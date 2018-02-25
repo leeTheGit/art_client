@@ -1,0 +1,16 @@
+Options +FollowSymlinks +SymLinksifOwnerMatch
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteBase /
+RewriteRule ^.*$ index.php [L]
+php_flag display_errors off
+
+
+# enable PHP error logging
+php_flag  log_errors on
+php_value error_log  ./php_errors.log
+# general directive for setting php error level
+php_value error_reporting 32759
+#php_value error_reporting 8191
+

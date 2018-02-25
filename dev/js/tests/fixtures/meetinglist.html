@@ -1,0 +1,180 @@
+<div class="meeting_list_tabs">
+    <ul>
+        <li class="black">To load</li>
+        <li class="black">Meetings</li>
+    </ul>
+</div>
+<ul class="meetingsList"></ul>
+<div class="meeting-info flex_col flex-shrink0"></div>
+
+<ul class="raceList"></ul>
+<ul class="runnersList"></ul>
+
+<script id="meetingFiltertmpl" type="text/template">
+    <div class="left">
+        <input type="search" id="meetingfilter" class="meetingfilter flex-shrink0" name="meetingfilter" placeholder="Filter meetings">
+    </div>
+</script>
+
+<script id="meeting_top" type="text/template">
+    <div class="top-main flex1">
+        
+        <p class="track white" id="meetingLocation">
+            <span id="viewFeed" class="switchView">◀︎︎</span>
+            <span class="nowrap padding-r10"><%= location %></span>
+            <span class="nowrap padding-r10"><%= type %></span>
+            <span class="nowrap padding-r10"><%= date %></p></span>
+        </p>
+
+        <p class="runnercount gray padding-bottom-30" id="runnercount"><span class="weight-500"><%= runnercount %></span> runners</span>
+        
+    </div>
+
+
+    <div class="top-sub flex_row flex-shrink0">
+
+        <div class="rail-container flex_row flex2">
+            <label class=" flex-shrink0 padding-5" for="rating">Track</label>
+                <input class="track-details flex1" id="meeting_rating" type="text" value="<%= rating %>" name="rating" autocomplete="off">
+            
+            <label class=" flex-shrink0 padding-5" for="weather">Weather</label>
+                <input class="track-details flex1" id="meeting_weather" type="text" value="<%= weather %>" name="weather" autocomplete="off">
+            
+            <label class=" flex-shrink0 padding-5" for="meeting_rail">Rail</label>
+                <input class="track-rail flex5"  type="text" id="meeting_rail" value="<%= rail %>" name="rail" autocomplete="off">
+        </div>
+
+        <div id="meeting_buttons" class="meeting_buttons flex-shrink0">
+            <div class="coloursbuttons">
+                <p>Silks</p>
+                <button class="meeting_control colours">Order</button>
+            </div>
+            <div class="syncbuttons">
+                <p>Web</p>
+                <button class="meeting_control sync">Show</button>
+            </div>
+            <div class="meetingbuttons">
+                <p>Meeting</p>
+                <button class="meeting_control hold <%= hold %>">Hold</button>
+                <button class="meeting_control delete">Delete</button>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+
+<script id="loginInfo" type="text/x-handlebars-template">
+    <label for="username"> Logged in as: </label>
+    <a id="username" href="/users"><%= userName %></a>
+</script>
+
+<script id="meetingList" type="text/template">
+    <div class="meeting-item flex_row <%= oldrace %> <%= selected %>" data-arrayid="<%= index %>" data-id="<%= id %>">
+        <div class="load-details flex9">
+            <li>
+                <ul>
+                    <li class="meeting track <%= hold %>"><%= venue %> <span class="meetingtype"><%= type %></span></li>
+                </ul>
+                <ul>
+                    <li class="racedate lightgray <%= sync %>"><%= raceDate %></li>
+                </ul>
+            </li>
+        </div>
+            <div class="load-actions flex1 flex_row">
+            <div id="viewFeed" class="viewFeed flex3">◀︎</div>
+        </div>
+    </div>
+</script>
+
+ <script id="search_result_tmpl" type="text/template">
+   <div id="search_result" class="search_result">
+        <h3>Results</h3>
+        <ul id="search_header" class="searchitem header">
+            <li class="search_type">Type</li>
+            <li class="search_find">Result</li>
+            <li class="search_meeting">Meeting</li>
+            <li class="search_racename">Race</li>
+        </ul>
+        <ul id="search_results" class="searchresults"></ul>
+        <div class="search_buttons">
+            <button class="close">Close</button>
+            <button class="min">Minimise</button>
+        </div>
+   </div>
+</script>
+
+<script id="raceDataHeader" type="text/template">
+    <li class="race_number flex1">Race</li
+    ><li class="race_time flex2">Time</li
+    ><li class="race_name flex6">Race Name</li
+    ><li class="race_name2 flex4">Name 2</li
+    ><li class="race_class flex4">Class</li
+    ><li class="race_class2 flex4">Class 2</li
+    ><li class="race_distance flex2">Distance</li
+    ><li class="race_runnercount flex1">Runners</li>
+</script>
+
+
+<script id="raceData" type="text/template">
+    <li class="border-bottom_50" data-arrayid="<%= index %>">
+        <ul class="race_data lightgray flex_row <%= selected %>">
+            <li class="race_number flex1" ><input type="text" class="textBold" name="number"  id="race_number"  value="<%= number %>" autocomplete="off"></li>
+            <li class="race_time flex2"><input type="text"  name="racetime"  id="race_time"  value="<%= time %>" autocomplete="off"></li>
+            <li class="race_name flex6"><input type="text" name="name"  id="race_name"  value="<%= name %>" autocomplete="off"></li>
+            <li class="race_name2 flex4"><input type="text" name="name2"  id="race_name2"  value="<%= name2 %>" autocomplete="off"></li>
+            <li class="race_class flex4"><input type="text" name="class"  id="race_class"  value="<%= race_class %>" autocomplete="off"></li>
+            <li class="race_class2 flex4"><input type="text" name="class2"  id="race_class2"  value="<%= race_class2 %>" autocomplete="off"></li>
+            <li class="race_distance flex2"><input  type="text"  name="distance"  id="race_distance"  value="<%= distance %>" autocomplete="off"></li>
+            <li class="race_runnercount flex1"><input type="text" value="<%= runners_count %>" readonly></li>
+        </ul>
+    </li>
+</script>
+
+<script id="runnersDataHeader" type="text/template">
+    <li class="runner_data_legend_pill" >Scr</li
+    ><li class="runner_number flex1"      >#</li
+    ><li class="runner_record flex2"      >Record</li
+    ><li class="runner_name flex4"        >Name</li
+    ><li class="runner_tip flex2"         ></li
+    ><li class="runner_tip flex1"         >Em</li
+    ><li class="runner_data_legend_pill"         >Tip</li
+    ><li class="runner_jockey flex4"      >Jockey</li
+    ><li class="runner_claim flex2"       >Clm</li
+    ><li class="runner_jockey2 flex4"     >Jockey 2</li
+    ><li class="runner_weight flex1"      >W</li
+    ><li class="runner_legend flex2"      >L</li
+    ><li class="runner_row flex1"         >Row</li
+    ><li class="runner_bar flex2"         >Bar</li
+    ><li class="runner_hcp flex2"         >hcp</li
+    ><li class="runner_trainer flex3"     >Trainer</li
+    ><li class="runner_location flex2"    >Location</li
+    ><li class="runner_rating flex1 centre"      >Rtg</li
+    ><li class="runner_market flex2 centre"      >Market</li>
+
+</script>
+
+<script id="runnersData" type="text/template">
+    <li class="border-bottom_50 <%= discrepancy %>" data-arrayid="<%= index %>">
+        <ul class="runner_data flex_row  <%= selected %> <%= scratched %>">
+            <li class="runner_number flex2">     <button data-id="<%= runnerid %>" class="scratch_button"><%= number %></button></li
+            ><li class="runner_record flex3">     <input type="text"  name="record"     value="<%= record %>" autocomplete="off"></li
+            ><li class="runner_tip flex2"> <div class="pill"><%= tip %></div></li
+            ><li class="runner_name flex7">       <button data-id="<%= runnerid %>" class="runnername"><%= name %></button></li
+            ><li class="runner_emergency flex2">  <input type="text" name="emergency"  value="<%= emergency %>" autocomplete="off"></li
+            ><li class="runner_country flex2">     <input type="text" class="weight-300" name="country"    value="<%= country %>" autocomplete="off"></li
+            ><li class="runner_bar flex2">        <input type="text" name="barrier"    value="<%= barrier %>" autocomplete="off"></li
+            ><li class="runner_legend flex4">     <input type="text" class="weight-300" name="legend"     value="<%= legend %>" autocomplete="off"></li
+            ><li class="runner_jockey flex7">     <input type="text" name="jockey" value="<%= jockey %>" autocomplete="off"></li
+            ><li class="runner_claim flex2">      <input type="text" class="weight-300" name="claim"      value="<%= claim %>" autocomplete="off"></li
+            ><li class="runner_jockey2 flex6">    <input type="text" class="weight-300" name="jockey2"    value="<%= jockey2 %>" autocomplete="off"></li
+            ><li class="runner_row flex2">        <input type="text" name="row"        value="<%= row %>" autocomplete="off"></li
+            ><li class="runner_weight flex2">     <input type="text"  name="weight"     value="<%= weight %>" autocomplete="off"></li
+            ><li class="runner_trainer flex7">    <input type="text" name="trainer"    value="<%= trainer %>" autocomplete="off"></li
+            ><li class="runner_location flex5">   <input type="text" class="weight-300" name="trainerlocation"   value="<%= trainerlocation %>" autocomplete="off"></li
+            ><li class="runner_hcp flex2">        <input type="text" class="weight-300" name="hcp"        value="<%= hcp %>" autocomplete="off"></li
+            ><li class="runner_rating flex3">     <input type="text" name="rating"     value="<%= rating %>" class="centre" autocomplete="off"></li
+            ><li class="runner_market flex3">     <input type="text" name="market"     value="<%= market %>" class="centre <%= market_missing %> <%= market_unset %>" placeholder="<%= market_aap %>" <%= disabled %> autocomplete="off" tabindex="100<%= index %>"></li>
+        </ul>
+    </li>
+</script>

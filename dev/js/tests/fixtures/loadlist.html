@@ -1,0 +1,138 @@
+<div class="load-info"></div>
+
+
+<ul class="meetingsList"></ul>
+<div class="meeting-info flex_col flex-shrink0"></div>
+
+
+<script id="loadList" type="text/template">
+    <div class="meeting-item flex_col <%= selected %>" data-status="<%= load_status %>" data-arrayid="<%= index %>" data-id="<%= id %>">
+        <div class="flex9">
+            <div class="flex_row">
+                <div class="load-actions flex3"><button class="wide status <%= load_status %> fa fa-circle-notch" name="race" data-feed="race"></button></div>
+                <div class="load-details flex7">
+                    <li>
+                        <ul>
+                            <li class="meeting track"><%= track %></li>
+                        </ul>
+                        <ul>
+                            <li class="racedate lightgray"><%= type %> <%= meetingdate %></li>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+        </div>
+        <div class="flex1">
+            <div class="barber-pole <%= index %> barber-pole-off" role="progressbar"><div class="stripe-wrapper" aria-hidden="true"><hr><hr><hr><hr><hr><hr><hr><hr><hr><hr><hr></div></div>
+        </div>
+    </div>
+</script>
+
+
+ <script id="load-info" type="text/template">
+ <div class="flex_col flex1 mainLoadContainer">
+
+    <div class="load-top flex-shrink0">
+
+            <p class="track white padding-bottom-15" id="meetingLocation">
+            <%= (load_status !== 'load') ? '<span id="viewFeed" class="viewloaded"><span class="switchView fa fa-shield"></span>︎</span>' : '' %>
+                <span class="nowrap padding-r10"><%- location %></span>
+                <span class="nowrap padding-r10 lightgray smaller"><%- type %></span>
+                <span class="nowrap padding-r10 lightgray smaller"><%- date %></span>
+            </p>
+            <p class="runnercount gray padding-bottom-30" id="runnercount"><span class="weight-500"><%- runnercount %></span> runners</span>
+    </div>
+
+
+    <div class="load-data flex1 flex_col">
+        <div class="loadContainer flex1 flex_row">
+            <div class="leftside flex_col flex1">
+                <div class="load-info flex1" >
+                    <div class="loadHeader blueHilight border-bottom_50">
+
+                        <h3>History</h3>
+                        <div class="dataList">
+                            <ul class="dark_30pc flex_row">
+                                <li class="flex2 blueHilight">Time</li
+                                ><li class="flex2 blueHilight">User</li
+                                ><li class="flex2 blueHilight">Type</li
+                                ><li class="flex4 blueHilight">Message</li>
+                            </ul>
+                            <div id="historyData"></div>
+                        </div>
+
+                        <h3>Source Files</h3>
+                        <div class="dataList">
+                            <ul class="dark_30pc flex_row">
+                                 <li class="flex1 blueHilight ">Time</li
+                                ><li class="flex1 blueHilight ">Since</li
+                                ><li class="flex3 blueHilight ">Feed</li>
+                            </ul>
+                            <div id="sourceData"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="rightside" class="rightside flex_col flex1">
+                <div id="importBox" class="flex_col flex1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+<script id="load-box" type="text/template">
+    <div class="load-box flex1 flex_col">
+        <div class="import-options">
+            <button class="feed_save button" data-feed="comment">Comment</button>
+            <button class="feed_save button" data-feed="nztxt">NZ TXT</button>
+            <button class="feed_save button" data-feed="tips">Tips</button>
+            <button class="feed_save button" data-feed="market">Market</button>
+            <button class="feed_save button" data-feed="race_comment">Race Comment</button>
+            <button class="feed_clear button">Clear</button>
+        </div>
+
+        <textarea class="flex1" id="feed-textbox"></textarea>
+    </div>
+</script>
+
+<script id="meetingHistory" type="text/template">
+    <ul class="flex_row">
+        <li class="flex2"><%= time %></li
+        ><li class="flex3"><%= user %></li
+        ><li class="flex2"><%= type %></li
+        ><li class="flex3"><%= message %></li
+    </ul>
+</script>
+
+<script id="meetingSource" type="text/template">
+    <ul class="flex_row">
+        <li class="flex1"><%= time %></li
+        ><li class="flex4"><%= feed %></li>
+    </ul>
+</script>
+
+<script id="meetingFiltertmpl" type="text/template">
+    <div class="left">
+        <input type="search" id="meetingfilter" class="meetingfilter flex-shrink0" name="meetingfilter" placeholder="Filter meetings">
+    </div>
+</script>
+
+
+
+<script id="loadOptionList" type="text/template">
+    <div id="importOptWindow" class="importOptWindow darker_bg">
+        <p>Load options</p>
+        <input id="newTask" class="newTask" type="text" name="newTask" autocomplete="off" />
+        <ul id="importList" class="importList"></ul>
+        <div class="import-options">
+            <button id="import" class="button">Import</button>
+            <button id="importClose" class="button">Close</button>
+        </div>
+    </div>
+</script>
+
+<script id="listItems" type="text/template">
+    <li><%= label %></li>
+</script>

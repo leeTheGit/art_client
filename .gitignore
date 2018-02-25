@@ -1,0 +1,6 @@
+Iconr
+.vagrant
+.vagrant/*
+.DS_Store
+config/config.php
+request.txt

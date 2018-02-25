@@ -1,0 +1,80 @@
+[25-Feb-2018 03:14:20 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(83): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:14:44 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(83): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:21:19 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:23:21 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:24:02 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:24:24 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:25:29 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:25:54 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:27:21 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:45
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 45
+[25-Feb-2018 03:28:25 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:46
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 46
+[25-Feb-2018 03:29:08 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:47
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 47
+[25-Feb-2018 03:29:39 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:47
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 47
+[25-Feb-2018 03:29:49 UTC] PHP Fatal error:  Uncaught Error: Class 'ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:47
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 47
+[25-Feb-2018 03:30:36 UTC] PHP Fatal error:  Uncaught Error: Class 'mvcr\service\ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:47
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 47
+[25-Feb-2018 03:31:14 UTC] PHP Fatal error:  Uncaught Error: Class 'mvcr\service\ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:47
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 47
+[25-Feb-2018 03:31:49 UTC] PHP Fatal error:  Uncaught Error: Class 'mvcr\service\ApiCaller' not found in /vagrant/src/client/mvcr/controller/api_cont.php:48
+Stack trace:
+#0 /vagrant/src/client/public/index.php(81): include_once()
+#1 {main}
+  thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 48

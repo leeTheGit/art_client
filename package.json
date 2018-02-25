@@ -1,0 +1,15 @@
+{
+  "name": "arta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@tv-api.pagemasters.com.au/home/git/racingClient.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
