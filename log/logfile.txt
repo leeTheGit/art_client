@@ -168,3 +168,95 @@ ea496 | /vagrant/src/client/public/index.php
  ▶ ︎sendRequest(): 
   ▶ ︎128: ︎http://arta-api.io/meeting/undefined/?data=portal&portal=all"¡
 
+61f92 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/meeting_cont.php"¡
+
+1272e | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/meeting_cont.php"¡
+
+f7532 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/api_cont.php"¡
+
+f7532 | /vagrant/src/client/mvcr/controller/api_cont.php
+ ▶ ︎include_once(): 
+  ▶ ︎2: ︎in teh api controller"¡
+
+f7532 |   ▶ ︎16: ︎:"¡
+
+f7532 |   ▶ ︎34: ︎crating api caller"¡
+
+f7532 |   ▶ ︎35: ︎Array
+(
+    [url] => arta-api.io/user/self
+    [method] => GET
+)
+"¡
+
+f7532 |   ▶ ︎38: ︎Made!!"¡
+
+f7532 | /vagrant/src/client/mvcr/service/apicaller.php
+ ▶ ︎sendRequest(): 
+  ▶ ︎128: ︎http://arta-api.io/user/self"¡
+
+e78c6 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/login_cont.php"¡
+
+980ea | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/meeting_cont.php"¡
+
+00bf3 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/api_cont.php"¡
+
+00bf3 | /vagrant/src/client/mvcr/controller/api_cont.php
+ ▶ ︎include_once(): 
+  ▶ ︎2: ︎in teh api controller"¡
+
+00bf3 |   ▶ ︎16: ︎:"¡
+
+00bf3 |   ▶ ︎34: ︎crating api caller"¡
+
+00bf3 |   ▶ ︎35: ︎Array
+(
+    [url] => arta-api.io/user/self
+    [method] => GET
+)
+"¡
+
+00bf3 |   ▶ ︎38: ︎Made!!"¡
+
+00bf3 | /vagrant/src/client/mvcr/service/apicaller.php
+ ▶ ︎sendRequest(): 
+  ▶ ︎128: ︎http://arta-api.io/user/self"¡
+
+49552 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/login_cont.php"¡
+
+05628 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/meeting_cont.php"¡
+
+34289 | /vagrant/src/client/public/index.php
+  ▶ ︎80: ︎/vagrant/src/client/public/../mvcr/controller/api_cont.php"¡
+
+34289 | /vagrant/src/client/mvcr/controller/api_cont.php
+ ▶ ︎include_once(): 
+  ▶ ︎2: ︎in teh api controller"¡
+
+34289 |   ▶ ︎16: ︎lneenan:radb"¡
+
+34289 |   ▶ ︎34: ︎crating api caller"¡
+
+34289 |   ▶ ︎35: ︎Array
+(
+    [url] => arta-api.io/user/self
+    [method] => GET
+    [user] => lneenan
+    [pass] => radb
+)
+"¡
+
+34289 |   ▶ ︎38: ︎Made!!"¡
+
+34289 | /vagrant/src/client/mvcr/service/apicaller.php
+ ▶ ︎sendRequest(): 
+  ▶ ︎128: ︎http://arta-api.io/user/self"¡
+

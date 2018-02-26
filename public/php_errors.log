@@ -78,3 +78,133 @@ Stack trace:
 #0 /vagrant/src/client/public/index.php(81): include_once()
 #1 {main}
   thrown in /vagrant/src/client/mvcr/controller/api_cont.php on line 48
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:26 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:27 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(/vagrant/src/client/public): failed to open stream: No such file or directory in /vagrant/src/client/public/index.php on line 99
+[26-Feb-2018 10:54:28 UTC] PHP Warning:  include_once(): Failed opening '' for inclusion (include_path='.:/usr/share/php') in /vagrant/src/client/public/index.php on line 99
