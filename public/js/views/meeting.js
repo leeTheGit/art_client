@@ -4,27 +4,25 @@
 
 
 
-	Radb.View.meetings = function(config)
+	Acme.View.meetings = function(config)
 	{
 		this.temp 			 = config.template;;
-		this.meetings        = [];
+		this.plants          = [];
 		this.container       = config.el;
 		this.selected        = null;
 		this.selectedElem    = null; //jquery element
 		this.selectedId 	 = null;
 
 		this.filter 		 = '';
-		this.meetingtype  	 = null;
-		this.meetingsort     = {
-			"Date"          : false
+		this.sortBy     	 = {
+			"Date" : false
 		};
 		this.days 			 = [];
-		this.loadStatus      = null;
 
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.meeting_view.listener' : [ "meetings/filter",
-									   	     "state_changed"]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.meeting_view.listener' : [ "state_changed"]
 		});
+
 		this.listeners = {
 			"meetings" : function(data) {
 				this.meetings = data.meetings;
@@ -32,7 +30,7 @@
 			},
 			"meeting": function(data) {
 				this.selectedId = data.meeting;
-				Radb.PubSub.publish('meeting/selected', {'id': data.meeting});
+				Acme.PubSub.publish('meeting/selected', {'id': data.meeting});
 			},
 			"meetingtype": function(data) {
 				this.render();
@@ -50,58 +48,44 @@
 
 		};
 	};
-		Radb.View.meetings.prototype.listener = function(topic, data)
+		// Acme.View.meetings.prototype.listener = function(topic, data)
+		// {
+		// 	var keys = Object.keys(data);
+		// 	for (var i = 0; i<keys.length; i++) {
+		// 		for (var listener in this.listeners) {
+		// 			if ( listener === keys[i] ) {
+		// 				this.listeners[listener].call(this, data);
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// };
+		Acme.View.meetings.prototype.render = function()
 		{
-			var keys = Object.keys(data);
-			for (var i = 0; i<keys.length; i++) {
-				for (var listener in this.listeners) {
-					if ( listener === keys[i] ) {
-						this.listeners[listener].call(this, data);
-						break;
-					}
-				}
-			}
-		};
-		Radb.View.meetings.prototype.render = function()
-		{
-			console.time('date');
-
-			this.chromeEvents();
-
-			localStorage['context'] = 'meetings';
 			var self = this;
 			self.container.empty();
 
-			var meetings = self.meetings.meetings;
-			var filter = Radb.filter.filter.toLowerCase().split(',');
 
-			Radb.filter.days = [];
+			Acme.filter.days = [];
 			if (meetings.length === 0 ) {
-				self.container.empty().append('<div class="noScheduleData">No Meetings</div>');
+				self.container.empty().append('<div class="noScheduleData">No Plants</div>');
 				return;
 			}
 
-			$('#dayname').text(Radb.state.date.format('dddd'));
-
-			var finalTmpl     = '';
-			var meetingCount  = meetings.length;
-			var visibleMeetings = 0;
-
-			var sortlabel = Object.keys(Radb.filter.meetingsort)[0];
 
 			if (sortlabel === 'Starttime') {
 												// path, 		  reverse, 								primer, then, dataTransform
-				meetings = meetings.sort(Radb.by('data.starttime', Radb.filter.meetingsort[sortlabel], null, null, function(d){return d.replace(/:/g, '') }));
+				meetings = meetings.sort(Acme.by('data.starttime', Acme.filter.meetingsort[sortlabel], null, null, function(d){return d.replace(/:/g, '') }));
 			}
 			if (sortlabel === 'Track') {
-				meetings = meetings.sort(Radb.by('data.venue', Radb.filter.meetingsort[sortlabel]));
+				meetings = meetings.sort(Acme.by('data.venue', Acme.filter.meetingsort[sortlabel]));
 			}
 			if (sortlabel === 'Date') {
-				// meetings = meetings.sort(Radb.by('data.date', Radb.filter.meetingsort[sortlabel]))
+				// meetings = meetings.sort(Acme.by('data.date', Acme.filter.meetingsort[sortlabel]))
 
-				meetings = meetings.sort(Radb.by('data.date', Radb.filter.meetingsort[sortlabel], null, Radb.by('data.venue')));
+				meetings = meetings.sort(Acme.by('data.date', Acme.filter.meetingsort[sortlabel], null, Acme.by('data.venue')));
 			}
-			var sortClass = (Radb.filter.meetingsort[sortlabel]) ? 'ASC': 'DESC';
+			var sortClass = (Acme.filter.meetingsort[sortlabel]) ? 'ASC': 'DESC';
 
 			$('.meeting_sort ul li').each(function(i,e) {
 				var $e = $(e);
@@ -117,7 +101,7 @@
 			$('.meeting_types ul li').each(function(i,e) {
 				var $e = $(e);
 				$e.removeClass('selectedColour');
-				if ($e.text() === Radb.filter.meetingtype) {
+				if ($e.text() === Acme.filter.meetingtype) {
 					$e.removeClass().addClass('selectedColour');
 				}
 			});
@@ -128,16 +112,16 @@
 				var day = +meetingDate.format("d");
 				var selected = '';
 
-				if (Radb.filter.hiddendays.indexOf(day) > -1) continue;
-				if (Radb.filter.meetingtype != null && Radb.filter.meetingtype != meetings[i].data.type) continue;
+				if (Acme.filter.hiddendays.indexOf(day) > -1) continue;
+				if (Acme.filter.meetingtype != null && Acme.filter.meetingtype != meetings[i].data.type) continue;
 
 				if (filter[0] !== '') {
 					if (!self.filterList(meetings[i], filter)) continue;
 				}
 
 				visibleMeetings++;
-				if (Radb.filter.days.indexOf(day) == -1) {
-					Radb.filter.days.push(day);
+				if (Acme.filter.days.indexOf(day) == -1) {
+					Acme.filter.days.push(day);
 				}
 
 				if (self.selectedId === meetings[i].data.id) {
@@ -202,21 +186,21 @@
 
 			return this;
 		};
-		Radb.View.meetings.prototype.progPercent = function(one, other)
+		Acme.View.meetings.prototype.progPercent = function(one, other)
 		{
 			var one = parseInt(one);
 			var other = parseInt(other);
 			return (100 / other) * one ;
 		};
 
-		Radb.View.meetings.prototype.scrolllist = function()
+		Acme.View.meetings.prototype.scrolllist = function()
 		{
 			var arrayid = this.selectInArrayById(this.selectedId);
 			this.select(arrayid);
 			this.selectedElem = $('div.meeting-item.selectedLoad');
-			if (this.selectedElem.length > 0) Radb.effects.scroll($('.meetingsList'), this.selectedElem);
+			if (this.selectedElem.length > 0) Acme.effects.scroll($('.meetingsList'), this.selectedElem);
 		};
-		Radb.View.meetings.prototype.filterList = function(meeting, filter)
+		Acme.View.meetings.prototype.filterList = function(meeting, filter)
 		{
 			var renderArray = [];
 			for (var j=0;j<filter.length;j++) {
@@ -229,7 +213,7 @@
 			}
 			return false;
 		};
-		Radb.View.meetings.prototype.selectInArrayById = function(id)
+		Acme.View.meetings.prototype.selectInArrayById = function(id)
 		{
 			if (this.meetings.length === 0) return;
 			var meetings = this.meetings.meetings;
@@ -239,9 +223,9 @@
 				}
 			}
 		};
-		Radb.View.meetings.prototype.toggleHoldLight = function(toggle)
+		Acme.View.meetings.prototype.toggleHoldLight = function(toggle)
 		{
-			var arrayid = this.selectInArrayById(Radb.state.meeting);
+			var arrayid = this.selectInArrayById(Acme.state.meeting);
 			var elem = this.select(arrayid);
 			if (toggle) {
 				elem.find('i.meeting-hold-light').addClass('fa-lock');
@@ -249,10 +233,10 @@
 				elem.find('i.meeting-hold-light').removeClass('fa-lock');
 			}
 		};
-		Radb.View.meetings.prototype.toggleSyncLight = function(toggle)
+		Acme.View.meetings.prototype.toggleSyncLight = function(toggle)
 		{
 			console.log('sync light');
-			var arrayid = this.selectInArrayById(Radb.state.meeting);
+			var arrayid = this.selectInArrayById(Acme.state.meeting);
 			var elem = this.select(arrayid);
 			if (toggle) {
 				elem.find('i.meeting-sync-light').addClass('fa-circle');
@@ -260,7 +244,7 @@
 				elem.find('i.meeting-sync-light').removeClass('fa-circle');
 			}
 		};
-		Radb.View.meetings.prototype.select = function(id)
+		Acme.View.meetings.prototype.select = function(id)
 		{
 			var meetings = $('.meetingsList div.meeting-item');
 			var selected_elem = [];
@@ -274,7 +258,7 @@
 			});
 			return selected_elem;
 		};
-		Radb.View.meetings.prototype.renderDays = function(id)
+		Acme.View.meetings.prototype.renderDays = function(id)
 		{
 			var self = this;
 			var days = $('.meeting_days ul li');
@@ -282,174 +266,17 @@
 				var $elem = $(elem);
 				$elem.removeClass('onBlue');
 				$elem.removeClass('offBlue');
-				if (Radb.filter.days.indexOf(index) > -1 && Radb.filter.hiddendays.indexOf(index) == -1) {
+				if (Acme.filter.days.indexOf(index) > -1 && Acme.filter.hiddendays.indexOf(index) == -1) {
 					$elem.addClass('onBlue');
-				} else if (Radb.filter.hiddendays.indexOf(index) > -1) {
+				} else if (Acme.filter.hiddendays.indexOf(index) > -1) {
 					$elem.addClass('offBlue');
 				}
 			});
 		};
-		Radb.View.meetings.prototype.chromeEvents = function(meetingdata)
-		{
-			var self = this;
-
-			var dPicker = $( "#dTime" );
-			dPicker.val(Radb.state.date.format('YYYY-MM-DD'));
-			dPicker.datepicker({
-			  	// changeMonth: true,
-			  	changeYear: true,
-			  	showOn:"button",
-			  	buttonImage: "/images/icons/calendar.png",
-			  	buttonImageOnly: true,
-			  	dateFormat: "yy-mm-dd",
-				 	beforeShow: function (textbox, instance) {
-	            	instance.dpDiv.css({
-	                    marginTop: (-textbox.offsetHeight) + 'px',
-	                    marginLeft: textbox.offsetWidth + 20 + 'px'
-	            	});
-				}
-			});
-
-			$('#schedDateStart label').unbind().on("click", function(e) {
-				var $elem 		= $(e.target);
-				var $dateField 	= $elem.siblings('input');
-				var theDate = moment($dateField.val());
-				if($elem.hasClass('add')) {
-					var newDate = 'Next'
-					$dateField.val( theDate.add('d', 1).format("YYYY-MM-DD") );
-				} else if ($elem.hasClass('minus')) {
-					$dateField.val( theDate.subtract('d', 1).format("YYYY-MM-DD") );
-					var newDate = 'Previous'
-				}
-				Radb.state.listener('update_state', {'date_rel': newDate, 'daterange': 'date'});
-			});
-
-			$("#dTime").change(function(e) {
-				var $elem 		= $(e.target);
-				var theDate 	= $elem.val();
-				Radb.state.listener('update_state', {'date_abs': theDate, 'daterange': 'date'});
-			});
-
-			$('#meetingfilter').unbind().on({
-
-				input: function(e) {
-					Radb.PubSub.publish('filter/updated', {'filter': $(e.target).val() });
-				},
-				search: function(e) {
-					if (!this.value) {
-						$(this).animate({
-							'width': '0'
-						});
-					}
-				}
-			});
-
-			$('#filtericon').unbind().on('click', function(e) {
-				e.stopPropagation();
-				var box = $(this).siblings('input');
-				box.animate({
-								'width': '220px',
-							});
-				box.focus();
-			});
-
-			$('.meeting_sort').unbind().on('click', function(e) {
-				var elem = $(e.target);
-				if (elem.is('li')) {
-					var sorted = [];
-					var meetings = self.meetings.meetings;
-					var label = elem.text();
-					var sortlabel = label.toLowerCase() + 'sort';
-					var tabs = elem.siblings();
-					tabs.each(function(i,e) {
-						var $e = $(e);
-						$e.removeClass('selectedColour');
-					});
-						$('.meeting_sort')
-					if (Object.keys(Radb.filter.meetingsort)[0] == label) {
-						var val = Radb.filter.meetingsort[label];
-						Radb.filter.meetingsort[label] = !val;
-					} else {
-						Radb.filter.meetingsort = {};
-						Radb.filter.meetingsort[label] = false;
-					}
-
-					var orderClass = (Radb.filter.meetingsort[label]) ? 'ASC': 'DESC';
-					elem.removeClass().addClass(orderClass).addClass('selectedColour');
-					self.render();
-				}
-			});
-
-			$('.meeting_days').unbind().on('click', function(e) {
-				var elem = $(e.target);
-				var id = elem.data('id');
-				if (elem.hasClass('onBlue')) {
-					Radb.filter.hiddendays.push(id);
-				} else if (elem.hasClass('offBlue')) {
-					var el = Radb.filter.hiddendays.indexOf(id);
-					Radb.filter.hiddendays.splice(el, 1);
-				}
-				self.render();
-			});
-
-			$('.meeting_types').unbind().on('click', function(e) {
-				var elem = $(e.target);
-				if (elem.is('li')) {
-					var data = {};
-					(elem.hasClass('selectedColour')) ?	data.meetingtype = null : data.meetingtype = elem.data('type');
-					Radb.PubSub.publish('filter/updated', data);
-				}
-			});
-
-			$('.meeting_dates').unbind().on('click', function(e) {
-				var elem = $(e.target);
-				if (elem.is('li')) {
-					Radb.state.listner('state/change', {'date_rel':elem.text(), 'daterange': 'date'});
-				}
-			});
 
 
-		};
-		Radb.View.meetings.prototype.contentEvents = function()
-		{
-			var self = this;
 
-			self.container.unbind().on('click', function(e) {
-				var elem = $(e.target);
-				var parent = elem.closest('div.meeting-item');
-				var id = parent.data('arrayid');
-				if (id === undefined) return;
-				self.selected = id;
-				self.selectedId = parent.data('id');
-				self.selectedElem = parent;
-				self.select(id);
-				self.scrolllist();
-				Radb.state.race = null;
-				Radb.state.runner = null;
-				Radb.url.query = [];
-				Radb.PubSub.publish('state_changed', {'clickEvent' : 'meeting'} );
-				Radb.PubSub.publish('update_state', {'meeting' : self.selectedId} );
-				// Radb.state.listener('state/change', {'meeting': self.selectedId});
-
-				// var mi = Radb.PubSub.publish('resource/selected', Radb.state);
-				// if (mi) {
-				// 	mi.done(function() {
-				// 		console.log('publishing load_from_url');
-				// 		Radb.PubSub.publish('load_from_url');
-				// 	});
-				// }
-			});
-		};
-		Radb.View.meetings.prototype.refreshSelected = function()
-		{
-			var meeting = this.meetings.meetings[this.selected];
-			meeting.query = ['portal', true, 'publication', Radb.state.publication, 'tipster', Radb.state.tipster];
-			meeting.fetch();
-			meeting.query = ['data', 'all'];
-		};
-
-
-	Radb.View.meeting = Radb.View.create(
+	Acme.View.meeting = Acme.View.create(
 	{
 		"temp" 			: template('meeting_top'),
 		"container" 	: '.meeting-info',
@@ -467,15 +294,15 @@
 				this.render();
 			},
 			"divs" : function(data) {
-				Radb.PubSub.publish('state_changed', {'meeting': this.meeting.data.id})
+				Acme.PubSub.publish('state_changed', {'meeting': this.meeting.data.id})
 			},
 		}
 	});
-		Radb.View.meeting.subscriptions = Radb.PubSub.subscribe({
-			'Radb.View.meeting.listener' : ["state_changed", "meeting_updated"]
+		Acme.View.meeting.subscriptions = Acme.PubSub.subscribe({
+			'Acme.View.meeting.listener' : ["state_changed"]
 		});
 
-		Radb.View.meeting.render = function(id)
+		Acme.View.meeting.render = function(id)
 		{
 			var self = this;
 
@@ -541,7 +368,7 @@
 
 			self.events();
 		};
-		Radb.View.meeting.renderMultiples = function(meetingdata)
+		Acme.View.meeting.renderMultiples = function(meetingdata)
 		{
 			var self = this;
 			var divs = JSON.parse(JSON.stringify(meetingdata.results.divs));
@@ -595,7 +422,7 @@
 			$('#multiplestext').html(divs.multiplesStr);
 			$('#aapmultiplestext').html(divs.aapmultiples);
 		};
-		Radb.View.meeting.webButtonToggle = function(meetingdata)
+		Acme.View.meeting.webButtonToggle = function(meetingdata)
 		{
 			if (meetingdata.web_enabled) {
 				$("button.sync").addClass('sync_on').data('sync', true);
@@ -603,7 +430,7 @@
 				$("button.sync").removeClass('sync_on').data('sync', false);
 			}
 		};
-		Radb.View.meeting.silksButtonToggle = function(meetingdata)
+		Acme.View.meeting.silksButtonToggle = function(meetingdata)
 		{
 			if (meetingdata.require_colours) {
 				$("button.colours").addClass('silks_on').data('colours', true);
@@ -611,7 +438,7 @@
 				$("button.colours").removeClass('silks_on').data('colours', false);
 			}
 		};
-		// Radb.View.meeting.timeZoneMenu = function(meetingdata)
+		// Acme.View.meeting.timeZoneMenu = function(meetingdata)
 		// {
 		// 	var self = this;
 
@@ -619,20 +446,20 @@
 		// 		self.tzMenu.remove();
 		// 	}
 
-		// 	self.tzMenu = new Radb.listMenu( {
+		// 	self.tzMenu = new Acme.listMenu( {
 		// 				'parent' 		: $('#timezoneSelect'),
 		// 				'defaultSelect' : {"label": meetingdata.timezone},
 		// 				'name' 			: 'timezone',
 		// 				'callback'		: self.meeting.updater(),
-		// 	}).init(Radb.timezones).render();
+		// 	}).init(Acme.timezones).render();
 
 		// };
-		Radb.View.meeting.events = function()
+		Acme.View.meeting.events = function()
 		{
 			var self = this;
 			$('.switchView').unbind().on('click', function(e) {
-				Radb.render_load();
-				Radb.load_col.fetch();
+				Acme.render_load();
+				Acme.load_col.fetch();
 				return;
 			});
 
@@ -654,7 +481,7 @@
 						elem.removeClass('hold_on');
 						// self.selectedElem.children().find('.meeting.track').addClass('hold');
 					}
-					Radb.PubSub.publish('state_changed', {'hold':meeting.data.disabled});
+					Acme.PubSub.publish('state_changed', {'hold':meeting.data.disabled});
 				});
 				return;
 			});
@@ -663,7 +490,7 @@
 			$('button.delete').unbind().on('click', function(e) {
 				var meeting = self.meeting;
 				var message = "Delete " + meeting.data.venue + " on " + meeting.data.date + "?";
-				Radb.dialog.show(message, "Warning", meeting.delete, meeting);
+				Acme.dialog.show(message, "Warning", meeting.delete, meeting);
 				return;
 			});
 
@@ -673,7 +500,7 @@
 
 				var message = '<div id="races">';
 
-				var dialog = Object.create(Radb.dialog);
+				var dialog = Object.create(Acme.dialog);
 				dialog.state = {'races' : []};
 				dialog.events = function() {
 					$('#races').on("click", function(e) {
@@ -721,10 +548,10 @@
 
 						elem.data('sync', sync);
 
-						Radb.PubSub.publish('state_changed', {'sync':sync});
+						Acme.PubSub.publish('state_changed', {'sync':sync});
 					};
 
-					Radb.PubSub.publish('state_changed', {'hold':meeting.data.disabled});
+					Acme.PubSub.publish('state_changed', {'hold':meeting.data.disabled});
 				});
 
 			});
@@ -755,7 +582,7 @@
 				meeting.update(data)
 				.fail(function(r) {
 					elem.val(self.meeting.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
@@ -804,7 +631,7 @@
 				})
 				.fail(function(r) {
 					elem.val(self.meeting.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
@@ -817,7 +644,7 @@
 
 				self.meeting.update(data).fail(function(r) {
 					elem.val(self.meeting.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
@@ -826,13 +653,13 @@
 				e.preventDefault();
 				var elem = $(e.target);
 
-				var state = Radb.state.resultsState;
+				var state = Acme.state.resultsState;
 				var mults = self.meeting.data.results.divs[state].multiples;
-				Radb.multEditor.show(mults, state, function(data) {
+				Acme.multEditor.show(mults, state, function(data) {
 					console.log(data);
 					self.meeting.update({divs: JSON.stringify(data.divs), state: data.state}).done(function(r) {
-						Radb.PubSub.publish('meeting_updated', {'divs': true});
-						Radb.effects.saved(elem);
+						Acme.PubSub.publish('meeting_updated', {'divs': true});
+						Acme.effects.saved(elem);
 					})
 				});
 			});
@@ -840,7 +667,7 @@
 		};
 
 
-	Radb.multEditor = {
+	Acme.multEditor = {
 		data : {},
 		show : function(data, state, callback) {
 			var self = this;

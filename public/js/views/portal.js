@@ -4,7 +4,7 @@
 
 
 
-	Radb.View.portal = Radb.View.create(
+	Acme.View.portal = Acme.View.create(
 	{
 		"temp" 			: {
 			'main' 			: template('portalData'),
@@ -34,19 +34,19 @@
 
 		}
 	});
-		Radb.View.portal.filterpub       = null;
-		Radb.View.portal.filterrunners 	 = false;
-		Radb.View.portal.filtertips 	 = false;
-		Radb.View.portal.$bestscontainer = Radb.View.portal.container.bests;
-		Radb.View.portal.$tipscontainer  = Radb.View.portal.container.tips;
-		Radb.View.portal.$pubscontainer	 = Radb.View.portal.container.publications;
-		Radb.View.portal.container 		 = Radb.View.portal.container.main;
-		Radb.View.portal.subscriptions   = Radb.PubSub.subscribe({
-			'Radb.View.portal.listener' : ["meeting/portalupdated", "state_changed"]
+		Acme.View.portal.filterpub       = null;
+		Acme.View.portal.filterrunners 	 = false;
+		Acme.View.portal.filtertips 	 = false;
+		Acme.View.portal.$bestscontainer = Acme.View.portal.container.bests;
+		Acme.View.portal.$tipscontainer  = Acme.View.portal.container.tips;
+		Acme.View.portal.$pubscontainer	 = Acme.View.portal.container.publications;
+		Acme.View.portal.container 		 = Acme.View.portal.container.main;
+		Acme.View.portal.subscriptions   = Acme.PubSub.subscribe({
+			'Acme.View.portal.listener' : ["meeting/portalupdated", "state_changed"]
 		});
 
 
-	// Radb.View.portal = function(config)
+	// Acme.View.portal = function(config)
 	// {
 		// this.mainTemp        = config.templates.main;
 		// this.maincontainer   = config.containers.main;
@@ -59,8 +59,8 @@
 		// this.filterpub       = null;
 		// this.filterrunners 	 = false;
 		// this.filtertips 	 = false;
-		// Radb.View.portal.subscriptions = Radb.PubSub.subscribe({
-		// 	'Radb.portal_view.listener' : ["meeting/portalupdated", "state_changed"]
+		// Acme.View.portal.subscriptions = Acme.PubSub.subscribe({
+		// 	'Acme.portal_view.listener' : ["meeting/portalupdated", "state_changed"]
 		// });
 		// this.listeners = {
 		// 	"currentmeeting" : function(data) {
@@ -73,7 +73,7 @@
 		//
 		// }
 
-		// Radb.View.portal.prototype.listener = function(topic, data)
+		// Acme.View.portal.prototype.listener = function(topic, data)
 		// {
 		// 	console.log(topic, data);
 		// 	if (topic == 'meeting/portalupdated')
@@ -89,11 +89,11 @@
 		// 	// 	this.filtertips 	 = false;
 		// 	// }
 		// };
-		// Radb.View.portal.prototype.clear = function()
+		// Acme.View.portal.prototype.clear = function()
 		// {
 		// 	this.maincontainer.empty();
 		// };
-		Radb.View.portal.render = function()
+		Acme.View.portal.render = function()
 		{
 			var self = this;
 			console.log(self);
@@ -268,7 +268,7 @@
 
 			return true;
 		};
-		Radb.View.portal.events = function()
+		Acme.View.portal.events = function()
 		{
 			var self = this;
 

@@ -37,35 +37,35 @@ $(function()
 			loadFixtures('meetinglist.html');
 			z = 0;
 
-            Radb.url = new Radb.Url();
-            Radb.state = new Radb.State();
-            // Radb.PubSub.subscribe({
-            //     'Radb.resource.update'  : [ "load_from_url",
+            Acme.url = new Acme.Url();
+            Acme.state = new Acme.State();
+            // Acme.PubSub.subscribe({
+            //     'Acme.resource.update'  : [ "load_from_url",
             //                                 "resource/selected",
             //                                 "resource/updated" ],
-            //     'Radb.url.update'       : [ "url/updated" ]
+            //     'Acme.url.update'       : [ "url/updated" ]
             // });
 
-            // spyOn(Radb.resource, 'update');
+            // spyOn(Acme.resource, 'update');
 
 
 
 			// ***************************************
 			//               LOAD VIEWS
 			// ***************************************
-            Radb.meeting_view   = new Radb.View.meetings({'template': template('meetingList'), 'el': $('.meetingsList')});
-            Radb.filter         = new Radb.View.filter();
-			Radb.race_list_view = new Radb.View.race(    {'template': template('raceData'),    'el': $('.raceList')});
-			Radb.runners_view   = new Radb.View.runners( {'template': template('runnersData'), 'el': $('.runnersList')});
+            Acme.meeting_view   = new Acme.View.meetings({'template': template('meetingList'), 'el': $('.meetingsList')});
+            Acme.filter         = new Acme.View.filter();
+			Acme.race_list_view = new Acme.View.race(    {'template': template('raceData'),    'el': $('.raceList')});
+			Acme.runners_view   = new Acme.View.runners( {'template': template('runnersData'), 'el': $('.runnersList')});
 
 
 
             // // ***************************************
 			// 			   LOAD COLLECTIONS
 			// // ***************************************
-			Radb.runners_col = new Radb.Collection.runners(Radb.Model.runner);
-			Radb.races_col   = new Radb.Collection.races(Radb.Model.race);
-			Radb.meeting_col = new Radb.Collection.meetings(Radb.Model.meeting);
+			Acme.runners_col = new Acme.Collection.runners(Acme.Model.runner);
+			Acme.races_col   = new Acme.Collection.races(Acme.Model.race);
+			Acme.meeting_col = new Acme.Collection.meetings(Acme.Model.meeting);
 
 
 
@@ -76,17 +76,17 @@ $(function()
 				return d.promise();
 			});
 
-			spyOn(Radb.PubSub,          'publish');
-			spyOn(Radb.meeting_view, 	'render').andCallThrough();
-			spyOn(Radb.meeting_view, 	'events').andCallThrough();
-			spyOn(Radb.race_list_view, 	'render').andCallThrough();
-			spyOn(Radb.race_list_view, 	'events').andCallThrough();
-			spyOn(Radb.race_list_view, 	'update').andCallThrough();
-			spyOn(Radb.runners_view, 	'render').andCallThrough();
-			spyOn(Radb.runners_view, 	'events').andCallThrough();
+			spyOn(Acme.PubSub,          'publish');
+			spyOn(Acme.meeting_view, 	'render').andCallThrough();
+			spyOn(Acme.meeting_view, 	'events').andCallThrough();
+			spyOn(Acme.race_list_view, 	'render').andCallThrough();
+			spyOn(Acme.race_list_view, 	'events').andCallThrough();
+			spyOn(Acme.race_list_view, 	'update').andCallThrough();
+			spyOn(Acme.runners_view, 	'render').andCallThrough();
+			spyOn(Acme.runners_view, 	'events').andCallThrough();
 
 
-			page = Radb.meeting_col.fetch().fail(function(r) {
+			page = Acme.meeting_col.fetch().fail(function(r) {
 				console.log(r.responseText);
 			});
 		});
@@ -97,39 +97,39 @@ $(function()
 		it("expects Meetings to fetch and publish message", function() {
 			page.done(function(r) {
 				meetingId = r.data.length -1;
-				expect(Radb.meeting_col.meetings[meetingId].data.code).toEqual('tes');
-				expect(Radb.PubSub.publish).toHaveBeenCalledWith('meetings/fetched', Radb.meeting_col);
+				expect(Acme.meeting_col.meetings[meetingId].data.code).toEqual('tes');
+				expect(Acme.PubSub.publish).toHaveBeenCalledWith('meetings/fetched', Acme.meeting_col);
 			});
 		});
 
 		it("expects Meetings_list view to update after fetch", function() {
 			page.done(function(r) {
 				z = 0;
-				Radb.meeting_view.update('meetings/fetched', Radb.meeting_col);
-				expect(Radb.meeting_view.render).toHaveBeenCalled();
-				expect(Radb.meeting_view.events).toHaveBeenCalled();
+				Acme.meeting_view.update('meetings/fetched', Acme.meeting_col);
+				expect(Acme.meeting_view.render).toHaveBeenCalled();
+				expect(Acme.meeting_view.events).toHaveBeenCalled();
 				$('.meetingsList ul:last').click();
-                expect(Radb.PubSub.publish).toHaveBeenCalledWith('resource/selected', Radb.state);
+                expect(Acme.PubSub.publish).toHaveBeenCalledWith('resource/selected', Acme.state);
 			});
 		});
 
         it("expects meeting header information to load", function() {
             page.done(function(r) {
-                Radb.meeting_view.update('meetings/fetched', Radb.meeting_col);
-                Radb.meeting_view.update('meeting/selected', Radb.meeting_view.meetings.meetings[1].data.id)
+                Acme.meeting_view.update('meetings/fetched', Acme.meeting_col);
+                Acme.meeting_view.update('meeting/selected', Acme.meeting_view.meetings.meetings[1].data.id)
 
                 /* test */
                 expect( $('.top-main') ).toExist();
                 expect( $('#meetingLocation') ).toExist();
                 expect( $('#meetingLocation span:nth-child(2)').text()).toEqual('TEST ');
 
-                spyOn(Radb.dialog, 'show').andCallThrough();
-                spyOn(Radb.dialog, 'closeWindow').andCallThrough();
+                spyOn(Acme.dialog, 'show').andCallThrough();
+                spyOn(Acme.dialog, 'closeWindow').andCallThrough();
 
                 z = 3;
-                spyOn(Radb.server, 'create').andCallThrough();
-                spyOn(Radb.server, 'update').andCallThrough();
-                spyOn(Radb.server, 'delete').andCallThrough();
+                spyOn(Acme.server, 'create').andCallThrough();
+                spyOn(Acme.server, 'update').andCallThrough();
+                spyOn(Acme.server, 'delete').andCallThrough();
                 /* test colours */
                 $('#meeting_buttons button.colours').trigger('click');
                 var datum = {'data':[]};
@@ -141,11 +141,11 @@ $(function()
 
                 $('#dialogButtons button:nth-child(1)').trigger('click');
 
-                expect(Radb.server.create).toHaveBeenCalledWith('jockeysilks', datum);
+                expect(Acme.server.create).toHaveBeenCalledWith('jockeysilks', datum);
 
                 $('#dialogButtons button:nth-child(2)').trigger('click');
 
-                expect(Radb.dialog.closeWindow).toHaveBeenCalled();
+                expect(Acme.dialog.closeWindow).toHaveBeenCalled();
 
 
 
@@ -153,12 +153,12 @@ $(function()
 
                 /* test sync*/
                 z = 0
-                Radb.meeting_view.update('meeting/selected', Radb.meeting_view.meetings.meetings[1].data.id)
-                var meetingsync = Radb.meeting_view.meetings.meetings[1];
+                Acme.meeting_view.update('meeting/selected', Acme.meeting_view.meetings.meetings[1].data.id)
+                var meetingsync = Acme.meeting_view.meetings.meetings[1];
                 spyOn(meetingsync, 'sync').andCallThrough();
                 $('#meeting_buttons button.sync').trigger('click');
 
-                expect(Radb.dialog.show).toHaveBeenCalledWith("Show TEST  on the portal?", "Warning", meetingsync.sync, meetingsync);
+                expect(Acme.dialog.show).toHaveBeenCalledWith("Show TEST  on the portal?", "Warning", meetingsync.sync, meetingsync);
 
                 expect( $('#dialogButtons button:nth-child(2)')).toExist();
 
@@ -167,18 +167,18 @@ $(function()
                 $('#dialogButtons button:nth-child(1)').trigger('click');
 
                 expect(meetingsync.sync).toHaveBeenCalled();
-                expect(Radb.server.update).toHaveBeenCalledWith('meeting/62e6516a-e549-403d-8175-3db41b5e15d6', {'sync':true});
+                expect(Acme.server.update).toHaveBeenCalledWith('meeting/62e6516a-e549-403d-8175-3db41b5e15d6', {'sync':true});
 
 
-                Radb.dialog.closeWindow();
+                Acme.dialog.closeWindow();
 
                 /* test unsync */
                 spyOn(meetingsync, 'unsync').andCallThrough();
                 $('#meeting_buttons button.sync').trigger('click');
-                expect(Radb.dialog.show).toHaveBeenCalledWith("Hide TEST  from the portal?", "Warning", meetingsync.unsync, meetingsync);
+                expect(Acme.dialog.show).toHaveBeenCalledWith("Hide TEST  from the portal?", "Warning", meetingsync.unsync, meetingsync);
                 $('#dialogButtons button:nth-child(1)').trigger('click');
                 expect(meetingsync.unsync).toHaveBeenCalled();
-                expect(Radb.server.update).toHaveBeenCalledWith('meeting/62e6516a-e549-403d-8175-3db41b5e15d6', {'unsync':true});
+                expect(Acme.server.update).toHaveBeenCalledWith('meeting/62e6516a-e549-403d-8175-3db41b5e15d6', {'unsync':true});
 
 
 
@@ -189,10 +189,10 @@ $(function()
 
 
                 // /* test delete */
-                Radb.dialog.show.reset();
+                Acme.dialog.show.reset();
                 spyOn(meetingsync, 'delete').andCallThrough();
                 $('#meeting_buttons button.delete').trigger('click');
-                expect(Radb.dialog.show).toHaveBeenCalledWith("Delete TEST  on 2099-01-01?", "Warning", meetingsync.delete, meetingsync);
+                expect(Acme.dialog.show).toHaveBeenCalledWith("Delete TEST  on 2099-01-01?", "Warning", meetingsync.delete, meetingsync);
                 $('#dialogButtons button:nth-child(1)').trigger('click');
                 expect(meetingsync.delete).toHaveBeenCalled();
 
@@ -207,13 +207,13 @@ $(function()
 			page.done(function(r) {
 
 				z = 1;
-				Radb.meeting_view.update('meetings/fetched', Radb.meeting_col);
-				Radb.races_col.update('meeting/selected', Radb.meeting_view.meetings.meetings[1].data.id).done(function(r) {
-					expect(Radb.PubSub.publish).toHaveBeenCalledWith('races/fetched', Radb.races_col);
-					Radb.PubSub.publish('races/fetched', Radb.races_col);
-					Radb.race_list_view.update('races/fetched', Radb.races_col);
-					expect(Radb.race_list_view.update).toHaveBeenCalled();
-					expect(Radb.race_list_view.render).toHaveBeenCalled();
+				Acme.meeting_view.update('meetings/fetched', Acme.meeting_col);
+				Acme.races_col.update('meeting/selected', Acme.meeting_view.meetings.meetings[1].data.id).done(function(r) {
+					expect(Acme.PubSub.publish).toHaveBeenCalledWith('races/fetched', Acme.races_col);
+					Acme.PubSub.publish('races/fetched', Acme.races_col);
+					Acme.race_list_view.update('races/fetched', Acme.races_col);
+					expect(Acme.race_list_view.update).toHaveBeenCalled();
+					expect(Acme.race_list_view.render).toHaveBeenCalled();
 					expect( $('.race_data li').eq(2).find('input').val() ).toEqual('TAB Rewards Plate');
 					expect( $('.race_data li').eq(1).find('input').val() ).toEqual('13.10');
 				});
@@ -223,17 +223,17 @@ $(function()
 		it("expects a click on race item to load runners list view", function() {
 			page.done(function(r) {
 				z = 1;
-				Radb.meeting_view.update('meetings/reloaded', Radb.meeting_col);
-				Radb.races_col.update('meeting/selected', Radb.meeting_view.meetings.meetings[1].data.id).done(function(r) {
-					expect(Radb.PubSub.publish).toHaveBeenCalledWith('races/fetched', Radb.races_col);
-					Radb.race_list_view.update('races/fetched', Radb.races_col);
+				Acme.meeting_view.update('meetings/reloaded', Acme.meeting_col);
+				Acme.races_col.update('meeting/selected', Acme.meeting_view.meetings.meetings[1].data.id).done(function(r) {
+					expect(Acme.PubSub.publish).toHaveBeenCalledWith('races/fetched', Acme.races_col);
+					Acme.race_list_view.update('races/fetched', Acme.races_col);
 					$('.raceList li:first').click();
-					expect( Radb.PubSub.publish ).toHaveBeenCalledWith('race/selected', Radb.race_list_view.data.races[0].data.id);
+					expect( Acme.PubSub.publish ).toHaveBeenCalledWith('race/selected', Acme.race_list_view.data.races[0].data.id);
 					z = 2;
-					Radb.runners_col.update('race/selected', Radb.race_list_view.data.races[0].data.id);
-					expect(Radb.PubSub.publish).toHaveBeenCalledWith('runners/fetched', Radb.runners_col);
+					Acme.runners_col.update('race/selected', Acme.race_list_view.data.races[0].data.id);
+					expect(Acme.PubSub.publish).toHaveBeenCalledWith('runners/fetched', Acme.runners_col);
 
-					Radb.runners_view.update('runners/fetched', Radb.runners_col);
+					Acme.runners_view.update('runners/fetched', Acme.runners_col);
 					expect( $('.runner_data') ).toExist();
 					console.log($('.runner_data li').eq(3));
 					expect( $('.runner_data li').eq(1).find('input').val() ).toEqual('4879');
@@ -251,30 +251,30 @@ $(function()
 		it("expects data within a race to update", function() {
 			page.done(function(r) {
 				z = 1;
-				Radb.meeting_view.update('meetings/fetched', Radb.meeting_col);
-				Radb.races_col.update('meeting/selected', Radb.meeting_view.meetings.meetings[1].data.id).done(function(r) {
-					Radb.race_list_view.update('races/fetched', Radb.races_col);
+				Acme.meeting_view.update('meetings/fetched', Acme.meeting_col);
+				Acme.races_col.update('meeting/selected', Acme.meeting_view.meetings.meetings[1].data.id).done(function(r) {
+					Acme.race_list_view.update('races/fetched', Acme.races_col);
 					$('.raceList li:first').click();
 
-					spyOn(Radb.race_list_view.data.races[0], 'update').andCallThrough();
+					spyOn(Acme.race_list_view.data.races[0], 'update').andCallThrough();
 					$('.race_data li').eq(2).find('input').val('new val').trigger('change');
-					expect( Radb.race_list_view.data.races[0].update).toHaveBeenCalledWith({'name': "new val"});
+					expect( Acme.race_list_view.data.races[0].update).toHaveBeenCalledWith({'name': "new val"});
 
 
 					$('.race_data li').eq(3).find('input').val('andy cap').trigger('change');
-					expect( Radb.race_list_view.data.races[0].update).toHaveBeenCalledWith({'name2': "andy cap"});
+					expect( Acme.race_list_view.data.races[0].update).toHaveBeenCalledWith({'name2': "andy cap"});
 
 					$('.race_data li').eq(4).find('input').val('grade6').trigger('change');
-					expect( Radb.race_list_view.data.races[0].update).toHaveBeenCalledWith({'class': "grade6"});
+					expect( Acme.race_list_view.data.races[0].update).toHaveBeenCalledWith({'class': "grade6"});
 
 					$('.race_data li').eq(6).find('input').val('10').trigger('change');
-					expect( Radb.race_list_view.data.races[0].update).toHaveBeenCalledWith({'distance': "10"});
+					expect( Acme.race_list_view.data.races[0].update).toHaveBeenCalledWith({'distance': "10"});
 
-					expect(Radb.PubSub.publish).toHaveBeenCalledWith('race/updated', Radb.race_list_view.data.races[0]);
-					expect( Radb.race_list_view.data.races[0].data.name).toEqual('new val');
-					expect( Radb.race_list_view.data.races[0].data.name2).toEqual('andy cap');
-					expect( Radb.race_list_view.data.races[0].data.class).toEqual('grade6');
-					expect( Radb.race_list_view.data.races[0].data.distance).toEqual('10');
+					expect(Acme.PubSub.publish).toHaveBeenCalledWith('race/updated', Acme.race_list_view.data.races[0]);
+					expect( Acme.race_list_view.data.races[0].data.name).toEqual('new val');
+					expect( Acme.race_list_view.data.races[0].data.name2).toEqual('andy cap');
+					expect( Acme.race_list_view.data.races[0].data.class).toEqual('grade6');
+					expect( Acme.race_list_view.data.races[0].data.distance).toEqual('10');
 
 				});
 
@@ -284,42 +284,42 @@ $(function()
 		it("expects data within a runner to update", function() {
 			page.done(function(r) {
 				z = 1;
-				Radb.meeting_view.update('meetings/fetched', Radb.meeting_col);
+				Acme.meeting_view.update('meetings/fetched', Acme.meeting_col);
 				z = 2;
-				Radb.runners_col.update('meeting/selected', Radb.meeting_view.meetings.meetings[0].data.id).done(function(r) {
+				Acme.runners_col.update('meeting/selected', Acme.meeting_view.meetings.meetings[0].data.id).done(function(r) {
 
-					Radb.runners_view.update('runners/fetched', Radb.runners_col);
-					spyOn(Radb.runners_view.data.runners[0], 'update').andCallThrough();
+					Acme.runners_view.update('runners/fetched', Acme.runners_col);
+					spyOn(Acme.runners_view.data.runners[0], 'update').andCallThrough();
 
 					$('.runner_data:first').find('li').eq(1).find('input').val('666').trigger('change');
-					expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'record': "666"});
+					expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'record': "666"});
 
 					// $('.runner_data:first').find('li').eq(3).find('input').val('new runner').trigger('change');
-					// expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'name': "new runner"});
+					// expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'name': "new runner"});
 
 					$('.runner_data:first').find('li').eq(8).find('input').val('barry').trigger('change');
-					expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'jockey': "barry"});
+					expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'jockey': "barry"});
 
 					$('.runner_data:first').find('li').eq(9).find('input').val('5').trigger('change');
-					expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'claim': "5"});
+					expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'claim': "5"});
 
 					$('.runner_data:first').find('li').eq(17).find('input').val('999').trigger('change');
-					expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'market': "999", 'supplier': ""});
+					expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'market': "999", 'supplier': ""});
 
 					// $('.runner_data:first').find('li').eq(9).find('input').val('Harry').trigger('change');
-					// expect( Radb.runners_view.data.runners[0].update).toHaveBeenCalledWith({'jockey2': "Harry"});
+					// expect( Acme.runners_view.data.runners[0].update).toHaveBeenCalledWith({'jockey2': "Harry"});
 
-					// expect( Radb.PubSub.publish).toHaveBeenCalledWith('runner/updated', Radb.runners_view.data.runners[0]);
-					// expect( Radb.runners_view.data.runners[0].data.name).toEqual('new runner');
+					// expect( Acme.PubSub.publish).toHaveBeenCalledWith('runner/updated', Acme.runners_view.data.runners[0]);
+					// expect( Acme.runners_view.data.runners[0].data.name).toEqual('new runner');
 
-					expect( Radb.runners_view.data.runners[0].data.record).toEqual('666');
-					// expect( Radb.runners_view.data.runners[0].data.jockey).toEqual('barry');
-					expect( Radb.runners_view.data.runners[0].data.claim).toEqual('5');
-					// expect( Radb.runners_view.data.runners[0].data.jockey2).toEqual('Harry');
-					expect( Radb.runners_view.data.runners[0].data.market).toEqual('999');
+					expect( Acme.runners_view.data.runners[0].data.record).toEqual('666');
+					// expect( Acme.runners_view.data.runners[0].data.jockey).toEqual('barry');
+					expect( Acme.runners_view.data.runners[0].data.claim).toEqual('5');
+					// expect( Acme.runners_view.data.runners[0].data.jockey2).toEqual('Harry');
+					expect( Acme.runners_view.data.runners[0].data.market).toEqual('999');
 
 					$('.runner_data:first').find('li').eq(2).find('div').trigger('click');
-					expect( Radb.runners_view.data.runners[0].data.tip).toEqual(true);
+					expect( Acme.runners_view.data.runners[0].data.tip).toEqual(true);
 
 				});
 			});
@@ -349,30 +349,30 @@ $(function()
 			loadFixtures('loadlist.html');
 			z = 4;
 
-			Radb.url      = new Radb.Url();
-			Radb.state   = new Radb.State();
+			Acme.url      = new Acme.Url();
+			Acme.state   = new Acme.State();
 
 
 			// ***************************************
 			//               LOAD VIEWS
 			// ***************************************
 
-			Radb.load_view = new Radb.View.load({'template': template('loadList'), 'el': $('.meetingsList')});
-			Radb.feed      = new Radb.Feed.load();
-			Radb.filter    = new Radb.View.filter();
+			Acme.load_view = new Acme.View.load({'template': template('loadList'), 'el': $('.meetingsList')});
+			Acme.feed      = new Acme.Feed.load();
+			Acme.filter    = new Acme.View.filter();
 
 
-            Radb.load_history = new Radb.View.load_history({'template': template('meetingHistory'), 'el': '#historyData'});
-            Radb.load_source  = new Radb.View.load_source({'template': template('meetingSource'), 'el': '#sourceData'});
-            Radb.load_feed    = new Radb.View.load_feed({'template': template('load-box'), 'el': '#importBox'});
-            // Radb.source_feed  = new Radb.View.load_diff({'template': template('source-feed'), 'el': '#importBox'});
+            Acme.load_history = new Acme.View.load_history({'template': template('meetingHistory'), 'el': '#historyData'});
+            Acme.load_source  = new Acme.View.load_source({'template': template('meetingSource'), 'el': '#sourceData'});
+            Acme.load_feed    = new Acme.View.load_feed({'template': template('load-box'), 'el': '#importBox'});
+            // Acme.source_feed  = new Acme.View.load_diff({'template': template('source-feed'), 'el': '#importBox'});
 
 
 
 			// // ***************************************
 			//             LOAD COLLECTIONS
 			// // ***************************************
-			Radb.load_col = new Radb.Collection.load(Radb.Model.loadModel);
+			Acme.load_col = new Acme.Collection.load(Acme.Model.loadModel);
 
 
 
@@ -383,12 +383,12 @@ $(function()
 				return d.promise();
 			});
 
-			spyOn(Radb.PubSub,       'publish')
-			spyOn(Radb.load_view,    'render').andCallThrough();
-			spyOn(Radb.load_view,    'events').andCallThrough();
+			spyOn(Acme.PubSub,       'publish')
+			spyOn(Acme.load_view,    'render').andCallThrough();
+			spyOn(Acme.load_view,    'events').andCallThrough();
 
 
-			page = Radb.load_col.fetch().fail(function(r) {
+			page = Acme.load_col.fetch().fail(function(r) {
 				console.log(r.responseText);
 			});
 		});
@@ -399,31 +399,31 @@ $(function()
 		it("expects Load meetings to fetch and publish message", function() {
 			page.done(function(r) {
 				meetingId = 0;
-				expect(Radb.load_col.meetings[meetingId].data.code).toEqual('Angle Park');
-				expect(Radb.PubSub.publish).toHaveBeenCalledWith('load/fetched', Radb.load_col);
+				expect(Acme.load_col.meetings[meetingId].data.code).toEqual('Angle Park');
+				expect(Acme.PubSub.publish).toHaveBeenCalledWith('load/fetched', Acme.load_col);
 			});
 		});
 
 		it("expects Load_list view to update after fetch", function() {
 			page.done(function(r) {
-				Radb.load_view.update('load/fetched', Radb.load_col);
+				Acme.load_view.update('load/fetched', Acme.load_col);
 				z = 6;
 
-				// console.log(Radb.load_view.meetings.meetings);
+				// console.log(Acme.load_view.meetings.meetings);
 
-				spyOn( Radb.load_view.meetings.meetings[3], 'fetch' ).andCallThrough();
+				spyOn( Acme.load_view.meetings.meetings[3], 'fetch' ).andCallThrough();
 				$('.meetingsList > div:last').click();
-				expect(Radb.PubSub.publish).toHaveBeenCalledWith('load/fetched', Radb.load_col);
-				expect(Radb.load_view.render).toHaveBeenCalled();
-				expect(Radb.load_view.events).toHaveBeenCalled();
+				expect(Acme.PubSub.publish).toHaveBeenCalledWith('load/fetched', Acme.load_col);
+				expect(Acme.load_view.render).toHaveBeenCalled();
+				expect(Acme.load_view.events).toHaveBeenCalled();
 
-				expect(Radb.load_view.meetings.meetings[3].fetch).toHaveBeenCalledWith(null);
+				expect(Acme.load_view.meetings.meetings[3].fetch).toHaveBeenCalledWith(null);
 
-				spyOn( Radb.load_view, 'renderLoadInfo').andCallThrough();
+				spyOn( Acme.load_view, 'renderLoadInfo').andCallThrough();
 
-				// Radb.load_view.renderLoadInfo(ajaxData[6]);
+				// Acme.load_view.renderLoadInfo(ajaxData[6]);
 
-				// expect(Radb.load_view.renderLoadInfo).toHaveBeenCalledWith(ajaxData[6]);
+				// expect(Acme.load_view.renderLoadInfo).toHaveBeenCalledWith(ajaxData[6]);
 				expect( $('.loadContainer') ).toExist();
 				expect( $('#historyData') ).toExist();
 				expect( $('#sourceData') ).toExist();
@@ -431,7 +431,7 @@ $(function()
 				expect( $('#importBox') ).toExist();
 
 				// console.log( $('.meetingsList > div:last li.meeting').text() );
-				// console.log(Radb.load_col.meetings);
+				// console.log(Acme.load_col.meetings);
 				expect($('.meetingsList > div:last li.meeting').text()).toEqual('Bathurst');
 				var elem = $('.meetingsList > div:last div.load-actions > button');
 				expect(elem).toHaveClass('load');
@@ -444,7 +444,7 @@ $(function()
 				z = 6;
 
 				// render the load list
-				Radb.load_view.update('load/fetched', Radb.load_col);
+				Acme.load_view.update('load/fetched', Acme.load_col);
 
 				// select the last meeting (Bathurst)
 				$('.meetingsList > div:last').click();
@@ -452,14 +452,14 @@ $(function()
 				var elem = $('.meetingsList > div:last div.load-actions > button');
 				expect(elem).toHaveClass('load');
 
-				spyOn( Radb.load_col.meetings[3], 'load' ).andCallThrough();
-				spyOn(Radb.server, 'create').andCallThrough();
+				spyOn( Acme.load_col.meetings[3], 'load' ).andCallThrough();
+				spyOn(Acme.server, 'create').andCallThrough();
 
 				// click the load button
 				elem.click();
-				expect(Radb.load_col.meetings[3].load).toHaveBeenCalledWith({'feed': 'race'});
-				expect(Radb.server.create).toHaveBeenCalledWith('load/Bathurst,2015-10-05,GR', {'feed': 'race'});
-				expect(Radb.PubSub.publish).toHaveBeenCalledWith('load/fetched', Radb.load_col);
+				expect(Acme.load_col.meetings[3].load).toHaveBeenCalledWith({'feed': 'race'});
+				expect(Acme.server.create).toHaveBeenCalledWith('load/Bathurst,2015-10-05,GR', {'feed': 'race'});
+				expect(Acme.PubSub.publish).toHaveBeenCalledWith('load/fetched', Acme.load_col);
 			});
 		});
 
@@ -468,12 +468,12 @@ $(function()
 			page.done(function(r) {
 				z = 6;
 
-				spyOn( Radb.load_col.meetings[3], 'load' ).andCallThrough();
-				spyOn( Radb.server, 'create').andCallThrough();
-				spyOn( Radb.server, 'update').andCallThrough();
+				spyOn( Acme.load_col.meetings[3], 'load' ).andCallThrough();
+				spyOn( Acme.server, 'create').andCallThrough();
+				spyOn( Acme.server, 'update').andCallThrough();
 
 				// render the load list
-				Radb.load_view.update('load/fetched', Radb.load_col);
+				Acme.load_view.update('load/fetched', Acme.load_col);
 
 				// select the last meeting (Bathurst)
 				$('.meetingsList > div:nth-child(2)').click();
@@ -496,17 +496,17 @@ $(function()
 				// z=7;
 				loadAll.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'All': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'All': true});
 
 				elem.click();
 				var load            = $('#import');
 				var importList      = $('#importList');
 				var loadRaceHeaders = importList.find('li:nth-child(3)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadRaceHeaders.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Raceheaders': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Raceheaders': true});
 
 
 				elem.click();
@@ -514,20 +514,20 @@ $(function()
 				var importList      = $('#importList');
 				var racetime        = importList.find('li:nth-child(4)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				racetime.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Racetimes': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Racetimes': true});
 
                 elem.click();
                 var load            = $('#import');
                 var importList      = $('#importList');
                 var racetime        = importList.find('li:nth-child(5)');
 
-                Radb.server.update.reset();
+                Acme.server.update.reset();
                 racetime.click();
                 load.click();
-                expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Racenames': true});
+                expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Racenames': true});
 
 
                 elem.click();
@@ -535,30 +535,30 @@ $(function()
                 var importList      = $('#importList');
                 var loadStewards    = importList.find('li:nth-child(6)');
 
-                Radb.server.update.reset();
+                Acme.server.update.reset();
                 loadStewards.click();
                 load.click();
-                expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Stewards': true});
+                expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Stewards': true});
 
                 elem.click();
                 var load            = $('#import');
                 var importList      = $('#importList');
                 var loadStewards    = importList.find('li:nth-child(7)');
 
-                Radb.server.update.reset();
+                Acme.server.update.reset();
                 loadStewards.click();
                 load.click();
-                expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Distance': true});
+                expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Distance': true});
 
                 elem.click();
                 var load            = $('#import');
                 var importList      = $('#importList');
                 var loadStewards    = importList.find('li:nth-child(8)');
 
-                Radb.server.update.reset();
+                Acme.server.update.reset();
                 loadStewards.click();
                 load.click();
-                expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Tips': true});
+                expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Tips': true});
 
 
 				elem.click();
@@ -566,10 +566,10 @@ $(function()
 				var importList      = $('#importList');
 				var runners         = importList.find('li:nth-child(10)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				runners.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Runners': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Runners': true});
 
 
 				elem.click();
@@ -577,10 +577,10 @@ $(function()
 				var importList      = $('#importList');
 				var loadJockeys     = importList.find('li:nth-child(11)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadJockeys.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Jockeys': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Jockeys': true});
 
 
 				elem.click();
@@ -588,30 +588,30 @@ $(function()
 				var importList      = $('#importList');
 				var loadMarket      = importList.find('li:nth-child(12)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadMarket.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Market': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Market': true});
 
 				elem.click();
 				var load            = $('#import');
 				var importList      = $('#importList');
 				var loadRating      = importList.find('li:nth-child(13)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadRating.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Ratings': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Ratings': true});
 
 				elem.click();
 				var load            = $('#import');
 				var importList      = $('#importList');
 				var loadRating      = importList.find('li:nth-child(14)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadRating.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Silks': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Silks': true});
 
 
 				elem.click();
@@ -619,20 +619,20 @@ $(function()
 				var importList      = $('#importList');
 				var loadRating      = importList.find('li:nth-child(15)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadRating.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Formbank': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Formbank': true});
 
 				elem.click();
 				var load            = $('#import');
 				var importList      = $('#importList');
 				var loadRating      = importList.find('li:nth-child(16)');
 
-				Radb.server.update.reset();
+				Acme.server.update.reset();
 				loadRating.click();
 				load.click();
-				expect(Radb.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Brief': true});
+				expect(Acme.server.update).toHaveBeenCalledWith('load/Ascot Park Raceway NZ,2015-10-03,HA', {'Brief': true});
 
 			});
 		});
@@ -645,15 +645,15 @@ $(function()
 
 				z = 6;
 				// render the load list
-				Radb.load_view.update('load/fetched', Radb.load_col);
+				Acme.load_view.update('load/fetched', Acme.load_col);
 
-                Radb.PubSub.publish.reset();
+                Acme.PubSub.publish.reset();
 
 				// select the last meeting (Bathurst)
 				$('.meetingsList > div:last').click();
-				expect(Radb.PubSub.publish).toHaveBeenCalledWith('load/selected', ajaxData[6].data);
+				expect(Acme.PubSub.publish).toHaveBeenCalledWith('load/selected', ajaxData[6].data);
 
-                Radb.load_feed.update('load/selected', Radb.load_view.meetings.meetings[3].data);
+                Acme.load_feed.update('load/selected', Acme.load_view.meetings.meetings[3].data);
 
 				var elem = $('.load-top');
 				expect(elem).toExist();
@@ -661,8 +661,8 @@ $(function()
 				var elem = $('#importBox');
 				expect(elem).toExist();
 
-				spyOn( Radb.feed, 'update' ).andCallThrough();
-                spyOn( Radb.effects, 'message' );
+				spyOn( Acme.feed, 'update' ).andCallThrough();
+                spyOn( Acme.effects, 'message' );
 
 				var textbox = document.getElementById('feed-textbox');
 				expect(textbox).toExist();
@@ -672,34 +672,34 @@ $(function()
 				elem = $('.import-options > .feed_save:nth-child(1)');
 				expect(elem.data('feed')).toEqual('comment');
 				elem.click();
-				Radb.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
+				Acme.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
 
-				expect(Radb.feed.update).toHaveBeenCalled();
+				expect(Acme.feed.update).toHaveBeenCalled();
 
 				// NZ TXT File
 				elem = $('.import-options > .feed_save:nth-child(2)');
 				expect(elem.data('feed')).toEqual('nztxt');
 				elem.click();
 
-				Radb.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.data('feed')});
+				Acme.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.data('feed')});
 
-				expect(Radb.feed.update).toHaveBeenCalled();
+				expect(Acme.feed.update).toHaveBeenCalled();
 
 				// // Tips
 				elem = $('.import-options > .feed_save:nth-child(3)');
 				expect(elem.data('feed')).toEqual('tips');
 				elem.click();
-				Radb.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
+				Acme.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
 
-				expect(Radb.feed.update).toHaveBeenCalled();
+				expect(Acme.feed.update).toHaveBeenCalled();
 
 				// Market
 				elem = $('.import-options > .feed_save:nth-child(4)');
 				expect(elem.data('feed')).toEqual('market');
 				elem.click();
-				Radb.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
+				Acme.feed.update('load/import', {'meeting': ajaxData[z].data.id, 'text': textbox.value, 'feed': elem.text().toLowerCase()});
 
-				expect(Radb.feed.update).toHaveBeenCalled();
+				expect(Acme.feed.update).toHaveBeenCalled();
 
 				// Clear
 				elem = $('.import-options > .feed_clear');

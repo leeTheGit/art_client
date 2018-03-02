@@ -1,0 +1,80 @@
+.barber-pole,
+.barber-pole * {
+ -ms-box-sizing: border-box;
+ box-sizing: border-box;
+}
+.barber-pole-height-none{height: 0;}
+.barber-pole-height-four{}
+
+.barber-pole {
+  margin-top:3px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  border-radius: 5px;
+  height: 3px;
+}
+@-webkit-keyframes WEBKIT-BP {
+    0%   {
+        -webkit-transform: translate3D(-36px,0,0);
+    }
+    100% {
+        -webkit-transform: translate3D(-10px,0,0);
+    }
+}
+@-webkit-keyframes BP {
+    0%   {
+        -webkit-transform: translateX(-36px);
+                transform: translateX(-36px);
+    }
+    100% {
+        -webkit-transform: translateX(-10px);
+                transform: translateX(-10px);
+    }
+}
+@keyframes BP {
+    0%   {
+        -webkit-transform: translateX(-36px);
+                transform: translateX(-36px);
+    }
+    100% {
+        -webkit-transform: translateX(-10px);
+                transform: translateX(-10px);
+    }
+}
+.barber-pole .stripe-wrapper {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    white-space: nowrap;
+    -webkit-animation: WEBKIT-BP .5s linear infinite;
+    animation: BP .5s linear infinite;
+}
+
+.barber-pole-off hr {
+    display: none;
+}
+
+
+.barber-pole-on hr {
+    margin: 0;
+    display: inline-block;
+    margin-left: 10px;
+    width: 15px;
+    height: 20px;
+    background: #69B8CE;
+    -webkit-transform: skew(-45deg);
+    transform: skew(-45deg);
+}
+.ie7 .barber-pole,
+.ie8 .barber-pole,
+.ie9 .barber-pole {
+    background: url(http://a.l.yimg.com/pv/i/us/sch/gr4/sp-progress2.gif);
+    border: 0;
+}
+.ie7 .barber-pole .stripe-wrapper,
+.ie8 .barber-pole .stripe-wrapper,
+.ie9 .barber-pole .stripe-wrapper {
+    display: none;
+}

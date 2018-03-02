@@ -3,13 +3,13 @@
 	'use strict';
 
 
-	Radb.Collection.meetings = function(model)
+	Acme.Collection.meetings = function(model)
 	{
 		this.date 		= moment();
 		this.model 		= model;
 		this.meetings 	= [];
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.meeting_col.listener' : [ "timezoneSelect/selected",
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.meeting_col.listener' : [ "timezoneSelect/selected",
 										  "state_changed"
 										  ]
 		});
@@ -25,19 +25,19 @@
 		};
 
 	};
-		Radb.Collection.meetings.prototype.url = function()
+		Acme.Collection.meetings.prototype.url = function()
 		{
-			// return "meeting?"+Radb.state.daterange+"=" + Radb.state.date.format("YYYY-MM-DD") + "&results=true";
+			// return "meeting?"+Acme.state.daterange+"=" + Acme.state.date.format("YYYY-MM-DD") + "&results=true";
 
 			var getResults = "";
-			if (this.date > Radb.state.date) {
+			if (this.date > Acme.state.date) {
 				getResults = "&results=true"
 			};
 
-			return "meeting?"+Radb.state.daterange+"=" + Radb.state.date.format("YYYY-MM-DD") + getResults;
+			return "meeting?"+Acme.state.daterange+"=" + Acme.state.date.format("YYYY-MM-DD") + getResults;
 
 		};
-		Radb.Collection.meetings.prototype.listener = function(topic, data)
+		Acme.Collection.meetings.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -49,13 +49,13 @@
 				}
 			}
 		};
-		Radb.Collection.meetings.prototype.fetch = function(url)
+		Acme.Collection.meetings.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
 			// console.log('fetching meetings');
 			// console.log(url);
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 			 .done( function(response) {
 				//  console.log(response);
 			 	// console.log(JSON.stringify(response.data));
@@ -70,7 +70,7 @@
 					);
 				});
 
-				Radb.PubSub.publish('update_state', {'meetings':self});
+				Acme.PubSub.publish('update_state', {'meetings':self});
 			});
 		};
 

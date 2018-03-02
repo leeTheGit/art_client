@@ -1,0 +1,79 @@
+ScrollBars{;}
+	::-webkit-scrollbar {width: 2px;height:2px;}
+	/* Track */
+	::-webkit-scrollbar-track {background:rgba(21, 22, 26, .5);border-radius: 10px;}
+	::-webkit-scrollbar-corner {background: rgba(57,57,57,1.0);}
+	::-webkit-scrollbar-track:horizontal {background: rgba(57,57,57,1.0);}
+	/* Handle */
+	::-webkit-scrollbar-thumb {border-radius: 5px;background:#69B8CE;}
+	::-webkit-scrollbar-thumb:window-inactive {background: #69B8CE;}
+
+*::selection{
+  background: #86cc51;
+  /*background: rgba(0,0,0,1.0);*/
+  color:white;
+};
+
+html {height:100%;width:100%;-webkit-font-smoothing: subpixel-antialiased;
+			/*background: url("../images/backgrounds/blur.jpg") no-repeat center center fixed;background-size: cover;*/
+
+}
+body {overflow-x:hidden;overflow-y:hidden;width:100%;height:100%;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:0.735em;font-weight:300;color:rgba(240,240,240,1.0);line-height:1;}
+a {color:white;text-decoration:none;}
+input, select, textarea, button{font-family:inherit;color:inherit;}
+button{color:black;}
+/*input,textarea {-webkit-font-smoothing: subpixel-antialiased;}*/
+form {margin:0;padding:0;}
+
+input:focus::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+input[type=text] {background:transparent;border:none;-webkit-appearance: none;}
+input[type=search] {background:transparent;border:none;-webkit-appearance: none;}
+input[type=password] {background:transparent;border:none;-webkit-appearance: none;}
+input[type=checkbox] {width:20px;}
+input[type=number] {width:30px;color:white;background:transparent;border:none;}
+
+button{  font-size: 13px;
+  min-width: 70px;
+  color: rgba(255,255,255,0.9);
+  background-color: #323646;
+  border-radius: 8px;
+  cursor: pointer !important;
+  padding: 3px 16px;
+  font-weight: 400 !important;
+  letter-spacing: 0.6px;
+}
+
+button:disabled{
+	cursor:default !important;
+	background-color: rgba(0,0,0,0.8);
+	color: rgba(255,255,255,0.2) !important;
+}
+button:first-letter{
+	text-transform: uppercase;
+}
+
+button:not([disabled]):hover{
+	background-color:#258BA8 !important;
+	box-shadow: 1px 2px 3px #111;
+}
+button:disabled:hover{;}
+
+button + button { margin-left: 8px; }
+
+select {display:inline-block;padding:4px;border:none;margin-bottom:5px;background:black;}
+textarea {color:white;border:none;background:rgba(0,0,0,0.2);line-height:17px;margin-bottom:10px;resize:vertical;border-radius:6px;padding:10px;}
+label {display:block;font-weight: bold;letter-spacing: 0.01em;}
+label:first-letter{text-transform: uppercase;}
+/*p.message em {text-decoration: none;font-weight: 400;font-style:normal;}*/
+h3 {
+	font-size:1.5em !important;
+	font-family: 'Lato', sans-serif;
+	font-weight:300 !important;
+	color:white;
+	text-align:center;
+	margin:10px 0 10px;
+}
+

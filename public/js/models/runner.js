@@ -3,7 +3,7 @@
 	'use strict';
 
 
-	Radb.Model.runner = Radb.Model.create({
+	Acme.Model.runner = Acme.Model.create({
 		'url' : 'runner'
 	});
 

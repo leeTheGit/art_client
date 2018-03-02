@@ -3,26 +3,26 @@
 	'use strict';
 
 
-  Radb.Groups = function(model)
+  Acme.Groups = function(model)
   {
 	  this.model     = model;
 	  this.groups = [];
   };
-	  Radb.Groups.prototype.url = function()
+	  Acme.Groups.prototype.url = function()
 	  {
 		  return "group/";
 	  };
-	  Radb.Groups.prototype.update = function(topic, data)
+	  Acme.Groups.prototype.update = function(topic, data)
 	  {
 		  return this.fetch();
 	  };
-	  Radb.Groups.prototype.fetch = function(url)
+	  Acme.Groups.prototype.fetch = function(url)
 	  {
 		  var self = this;
 
 		  var url = (url === undefined) ? this.url() : url;
 
-		  return Radb.server.request( url)
+		  return Acme.server.request( url)
 		   .done( function(response) {
 			  self.groups = _.map(response.data, function(group) {
 				  return	Object.getPrototypeOf(self.model),
@@ -33,7 +33,7 @@
 									  }
 			  });
 
-			  Radb.PubSub.publish('groups/fetched', self);
+			  Acme.PubSub.publish('groups/fetched', self);
 		  });
 	  };
 })();

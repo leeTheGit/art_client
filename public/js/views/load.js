@@ -100,7 +100,7 @@
 
 			$('#import').on('click', function(e) {
 				e.preventDefault();
-				Radb.PubSub.publish('update/start');
+				Acme.PubSub.publish('update/start');
 
 				var choiceTmp = self.selected.slice();
 				// console.log(choiceTmp);
@@ -141,7 +141,7 @@
 				// console.log(self.selected);
 				self.meeting.update(params).then(function(r) {
 					// console.log(self.selected);
-					Radb.PubSub.publish('import/done');
+					Acme.PubSub.publish('import/done');
 				});
 			});
 
@@ -160,15 +160,15 @@
 
 
 
-	Radb.View.load = function(config)
+	Acme.View.load = function(config)
 	{
 		this.temp 			 = config.template;
 		this.meetings        = [];
 		this.container       = config.el;
 		this.selected        = null;
 		this.selectedId 	 = null;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.load_view.update' : [ "load/reloaded",
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.load_view.update' : [ "load/reloaded",
 									 	"load/fetched",
 									 	"load/filter",
 									 	"track/match",
@@ -177,7 +177,7 @@
 										"meeting/selected"]
 		});
 	};
-		Radb.View.load.prototype.update = function(topic, data)
+		Acme.View.load.prototype.update = function(topic, data)
 		{
 
 			if (topic === 'update/start') {
@@ -187,7 +187,7 @@
 			if (topic === 'track/match') {
 				var meeting = this.meetings.meetings[this.selected];
 				meeting.update({'trackid':data.data.id}).done(function(r) {
-					Radb.effects.message("matched track!!");
+					Acme.effects.message("matched track!!");
 				});
 				return;
 			}
@@ -204,18 +204,18 @@
 
 			if (topic != 'load/reloaded') {
 				this.meetings = data;
-				if (!this.selectedId && Radb.state.meeting) {
-					this.selectById(Radb.state.meeting);
+				if (!this.selectedId && Acme.state.meeting) {
+					this.selectById(Acme.state.meeting);
 				}
 			}
 
 			this.render();
 			if (topic === 'load/fetched' || topic === 'load/reloaded') {
 				this.selectedElem = $('div.meeting-item.selectedLoad');
-				if (this.selectedElem.length > 0) Radb.effects.scroll($('.meetingsList'), this.selectedElem);
+				if (this.selectedElem.length > 0) Acme.effects.scroll($('.meetingsList'), this.selectedElem);
 			}
 		};
-		Radb.View.load.prototype.render = function(item)
+		Acme.View.load.prototype.render = function(item)
 		{
 			localStorage['context'] = 'load';
 			var self = this;
@@ -237,26 +237,26 @@
 				return;
 			}
 
-			var filter = Radb.filter.filter.toLowerCase().split(',');
+			var filter = Acme.filter.filter.toLowerCase().split(',');
 
 
-			var sortlabel = Object.keys(Radb.filter.meetingsort)[0];
+			var sortlabel = Object.keys(Acme.filter.meetingsort)[0];
 			if (sortlabel === 'Loaded') {
-				meetings = meetings.sort(Radb.by('data.updated', Radb.filter.meetingsort[sortlabel]));
+				meetings = meetings.sort(Acme.by('data.updated', Acme.filter.meetingsort[sortlabel]));
 			}
 			if (sortlabel === 'Track') {
-				meetings = meetings.sort(Radb.by('data.track', Radb.filter.meetingsort[sortlabel]));
+				meetings = meetings.sort(Acme.by('data.track', Acme.filter.meetingsort[sortlabel]));
 			}
 			if (sortlabel === 'Date') {
-				meetings = meetings.sort(Radb.by('data.date', Radb.filter.meetingsort[sortlabel], null, Radb.by('data.track') ) );
+				meetings = meetings.sort(Acme.by('data.date', Acme.filter.meetingsort[sortlabel], null, Acme.by('data.track') ) );
 			}
-			var sortClass = (Radb.filter.meetingsort[sortlabel]) ? 'ASC': 'DESC';
+			var sortClass = (Acme.filter.meetingsort[sortlabel]) ? 'ASC': 'DESC';
 
 
 			$('.meeting_types ul li').each(function(i,e) {
 				var $e = $(e);
 				$e.removeClass('selectedColour');
-				if ($e.text() === Radb.filter.meetingtype) {
+				if ($e.text() === Acme.filter.meetingtype) {
 					$e.removeClass().addClass('selectedColour');
 				}
 			});
@@ -317,12 +317,12 @@
 				var meetDate = moment(meetings[i].data.date);
 				var day = +meetDate.format("d")
 
-				if (Radb.filter.hiddendays.indexOf(day) > -1) continue;
-				if (Radb.filter.meetingtype != null && Radb.filter.meetingtype !== meetings[i].data.type) continue;
-				if (Radb.filter.loadStatus != null && Radb.filter.loadStatus !== load_status) continue;
+				if (Acme.filter.hiddendays.indexOf(day) > -1) continue;
+				if (Acme.filter.meetingtype != null && Acme.filter.meetingtype !== meetings[i].data.type) continue;
+				if (Acme.filter.loadStatus != null && Acme.filter.loadStatus !== load_status) continue;
 
 				visibleMeetings++;
-				if (Radb.filter.days.indexOf(day) == -1) Radb.filter.days.push(day);
+				if (Acme.filter.days.indexOf(day) == -1) Acme.filter.days.push(day);
 
  				var selected = false;
 
@@ -373,7 +373,7 @@
 
 				selectedMeeting.fetch(null).done(function(r) {
 					self.renderLoadInfo(r.data);
-					Radb.PubSub.publish('load/selected', r.data);
+					Acme.PubSub.publish('load/selected', r.data);
 				});
 			}
 
@@ -397,7 +397,7 @@
 				});
 			}
 			$('#meetActionsDiv').empty();
-			self.meetMenu = new Radb._listMenu( {
+			self.meetMenu = new Acme._listMenu( {
 						'parent' 		: $('#meetActionsDiv'),
 						'list' 			: theList,
 						'defaultSelect' : {"label": 'Actions'},
@@ -407,7 +407,7 @@
 			self.events();
 			return self;
 		};
-		Radb.View.load.prototype.renderDays = function(id)
+		Acme.View.load.prototype.renderDays = function(id)
 		{
 			var self = this;
 			var days = $('.meeting_days ul li');
@@ -415,14 +415,14 @@
 				var $elem = $(elem);
 				$elem.removeClass('onBlue');
 				$elem.removeClass('offBlue');
-				if (Radb.filter.days.indexOf(index) > -1 && Radb.filter.hiddendays.indexOf(index) == -1) {
+				if (Acme.filter.days.indexOf(index) > -1 && Acme.filter.hiddendays.indexOf(index) == -1) {
 					$elem.addClass('onBlue');
-				} else if (Radb.filter.hiddendays.indexOf(index) > -1) {
+				} else if (Acme.filter.hiddendays.indexOf(index) > -1) {
 					$elem.addClass('offBlue');
 				}
 			});
 		};
-		Radb.View.load.prototype.filterList = function(meeting, filter)
+		Acme.View.load.prototype.filterList = function(meeting, filter)
 		{
 			var renderArray = [];
 			for (var j=0;j<filter.length;j++) {
@@ -437,7 +437,7 @@
 			}
 			return false;
 		};
-		Radb.View.load.prototype.selectById = function(id)
+		Acme.View.load.prototype.selectById = function(id)
 		{
 			var meetings = this.meetings.meetings;
 			for (var i=0;i< meetings.length; i++) {
@@ -448,7 +448,7 @@
 				}
 			}
 		};
-		Radb.View.load.prototype.select = function(id)
+		Acme.View.load.prototype.select = function(id)
 		{
 			var meetings = $('.meetingsList div.meeting-item');
 			meetings.each(function(index, elem) {
@@ -463,7 +463,7 @@
 				}
 			});
 		};
-		Radb.View.load.prototype.renderLoadInfo = function(data)
+		Acme.View.load.prototype.renderLoadInfo = function(data)
 		{
 			if (this.selected === null) return;
 			var self = this;
@@ -496,9 +496,9 @@
 				var elem = $(e.target);
 
 				if (elem.hasClass('switchView')) {
-					Radb.PubSub.publish('update_state', {'meeting' : data.loaded} );
-					Radb.render_meetings();
-					Radb.meeting_col.fetch();
+					Acme.PubSub.publish('update_state', {'meeting' : data.loaded} );
+					Acme.render_meetings();
+					Acme.meeting_col.fetch();
 					return;
 				}
 
@@ -508,17 +508,17 @@
 
 					var meeting = self.meetings.meetings[self.selected];
 
-					Radb.dialog.show(message, "Warning", meeting.delete, meeting);
+					Acme.dialog.show(message, "Warning", meeting.delete, meeting);
 					return;
 				};
 
 			});
 		};
-		Radb.View.load.prototype.progressOn = function()
+		Acme.View.load.prototype.progressOn = function()
 		{
 			$('.status.'+this.selected).addClass('fa-spin').removeClass('fa-circle-o').addClass('fa-circle-o-notch').addClass('blueHilight');
 		};
-		Radb.View.load.prototype.events = function()
+		Acme.View.load.prototype.events = function()
 		{
 			var self = this;
 
@@ -540,10 +540,10 @@
 
 					self.renderLoadInfo(r.data);
 
-					Radb.PubSub.publish('load/selected', r.data);
+					Acme.PubSub.publish('load/selected', r.data);
 
 					if (!meeting.data.track) {
-						Radb.PubSub.publish('track/needed', meeting);
+						Acme.PubSub.publish('track/needed', meeting);
 					}
 
 					if (elem.hasClass('status')) {
@@ -693,15 +693,15 @@
 						$e.removeClass('selectedColour');
 					});
 						$('.meeting_sort')
-					if (Object.keys(Radb.filter.meetingsort)[0] == label) {
-						var val = Radb.filter.meetingsort[label];
-						Radb.filter.meetingsort[label] = !val;
+					if (Object.keys(Acme.filter.meetingsort)[0] == label) {
+						var val = Acme.filter.meetingsort[label];
+						Acme.filter.meetingsort[label] = !val;
 					} else {
-						Radb.filter.meetingsort = {};
-						Radb.filter.meetingsort[label] = false;
+						Acme.filter.meetingsort = {};
+						Acme.filter.meetingsort[label] = false;
 					}
 
-					var orderClass = (Radb.filter.meetingsort[label]) ? 'ASC': 'DESC';
+					var orderClass = (Acme.filter.meetingsort[label]) ? 'ASC': 'DESC';
 					elem.removeClass().addClass(orderClass).addClass('selectedColour');
 					self.render();
 				}
@@ -710,7 +710,7 @@
 			$('#meetingfilter').unbind().on({
 
 				input: function(e) {
-					Radb.PubSub.publish('filter/updated', {'filter': $(e.target).val() });
+					Acme.PubSub.publish('filter/updated', {'filter': $(e.target).val() });
 				},
 				search: function(e) {
 					if (!this.value) {
@@ -725,10 +725,10 @@
 				var elem = $(e.target);
 				var id = elem.data('id');
 				if (elem.hasClass('onBlue')) {
-					Radb.filter.hiddendays.push(id);
+					Acme.filter.hiddendays.push(id);
 				} else if (elem.hasClass('offBlue')) {
-					var el = Radb.filter.hiddendays.indexOf(id);
-					Radb.filter.hiddendays.splice(el, 1);
+					var el = Acme.filter.hiddendays.indexOf(id);
+					Acme.filter.hiddendays.splice(el, 1);
 				}
 				self.render();
 			});
@@ -738,7 +738,7 @@
 				if (elem.is('li')) {
 					var data = {};
 					data.meetingtype = (elem.hasClass('selectedColour')) ?	null : elem.data('type');
-					Radb.PubSub.publish('filter/updated', data);
+					Acme.PubSub.publish('filter/updated', data);
 				}
 			});
 
@@ -756,28 +756,28 @@
 						data.loadStatus = null
 					}
 
-					Radb.PubSub.publish('filter/updated', data);
+					Acme.PubSub.publish('filter/updated', data);
 				}
 			});
 		};
 
 
 
-	Radb.View.load_history = function(config)
+	Acme.View.load_history = function(config)
 	{
 		this.temp 			 = config.template;
 		this.meeting         = null;
 		this.container       = config.el;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.load_history.update' : [  "load/selected"]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.load_history.update' : [  "load/selected"]
 		});
 	};
-		Radb.View.load_history.prototype.update = function(topic, data)
+		Acme.View.load_history.prototype.update = function(topic, data)
 		{
 			this.meeting = data;
 			this.render();
 		}
-		Radb.View.load_history.prototype.render = function()
+		Acme.View.load_history.prototype.render = function()
 		{
 			$(this.container).empty();
 			var temp = this.temp
@@ -798,23 +798,23 @@
 
 
 
-	Radb.View.load_source = function(config)
+	Acme.View.load_source = function(config)
 	{
 		this.temp 			 = config.template;
 		this.meeting         = null;
 		this.container       = config.el;
-		this.subscriptions   = Radb.PubSub.subscribe({
-			'Radb.load_source.update' : [  "load/selected"]
+		this.subscriptions   = Acme.PubSub.subscribe({
+			'Acme.load_source.update' : [  "load/selected"]
 		});
 	};
-		Radb.View.load_source.prototype.update = function(topic, data)
+		Acme.View.load_source.prototype.update = function(topic, data)
 		{
 			console.log(topic, data);
 			this.meeting = data;
 			this.render();
 			this.events();
 		}
-		Radb.View.load_source.prototype.render = function()
+		Acme.View.load_source.prototype.render = function()
 		{
 			$(this.container).empty();
 			var temp = this.temp;
@@ -831,7 +831,7 @@
 
 					var params = {
 						"time"  : time.format("ddd D/M HH:mm"),
-						"duration": Radb.getTimeDuration(time, moment()),
+						"duration": Acme.getTimeDuration(time, moment()),
 						"feed": feed,
 						"id"  : i
 					};
@@ -840,7 +840,7 @@
 				}
 			}
 		};
-		Radb.View.load_source.prototype.events = function()
+		Acme.View.load_source.prototype.events = function()
 		{
 			var self = this;
 			function htmlPara(string)
@@ -876,27 +876,27 @@
 					finString += diffString( nArr[j].replace(/!/g, ' ! '), oArr[j].replace(/!/g, ' ! ') );
 				}
 				finString = finString.replace(/ ! /g, '&emsp;');
- 				Radb.PubSub.publish('source/selected', htmlPara( finString ));
+ 				Acme.PubSub.publish('source/selected', htmlPara( finString ));
 
 			});
 		}
 
 
-	Radb.View.load_feed = function(config)
+	Acme.View.load_feed = function(config)
 	{
 		this.temp 			 = config.template;
 		this.meeting         = null;
 		this.container       = config.el;
-		this.subscriptions   = Radb.PubSub.subscribe({
-			'Radb.load_feed.update' : [  "load/selected"]
+		this.subscriptions   = Acme.PubSub.subscribe({
+			'Acme.load_feed.update' : [  "load/selected"]
 		});
 	};
-		Radb.View.load_feed.prototype.update = function(topic, data)
+		Acme.View.load_feed.prototype.update = function(topic, data)
 		{
 			this.meeting = data;
 			this.render();
 		}
-		Radb.View.load_feed.prototype.render = function()
+		Acme.View.load_feed.prototype.render = function()
 		{
 			var self = this;
 			if (this.meeting.loaded) {
@@ -919,7 +919,7 @@
 					  
 					  if ((feedTrack !== pageTrack) || (feedDate !== pageDate)) {
 	  					var message = "Tracks do not match: loading " + feedTrack + " (" + feedDate + ") Gear Changes for " + pageTrack + " (" + pageDate + ")!";
-						Radb.confirmation.show("Warning", message);
+						Acme.confirmation.show("Warning", message);
 					  }
 
 				  };
@@ -959,7 +959,7 @@
 
 					var save 		= {'meeting': self.meeting.loaded, 'text': text, 'feed': feed};
 
-					if (text) Radb.PubSub.publish('load/import', save);
+					if (text) Acme.PubSub.publish('load/import', save);
 				});
 
 				$('.feed_clear').unbind().on('click', function(e) {
@@ -969,21 +969,21 @@
 		};
 
 
-	Radb.View.load_diff = function(config)
+	Acme.View.load_diff = function(config)
 	{
 		this.temp 			 = config.template;
 		this.feed 	         = null;
 		this.container       = config.el;
-		this.subscriptions   = Radb.PubSub.subscribe({
-			'Radb.source_feed.update' : [  "source/selected"]
+		this.subscriptions   = Acme.PubSub.subscribe({
+			'Acme.source_feed.update' : [  "source/selected"]
 		});
 	};
-		Radb.View.load_diff.prototype.update = function(topic, data)
+		Acme.View.load_diff.prototype.update = function(topic, data)
 		{
 			this.feed = data;
 			this.render();
 		}
-		Radb.View.load_diff.prototype.render = function()
+		Acme.View.load_diff.prototype.render = function()
 		{
 			if (this.feed) {
 				$(this.container).html(this.temp);
@@ -994,7 +994,7 @@
 
 
 
-	Radb.View.track = function(config)
+	Acme.View.track = function(config)
 	{
 
 		this.trackTemp		 = config.templates.tracks;
@@ -1006,15 +1006,15 @@
 		this.selectedElem 	 = null;
 		this.selectedResource= null;
 		this.filter          = '';
-		Radb.PubSub.subscribe({
-			'Radb.track_view.update' : [ "track/deleted",
+		Acme.PubSub.subscribe({
+			'Acme.track_view.update' : [ "track/deleted",
 										 "track/reloaded",
 									 	 "track/selectbyid",
 									 	 "track/added",
 									 	 "track/needed"]
 		});
 	};
-		Radb.View.track.prototype.update = function(topic, data)
+		Acme.View.track.prototype.update = function(topic, data)
 		{
 			console.log(topic, data, this.selected_array);
 			if (topic == 'track/deleted') {
@@ -1046,7 +1046,7 @@
 
 			this.refresh();
 		};
-		Radb.View.track.prototype.render = function()
+		Acme.View.track.prototype.render = function()
 		{
 			var self = this;
 			var Container = $(self.container);
@@ -1056,7 +1056,7 @@
 			this.refresh();
 			this.events();
 		};
-		Radb.View.track.prototype.refresh = function()
+		Acme.View.track.prototype.refresh = function()
 		{
 			console.log('ACTION: refreshing');
 			var self = this;
@@ -1108,7 +1108,7 @@
 
 			return this;
 		};
-		Radb.View.track.prototype.filterList = function(track, filter)
+		Acme.View.track.prototype.filterList = function(track, filter)
 		{
 			var renderArray = [];
 			for (var j=0;j<filter.length;j++) {
@@ -1121,7 +1121,7 @@
 			}
 			return false;
 		};
-		Radb.View.track.prototype.clear = function()
+		Acme.View.track.prototype.clear = function()
 		{
 			$('#TrackID').val('');
 			$('#TrackName').val('');
@@ -1131,7 +1131,7 @@
 			$('.timezone').val('');
 			$('.state').val('');
 		};
-		Radb.View.track.prototype.renderDetails = function()
+		Acme.View.track.prototype.renderDetails = function()
 		{
 
 			var track = this.track.track[this.selected_array];
@@ -1149,12 +1149,12 @@
 					this.tzMenu.remove();
 				}
 
-				this.tzMenu = new Radb.listMenu( {
+				this.tzMenu = new Acme.listMenu( {
 							'parent' 		: $('#timezoneSelect'),
 							'defaultSelect' : {"label": track.data.timezone},
 							'name' 			: 'timezone',
 							'callback'		: track.updater(),
-				}).init(Radb.timezones).render();
+				}).init(Acme.timezones).render();
 
 
 
@@ -1163,18 +1163,18 @@
 				}
 				var theList = [];
 
-				this.statemenu = new Radb.listMenu( {
+				this.statemenu = new Acme.listMenu( {
 							'parent' 		: $('#stateSelect'),
 							'defaultSelect' : {"label": track.data.state},
 							'name' 			: 'track_state',
 							'callback'		: track.updater(),
-				}).init(Radb.states).render();
+				}).init(Acme.states).render();
 
 			} else {
 				this.clear();
 			}
 		};
-		Radb.View.track.prototype.selectById = function(id)
+		Acme.View.track.prototype.selectById = function(id)
 		{
 			var tracks = this.track.track;
 
@@ -1192,7 +1192,7 @@
 			}
 			return this;
 		};
-		Radb.View.track.prototype.visual_select = function()
+		Acme.View.track.prototype.visual_select = function()
 		{
 			$('.list_item').removeClass('selected');
 
@@ -1200,11 +1200,11 @@
 
 			this.selectedElem.addClass('selected');
 
-			if (this.selectedElem.length > 0) Radb.effects.scroll($('#trackList'), this.selectedElem);
+			if (this.selectedElem.length > 0) Acme.effects.scroll($('#trackList'), this.selectedElem);
 
 			return this;
 		}
-		Radb.View.track.prototype.events = function()
+		Acme.View.track.prototype.events = function()
 		{
 			var self = this;
 
@@ -1223,19 +1223,19 @@
 				self.track.addTrack()
 					.done(function(r) {
 						console.log('PUBLISHING: track/added');
-						Radb.PubSub.publish('track/added', r.data.id);
+						Acme.PubSub.publish('track/added', r.data.id);
 					});
 			});
 
 			$('#matchTrack').unbind().click(function(e) {
 				e.stopPropagation();
-				Radb.PubSub.publish('track/match', self.track.track[self.selected_array]);
+				Acme.PubSub.publish('track/match', self.track.track[self.selected_array]);
 			});
 
 			$('#deleteTrack').unbind().click(function(e) {
 				e.stopPropagation();
 				var message = "Delete " + self.track.track[self.selected_array].data.name + "?";
-				Radb.dialog.show(message, "Warning", self.track.track[self.selected_array].delete, self.track.track[self.selected_array]);
+				Acme.dialog.show(message, "Warning", self.track.track[self.selected_array].delete, self.track.track[self.selected_array]);
 			});
 
 			$('#TrackInfo input').unbind().on('change', function(e) {
@@ -1253,7 +1253,7 @@
 				}
 				track.update(data).fail(function(r) {
 					elem.val(track.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 

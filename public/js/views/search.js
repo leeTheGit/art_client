@@ -3,7 +3,7 @@
 	'use strict';
 
 
-	Radb.View.search = function(model, config)
+	Acme.View.search = function(model, config)
 	{
 		this.model 			 = model;
 		this.containertemp	 = config.template;
@@ -12,23 +12,23 @@
 		this.selected 		 = null;
 		this.visited		 = [];
 		this.container       = config.el;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.search_view.listener' : ["search/maximize", "search/fetched"]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.search_view.listener' : ["search/maximize", "search/fetched"]
 		});
 		this.mainEvent();
 	};
-		Radb.View.search.prototype.listener = function(topic, data)
+		Acme.View.search.prototype.listener = function(topic, data)
 		{
 			console.log(topic);
 			if(topic === 'search/maximize') {
 				this.render();
 			}
 		};
-		Radb.View.search.prototype.clear = function()
+		Acme.View.search.prototype.clear = function()
 		{
 			this.container.empty();
 		};
-		Radb.View.search.prototype.render = function()
+		Acme.View.search.prototype.render = function()
 		{
 			var self = this;
 			var resCount  = this.data.length;
@@ -51,12 +51,12 @@
 			this.events();
 			return true;
 		};
-		Radb.View.search.prototype.select = function(elem)
+		Acme.View.search.prototype.select = function(elem)
 		{
 			$('.race_data').removeClass('raceSelect');
 			elem.addClass('raceSelect');
 		};
-		Radb.View.search.prototype.mainEvent = function()
+		Acme.View.search.prototype.mainEvent = function()
 		{
 			var self = this;
 			$('#meetingsearch').onEnter(function(e) {
@@ -73,14 +73,14 @@
 				});
 			});
 		};
-		Radb.View.search.prototype.minimize = function()
+		Acme.View.search.prototype.minimize = function()
 		{
 			var elem = $('#search_result');
 			var clone = elem.clone();
 			elem.remove();
 			$('#minified').css('visibility', 'visible');
 		};
-		Radb.View.search.prototype.events = function()
+		Acme.View.search.prototype.events = function()
 		{
 			var self = this;
 
@@ -100,7 +100,7 @@
 				var type = info.data('type');
 				var arrayid = info.data('arrayid');
 				self.visited.push(arrayid);
-				Radb.PubSub.publish('resource/updated', self.data[arrayid]);
+				Acme.PubSub.publish('resource/updated', self.data[arrayid]);
 				self.minimize();
 			});
 		};

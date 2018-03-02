@@ -3,13 +3,13 @@ $(function() {
 
 
 
-	Radb.Model.user = Radb.Model.create({
+	Acme.Model.user = Acme.Model.create({
 		'url' 			: 'user',
 		'resource_id' 	: 'data.userid'
 	});
 
 
-	Radb.Model.group = Radb.Model.create({
+	Acme.Model.group = Acme.Model.create({
 		'url' 			: 'group',
 		'resource_id' 	: 'data.groupid'
 	});
@@ -24,24 +24,24 @@ $(function() {
 */
 
 
-	Radb.Collection.users = function(model) 
+	Acme.Collection.users = function(model) 
 	{
 		this.model 		= model;
 		this.users 		= [];
 	};
-		Radb.Collection.users.prototype.url = function()
+		Acme.Collection.users.prototype.url = function()
 		{
 			return "user/"
 		};
-		Radb.Collection.users.prototype.update = function(topic, data)
+		Acme.Collection.users.prototype.update = function(topic, data)
 		{
 			return this.fetch();
 		};
-		Radb.Collection.users.prototype.fetch = function(url) 
+		Acme.Collection.users.prototype.fetch = function(url) 
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 
 			data.done( function(response) {
 				console.log(response);
@@ -59,11 +59,11 @@ $(function() {
 					));
 					// self.users.push( new self.model(users[i]));
 				}
-				Radb.PubSub.publish('users/reloaded', self);
+				Acme.PubSub.publish('users/reloaded', self);
 			});
 			return data;
 		};
-		Radb.Collection.users.prototype.addUser = function() 
+		Acme.Collection.users.prototype.addUser = function() 
 		{
 			var self = this;
 			var updateParams = {
@@ -71,33 +71,33 @@ $(function() {
 				'password' : 'slog818&list',
 				'group' : 'self',
 			};
-			Radb.server.create("user/", updateParams)
+			Acme.server.create("user/", updateParams)
 				.done(function(r) {
 					console.log(r);
 					self.users.push( new self.model(r.data));
-					Radb.PubSub.publish('user/added', self);
+					Acme.PubSub.publish('user/added', self);
 				});
 		};
 
 
-	Radb.Collection.groups = function(model) 
+	Acme.Collection.groups = function(model) 
 	{
 		this.model 		= model;
 		this.groups 		= [];
 	};
-		Radb.Collection.groups.prototype.url = function()
+		Acme.Collection.groups.prototype.url = function()
 		{
 			return "group/"
 		};
-		Radb.Collection.groups.prototype.update = function(topic, data)
+		Acme.Collection.groups.prototype.update = function(topic, data)
 		{
 			return this.fetch();
 		};
-		Radb.Collection.groups.prototype.fetch = function(url) 
+		Acme.Collection.groups.prototype.fetch = function(url) 
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 
 			data.done( function(response) {
 				console.log(response);
@@ -115,21 +115,21 @@ $(function() {
 					));
 					// self.groups.push( new self.model(groups[i]));
 				}
-				Radb.PubSub.publish('groups/reloaded', self);
+				Acme.PubSub.publish('groups/reloaded', self);
 			});
 			return data;
 		};
-		Radb.Collection.groups.prototype.addGroup = function() 
+		Acme.Collection.groups.prototype.addGroup = function() 
 		{
 			var self = this;
 			var updateParams = {
 				'name' : 'unnamed',
 				'access': 'self'
 			};
-			Radb.server.create("group/", updateParams)
+			Acme.server.create("group/", updateParams)
 				.done(function(r) {
 					self.groups.push( new self.model(r.data));
-					Radb.PubSub.publish('group/added', self);
+					Acme.PubSub.publish('group/added', self);
 			});
 		};
 
@@ -141,7 +141,7 @@ $(function() {
 ------------------------------------------------
 */
 
-	Radb.View.users = function(config)
+	Acme.View.users = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.users           = [];
@@ -150,7 +150,7 @@ $(function() {
 		this.selectedArray   = null;
 		this.group           = null;
 	};
-		Radb.View.users.prototype.update = function(topic, data)
+		Acme.View.users.prototype.update = function(topic, data)
 		{
 
 			if (topic == 'user/deleted') {
@@ -163,7 +163,7 @@ $(function() {
 				this.render();
 			}
 		};
-		Radb.View.users.prototype.render = function()
+		Acme.View.users.prototype.render = function()
 		{
 			var self = this;
 			self.container.empty();
@@ -195,7 +195,7 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.users.prototype.clear = function()
+		Acme.View.users.prototype.clear = function()
 		{
 			$('#UserID').val('');
 			$('#UserName').val('');
@@ -205,7 +205,7 @@ $(function() {
 			$('#GroupSelect').val('');
 			$('#UserAccess').val('');
 		};
-		Radb.View.users.prototype.renderDetails = function()
+		Acme.View.users.prototype.renderDetails = function()
 		{
 			if (this.selectedArray == null) return;
 			var user = this.users.users[this.selectedArray];
@@ -221,7 +221,7 @@ $(function() {
 				this.clear();
 			}
 		};
-		Radb.View.users.prototype.select = function(id)
+		Acme.View.users.prototype.select = function(id)
 		{
 			var self = this;
 			var users = $('#userList li');
@@ -237,7 +237,7 @@ $(function() {
 				}
 			});
 		};
-		Radb.View.users.prototype.events = function()
+		Acme.View.users.prototype.events = function()
 		{
 			var self = this;
 			self.container.unbind();
@@ -258,18 +258,18 @@ $(function() {
 				
 				if (elem.hasClass('delete')) {
 					var message = "Delete " + self.users.users[id].data.venue + " on " + self.users.users[id].data.date + "?";
-					Radb.dialog.show(message, "Warning", self.users.users[id].delete, self.users.users[id]);
+					Acme.dialog.show(message, "Warning", self.users.users[id].delete, self.users.users[id]);
 					return;
 				}
 				self.renderDetails();
-				// Radb.PubSub.publish('user/selected', self.users.users[id].data.id);
+				// Acme.PubSub.publish('user/selected', self.users.users[id].data.id);
 			});
 			$('#addUser').click(function() { 
 				self.users.addUser();
 			});
 			$('#deleteUser').click(function() {
 				var message = "Delete " + self.users.users[self.selectedArray].data.username + "?";
-				Radb.dialog.show(message, "Warning", self.users.users[self.selectedArray].delete, self.users.users[self.selectedArray]);
+				Acme.dialog.show(message, "Warning", self.users.users[self.selectedArray].delete, self.users.users[self.selectedArray]);
 			});
 			$('#usersInfo input').on('change', function(e) {
 				e.preventDefault();
@@ -298,14 +298,14 @@ $(function() {
 
 		};
 
-	Radb.View.groups = function(config)
+	Acme.View.groups = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.groups           = [];
 		this.container       = config.el;
 		this.selected        = null;
 	};
-		Radb.View.groups.prototype.update = function(topic, data)
+		Acme.View.groups.prototype.update = function(topic, data)
 		{
 			if (topic == 'group/deleted') {
 				this.clear();
@@ -316,7 +316,7 @@ $(function() {
 				this.render();
 			}
 		};
-		Radb.View.groups.prototype.render = function()
+		Acme.View.groups.prototype.render = function()
 		{
 			var self = this;
 			self.container.empty();
@@ -350,7 +350,7 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.groups.prototype.renderDetails = function()
+		Acme.View.groups.prototype.renderDetails = function()
 		{
 			var group = this.groups.groups[this.selected];
 			if (group) {
@@ -361,14 +361,14 @@ $(function() {
 				this.clear();
 			}
 		};
-		Radb.View.groups.prototype.clear = function()
+		Acme.View.groups.prototype.clear = function()
 		{
 			$('.groupid').val('');
 			$('.groupname').val('');
 			$('#GroupAccess').val('');
 		};
 
-		Radb.View.groups.prototype.select = function(id)
+		Acme.View.groups.prototype.select = function(id)
 		{
 			var groups = $('#groupList li');
 			groups.each(function(index, elem) {
@@ -382,7 +382,7 @@ $(function() {
 				}
 			});
 		};
-		Radb.View.groups.prototype.events = function()
+		Acme.View.groups.prototype.events = function()
 		{
 			var self = this;
 			self.container.unbind();
@@ -398,11 +398,11 @@ $(function() {
 				self.select(self.selected);
 				if (elem.hasClass('delete')) {
 					var message = "Delete " + self.groups.groups[id].data.groupname + "?";
-					Radb.dialog.show(message, "Warning", self.groups.groups[id].delete, self.groups.groups[id]);
+					Acme.dialog.show(message, "Warning", self.groups.groups[id].delete, self.groups.groups[id]);
 					return;
 				}
 				self.renderDetails();
-				Radb.PubSub.publish('group/selected', self.groups.groups[id].data.groupname);
+				Acme.PubSub.publish('group/selected', self.groups.groups[id].data.groupname);
 			});
 
 			$('#addGroup').click(function() { 
@@ -411,7 +411,7 @@ $(function() {
 			$('#deleteGroup').click(function() { 
 			//	self.groups.groups[self.selected].delete();
 				var message = "Delete " + self.groups.groups[self.selected].data.groupname + "?";
-				Radb.dialog.show(message, "Warning", self.groups.groups[self.selected].delete, self.groups.groups[self.selected]);
+				Acme.dialog.show(message, "Warning", self.groups.groups[self.selected].delete, self.groups.groups[self.selected]);
 			});
 			$('.groupInfo input').on('change', function(e) {
 				e.preventDefault();
@@ -434,24 +434,24 @@ $(function() {
 		};
 
 
-	Radb.start = function()
+	Acme.start = function()
 	{
 
 
 		// ***************************************
 					// LOAD VIEWS
 		// ***************************************
-		Radb.users_view = new Radb.View.users({'template': template('userListTemp'), 'el': $('#userList')});
+		Acme.users_view = new Acme.View.users({'template': template('userListTemp'), 'el': $('#userList')});
 		
-		Radb.PubSub.subscribe({ 
-			'Radb.users_view.update' : [ "users/reloaded",
+		Acme.PubSub.subscribe({ 
+			'Acme.users_view.update' : [ "users/reloaded",
 										 "user/deleted",
 										 "group/selected"]
 		});
 
-		Radb.groups_view = new Radb.View.groups({'template': template('groupListTemp'), 'el': $('#groupList')});
-		Radb.PubSub.subscribe({ 
-			'Radb.groups_view.update' : [ "groups/reloaded",
+		Acme.groups_view = new Acme.View.groups({'template': template('groupListTemp'), 'el': $('#groupList')});
+		Acme.PubSub.subscribe({ 
+			'Acme.groups_view.update' : [ "groups/reloaded",
 										  "group/updated"]
 		});
 
@@ -461,23 +461,23 @@ $(function() {
 		// 			// LOAD COLLECTIONS
 		// // ***************************************
 
-		Radb.users_col = new Radb.Collection.users(Radb.Model.user);
-		Radb.PubSub.subscribe({ 
-			'Radb.users_col.update' : [ "user/deleted",
+		Acme.users_col = new Acme.Collection.users(Acme.Model.user);
+		Acme.PubSub.subscribe({ 
+			'Acme.users_col.update' : [ "user/deleted",
 										"user/updated",
 										"group/deleted"]
 		});
 
-		Radb.groups_col = new Radb.Collection.groups(Radb.Model.group);
-		Radb.PubSub.subscribe({ 
-			'Radb.groups_col.update' : [ "group/deleted",
+		Acme.groups_col = new Acme.Collection.groups(Acme.Model.group);
+		Acme.PubSub.subscribe({ 
+			'Acme.groups_col.update' : [ "group/deleted",
 										 "group/updated",
 										 "group/deleted"]
 		});
 
 
-		Radb.users_col.fetch();
-		Radb.groups_col.fetch();
+		Acme.users_col.fetch();
+		Acme.groups_col.fetch();
 
 		// pageEvents();
 	}

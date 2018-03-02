@@ -2,7 +2,7 @@
 {
 	'use strict';
 
-	Radb.effects = {
+	Acme.effects = {
 		cascadeOpen: false,
 		left_pane_open: false,
 		left_pane_content: null,
@@ -13,12 +13,12 @@
 			return function() {
 				var context = this, args = arguments;
 				var later = function() {
-					Radb.effects.timeOut = null;
+					Acme.effects.timeOut = null;
 					if (!immediate) func.apply(context, args);
 				};
-				var callNow = immediate && !Radb.effects.timeOut;
-				clearTimeout(Radb.effects.timeOut);
-				Radb.effects.timeOut = setTimeout(later, wait);
+				var callNow = immediate && !Acme.effects.timeOut;
+				clearTimeout(Acme.effects.timeOut);
+				Acme.effects.timeOut = setTimeout(later, wait);
 				if (callNow) func.apply(context, args);
 			};
 		},
@@ -79,7 +79,7 @@
 				this.left_pane_content = mode;
 				this.leftPaneOpen();
 				this.leftPaneButtonSelect();
-                Radb.state.listener('update_state', {"portalwindow" : true});
+                Acme.state.listener('update_state', {"portalwindow" : true});
 
 
 			} else if (this.left_pane_open === true && this.left_pane_content != mode) {
@@ -90,7 +90,7 @@
 				this.leftPaneClose();
 				$('.toggleRunners').remove();
 				$('.toggleTips').remove();
-                Radb.state.portalwindow = false;
+                Acme.state.portalwindow = false;
 			}
 		},
 		leftPaneOpen: function()
@@ -143,7 +143,7 @@
 		}
 	};
 
-	Radb.dialog = {
+	Acme.dialog = {
 		type : '',
 		state : {},
 
@@ -165,9 +165,9 @@
 
 				if ( $elem.is('button') ) {
 					if ($elem.text() === "Cancel") {
-						Radb.dialog.closeWindow();
+						Acme.dialog.closeWindow();
 					} else if ($elem.text() === "Okay") {
-						Radb.dialog.closeWindow();
+						Acme.dialog.closeWindow();
 
 						// State can be provided by client external to 'show' call
 						if (data === undefined && that.state) {
@@ -202,7 +202,7 @@
 		}
 	};
 
-	Radb.confirmation = {
+	Acme.confirmation = {
 		show : function(title, message) {
 			var self = this;
 			var template  = '<div id="wrapper" class="flex_col"> <div id="dialog"><div><p id="dialogTitle">' + title + '</p><div id="dialogMessage">' + message + '</div>';
@@ -229,7 +229,7 @@
 		}
 	};
 
-	Radb.modal = {
+	Acme.modal = {
 		show : function(title, edit, data, callback) {
 			var self = this;
 			var template  = '<div id="wrapper" class="flex_col"><div id="modal"><div id="modalMessage"></div>';
@@ -246,7 +246,7 @@
 			$('#modalMessage').append('<div class="flex1"><button id="save_button">Save</button></div>');
 			$('#save_button').on("click", function() {
 				var value = $("#edit_val").val();
-				Radb.confirmation.show("Edit", "Do you want to change " + edit.text + " into " + value + "? This will affect every instance of " + edit.text).then(function() {
+				Acme.confirmation.show("Edit", "Do you want to change " + edit.text + " into " + value + "? This will affect every instance of " + edit.text).then(function() {
 					edit.callback(value);
 				});
 				self.closeWindow();

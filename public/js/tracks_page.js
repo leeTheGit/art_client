@@ -3,7 +3,7 @@ $(function() {
 
 
 
-	Radb.Model.track = Radb.Model.create({
+	Acme.Model.track = Acme.Model.create({
 		'url' 			: 'track',
 	});
 
@@ -16,32 +16,32 @@ $(function() {
 */
 
 
-	Radb.Collection.track = function(model)
+	Acme.Collection.track = function(model)
 	{
 		this.model 		= model;
 		this.track		= [];
 	};
-		Radb.Collection.track.prototype.url = function()
+		Acme.Collection.track.prototype.url = function()
 		{
 			return "track/";
 		};
-		Radb.Collection.track.prototype.update = function(topic, data)
+		Acme.Collection.track.prototype.update = function(topic, data)
 		{
 			if (topic === 'track/added') {
-				Radb.state.track = data;
-				Radb.PubSub.publish('resource/selected', Radb.state);
+				Acme.state.track = data;
+				Acme.PubSub.publish('resource/selected', Acme.state);
 			};
 			return this.fetch().done(function(data) {
 				// console.log('publishing: track/selectbyid');
-				// Radb.PubSub.publish('track/selectbyid', Radb.state.track);
+				// Acme.PubSub.publish('track/selectbyid', Acme.state.track);
 				return data;
 			});
 		};
-		Radb.Collection.track.prototype.fetch = function(url)
+		Acme.Collection.track.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 
 				data.done( function(response) {
 				self.track = [];
@@ -56,11 +56,11 @@ $(function() {
 					));
 				}
 
-				Radb.PubSub.publish('track/reloaded', self);
+				Acme.PubSub.publish('track/reloaded', self);
 			});
 			return data;
 		};
-		Radb.Collection.track.prototype.addTrack = function()
+		Acme.Collection.track.prototype.addTrack = function()
 		{
 			var self = this;
 			var updateParams = {
@@ -71,9 +71,9 @@ $(function() {
 				'state'    : 'VIC',
 				'type'     : 'RA'
 			};
-			Radb.server.create("track/", updateParams)
+			Acme.server.create("track/", updateParams)
 				.done(function(r) {
-					Radb.PubSub.publish('track/added', r.data.id);
+					Acme.PubSub.publish('track/added', r.data.id);
 				});
 		};
 
@@ -84,7 +84,7 @@ $(function() {
 ------------------------------------------------
 */
 
-	Radb.View.track = function(config)
+	Acme.View.track = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.track           = [];
@@ -94,7 +94,7 @@ $(function() {
 		this.selectedElem 	 = null;
 		this.filter          = '';
 	};
-		Radb.View.track.prototype.update = function(topic, data)
+		Acme.View.track.prototype.update = function(topic, data)
 		{
 			console.log(topic, data);
 			if (topic == 'track/deleted') {
@@ -111,9 +111,9 @@ $(function() {
 				this.render();
 			}
 		};
-		Radb.View.track.prototype.render = function()
+		Acme.View.track.prototype.render = function()
 		{
-			Radb.PubSub.publish('load_from_url');
+			Acme.PubSub.publish('load_from_url');
 
 			var self = this;
 			self.container.empty();
@@ -149,7 +149,7 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.track.prototype.filterList = function(track, filter)
+		Acme.View.track.prototype.filterList = function(track, filter)
 		{
 			var renderArray = [];
 			for (var j=0;j<filter.length;j++) {
@@ -162,7 +162,7 @@ $(function() {
 			}
 			return false;
 		};
-		Radb.View.track.prototype.clear = function()
+		Acme.View.track.prototype.clear = function()
 		{
 			$('#TrackID').val('');
 			$('#TrackName').val('');
@@ -172,15 +172,15 @@ $(function() {
 			$('.timezone').val('');
 			$('.state').val('');
 		};
-		Radb.View.track.prototype.renderDetails = function()
+		Acme.View.track.prototype.renderDetails = function()
 		{
 			var track = this.track.track[this.selected];
 
 			this.selectedTrack = track.data.id;
 
-			Radb.state.page = 'tracks';
-			Radb.state.track = track.data.id;
-			Radb.PubSub.publish('resource/selected', Radb.state);
+			Acme.state.page = 'tracks';
+			Acme.state.track = track.data.id;
+			Acme.PubSub.publish('resource/selected', Acme.state);
 
 			if (track) {
 				$('#TrackID').val(track.data.id);
@@ -197,31 +197,31 @@ $(function() {
 					this.tzMenu.remove();
 				}
 
-				this.tzMenu = new Radb.listMenu( {
+				this.tzMenu = new Acme.listMenu( {
 							'parent' 		: $('#timezoneSelect'),
 							'defaultSelect' : {"label": track.data.timezone},
 							'name' 			: 'timezone',
 							'callback'		: track.updater(),
-				}).init(Radb.timezones).render();
+				}).init(Acme.timezones).render();
 
 
 				if (typeof this.statemenu == 'object') {
 					this.statemenu.remove();
 				}
 
-				this.statemenu = new Radb.listMenu( {
+				this.statemenu = new Acme.listMenu( {
 							'parent' 		: $('#stateSelect'),
 							'defaultSelect' : {"label": track.data.state},
 							'name' 			: 'state',
 							'callback'		: track.updater(),
-				}).init(Radb.venueStates).render();
+				}).init(Acme.venueStates).render();
 
 
 			} else {
 				this.clear();
 			}
 		};
-		Radb.View.track.prototype.selectById = function(id)
+		Acme.View.track.prototype.selectById = function(id)
 		{
 			if (this.track.track.length > 0) {
 				var tracks = this.track.track;
@@ -232,14 +232,14 @@ $(function() {
 						this.selectedElem = $('.list_item[data-arrayid="' + this.selected + '"]');
 						this.selectedElem.addClass('selected');
 
-						if (this.selectedElem.length > 0) Radb.effects.scroll($('#trackList'), this.selectedElem);
+						if (this.selectedElem.length > 0) Acme.effects.scroll($('#trackList'), this.selectedElem);
 
 						return;
 					}
 				}
 			}
 		};
-		Radb.View.track.prototype.select = function(id)
+		Acme.View.track.prototype.select = function(id)
 		{
 			var track = $('#trackList li');
 			track.each(function(index, elem) {
@@ -253,7 +253,7 @@ $(function() {
 				}
 			});
 		};
-		Radb.View.track.prototype.events = function()
+		Acme.View.track.prototype.events = function()
 		{
 			var self = this;
 
@@ -267,7 +267,7 @@ $(function() {
 
 				if (elem.hasClass('delete')) {
 					var message = "Delete " + self.track.track[id].data.name + "?";
-					Radb.dialog.show(message, "Warning", self.track.track[id].delete, self.track.track[id]);
+					Acme.dialog.show(message, "Warning", self.track.track[id].delete, self.track.track[id]);
 					return;
 				}
 				self.renderDetails();
@@ -277,7 +277,7 @@ $(function() {
 			});
 			$('#deleteTrack').unbind().click(function() {
 				var message = "Delete " + self.track.track[self.selected].data.name + "?";
-				Radb.dialog.show(message, "Warning", self.track.track[self.selected].delete, self.track.track[self.selected]);
+				Acme.dialog.show(message, "Warning", self.track.track[self.selected].delete, self.track.track[self.selected]);
 			});
 			$('#TrackInfo input').unbind().on('change', function(e) {
 				e.preventDefault();
@@ -288,7 +288,7 @@ $(function() {
 				data[field] = elem.val();
 				track.update(data).fail(function(r) {
 					elem.val(self.track.track[self.selected].data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
@@ -300,16 +300,16 @@ $(function() {
 		};
 
 
-	Radb.start = function()
+	Acme.start = function()
 	{
-		Radb.state.page = 'tracks';
+		Acme.state.page = 'tracks';
 
 		// ***************************************
 					// LOAD VIEWS
 		// ***************************************
-		Radb.track_view = new Radb.View.track({'template': template('trackListTemp'), 'el': $('#trackList')});
-		Radb.PubSub.subscribe({
-			'Radb.track_view.update' : [ "track/deleted",
+		Acme.track_view = new Acme.View.track({'template': template('trackListTemp'), 'el': $('#trackList')});
+		Acme.PubSub.subscribe({
+			'Acme.track_view.update' : [ "track/deleted",
 										 "track/reloaded",
 									 	 "track/selectbyid"]
 		});
@@ -319,18 +319,18 @@ $(function() {
 		// 			// LOAD COLLECTIONS
 		// // ***************************************
 
-		Radb.track_col = new Radb.Collection.track(Radb.Model.track);
-		Radb.PubSub.subscribe({
-			'Radb.track_col.update' : [ "track/added",
+		Acme.track_col = new Acme.Collection.track(Acme.Model.track);
+		Acme.PubSub.subscribe({
+			'Acme.track_col.update' : [ "track/added",
 										 "track/deleted",
 										 "track/updated",
 										 "track_tz/selected",
 									 	 "track_state/selected"]
 		});
 
-		Radb.track_col.fetch();
+		Acme.track_col.fetch();
 
-		Radb.PubSub.publish('load_from_url');
+		Acme.PubSub.publish('load_from_url');
 
 	}
 

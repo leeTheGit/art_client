@@ -8,21 +8,21 @@
 ------------------------------------------------
 */
 
-	Radb.Feed.load = function(config)
+	Acme.Feed.load = function(config)
 	{
 		this.loadid 		= '';
-		this.subscriptions	= Radb.PubSub.subscribe({ 
-			'Radb.feed.update' : [ "load/import"]
+		this.subscriptions	= Acme.PubSub.subscribe({ 
+			'Acme.feed.update' : [ "load/import"]
 		});
 
 	};
 
-		Radb.Feed.load.prototype.url = function(type)
+		Acme.Feed.load.prototype.url = function(type)
 		{
 			return 'load/' + this.loadid;
 		};
 
-		Radb.Feed.load.prototype.update = function(topic, data)
+		Acme.Feed.load.prototype.update = function(topic, data)
 		{
 			this.loadid 	= data.meeting;
 
@@ -38,19 +38,19 @@
 			text = text.replace(/^[\ ]+/g, '');
 			text = text.replace(/^(\r\n|\n|\r)/gm,"");
 
-			return Radb.server.create(this.url('feed'), this[data.feed](text))
+			return Acme.server.create(this.url('feed'), this[data.feed](text))
 			.done(function(r) {
 
 				if (r.data === false) {
-					Radb.effects.message('There was a problem loading this feed!');
+					Acme.effects.message('There was a problem loading this feed!');
 				} else {
-					Radb.effects.message('Feed loaded! ');
-					Radb.PubSub.publish('load/loaded', r);
+					Acme.effects.message('Feed loaded! ');
+					Acme.PubSub.publish('load/loaded', r);
 				}
 			});
 		};
 
-		Radb.Feed.load.prototype.market = function(text)
+		Acme.Feed.load.prototype.market = function(text)
 		{
 			var content		= {'races': []};
 
@@ -88,7 +88,7 @@
 			return {'type': 'Market', 'data': content, 'feed': 'feed'};
 		}
 
-		Radb.Feed.load.prototype.tab_fixed = function(text)
+		Acme.Feed.load.prototype.tab_fixed = function(text)
 		{
 			var content		= {'races': []};
 
@@ -124,7 +124,7 @@
 			return {'type': 'TAB Markets', 'data': content, 'feed': 'feed'};
 		}
 
-		Radb.Feed.load.prototype.ubet_fixed = function(text)
+		Acme.Feed.load.prototype.ubet_fixed = function(text)
 		{
 			var content		= {'races': []};
 
@@ -159,7 +159,7 @@
 
 			return {'type': 'UBET Markets', 'data': content, 'feed': 'feed'};
 		}
-		Radb.Feed.load.prototype.lad_fixed = function(text)
+		Acme.Feed.load.prototype.lad_fixed = function(text)
 		{
 			var content		= {'races': []};
 
@@ -196,7 +196,7 @@
 		}
 
 
-		Radb.Feed.load.prototype.tips = function(text)
+		Acme.Feed.load.prototype.tips = function(text)
 		{
 			var content		= {'races': []};
 
@@ -219,7 +219,7 @@
 			return {'type': 'Selections', 'data': content, 'feed': 'feed'};
 		}
 
-		Radb.Feed.load.prototype.dogs_betting = function(text)
+		Acme.Feed.load.prototype.dogs_betting = function(text)
 		{
 			var content		= {'races': []};
 
@@ -245,7 +245,7 @@
 			return {'type': 'Market', 'data': content, 'feed': 'feed'};
 		}
 
-		Radb.Feed.load.prototype.race_comment = function(text)
+		Acme.Feed.load.prototype.race_comment = function(text)
 		{
 			var content		= {'races': []};
 
@@ -272,7 +272,7 @@
 			return {'type': 'Race comment', 'data': content, 'feed': 'feed', 'columns': ['comment']};
 		}
 
-		Radb.Feed.load.prototype.gear_changes = function(text)
+		Acme.Feed.load.prototype.gear_changes = function(text)
 		{
 
 			text = text + '\n';
@@ -291,7 +291,7 @@
 			return {'type': 'Gear changes', 'data': content, 'feed': 'feed', 'columns': ['gearchanges']};
 		}
 
-		Radb.Feed.load.prototype.comment = function(text)
+		Acme.Feed.load.prototype.comment = function(text)
 		{
 			var content 	= {'races': []};
 			var columns 	= ['comment'];	// the columns this feed is allowed to update
@@ -331,7 +331,7 @@
 			return {'type': 'Comment', 'data': content, 'columns': columns, 'feed': 'feed'};
 		};
 
-		Radb.Feed.load.prototype.oneliners = function(text)
+		Acme.Feed.load.prototype.oneliners = function(text)
 		{
 			var content 	= {'races': []};
 			var columns 	= ['comment'];	// the columns this feed is allowed to update
@@ -369,11 +369,11 @@
 
 			// console.log(content);
 
-			return {'type': 'Comment', 'data': content, 'columns': columns, 'feed': 'feed', 'supplier': Radb.state.group};
+			return {'type': 'Comment', 'data': content, 'columns': columns, 'feed': 'feed', 'supplier': Acme.state.group};
 		};
 
 
-		Radb.Feed.load.prototype.nztxt = function(text)
+		Acme.Feed.load.prototype.nztxt = function(text)
 		{
 			var content 	= {'races': []};
 			var columns 	= ['nz_jockey', 'legend', 'claim'];	// the columns this feed is allowed to update

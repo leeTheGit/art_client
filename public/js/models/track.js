@@ -2,7 +2,7 @@
 {
 	'use strict';
 
-	Radb.Model.track = Radb.Model.create({
+	Acme.Model.track = Acme.Model.create({
 		'url' 			: 'track',
 	});
 

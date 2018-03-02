@@ -83,7 +83,7 @@ include_once DIR_VIEW . "/templates/topPanel.php"; ?>
 
 
 
-		<div class="flex1 flex_col border-right-black right-margin-15"> <!-- Users list column -->
+		<div class="flex1 flex_col right-margin-15"> <!-- Users list column -->
 			
 			<div class="columnHeader flex-shrink0 ">
 				<h3>Users</h3>
@@ -146,12 +146,11 @@ include_once DIR_VIEW . "/templates/topPanel.php"; ?>
 					<select class="groupselect" name="GroupSelect"  id="GroupSelect"></select>
 
 					<label for="UserAccess">Access Level</label>
-					<select class = "primaryChannelSelect" name="UserAccess" id="UserAccess">
+					<select class="primaryChannelSelect" name="UserAccess" id="UserAccess">
 						<option value="admin">Admin</option>
 						<option value="editor">Editor</option>
 						<option value="user">User</option>
 						<option value="read">Read Only</option>
-						<option value="read_all_meetings">Read Only - All meetings</option>
 						<option value="portal">Portal</option>
 
 					</select>

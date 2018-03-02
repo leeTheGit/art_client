@@ -3,16 +3,16 @@
 	'use strict';
 
 
-	Radb.Collection.track = function(model)
+	Acme.Collection.track = function(model)
 	{
 		this.model 		= model;
 		this.track		= [];
 	};
-		Radb.Collection.track.prototype.url = function()
+		Acme.Collection.track.prototype.url = function()
 		{
 			return "track/";
 		};
-		Radb.Collection.track.prototype.update = function(topic, data)
+		Acme.Collection.track.prototype.update = function(topic, data)
 		{
 			if (topic === 'track_tz/selected') {
 				var val  = data.split('::')
@@ -33,11 +33,11 @@
 
 			return this.fetch();
 		};
-		Radb.Collection.track.prototype.fetch = function(url)
+		Acme.Collection.track.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 				.done( function(response) {
 					self.track = _.map(response.data, function(track) {
 						return Object.create(self.model,
@@ -48,10 +48,10 @@
 							}
 						);
 					});
-					Radb.PubSub.publish('track/reloaded', self);
+					Acme.PubSub.publish('track/reloaded', self);
 			});
 		};
-		Radb.Collection.track.prototype.addTrack = function()
+		Acme.Collection.track.prototype.addTrack = function()
 		{
 			var self = this;
 			var updateParams = {
@@ -62,7 +62,7 @@
 				'state'    : 'VIC',
 				'type'     : 'RA'
 			};
-			return Radb.server.create("track/", updateParams);
+			return Acme.server.create("track/", updateParams);
 		};
 
 })();

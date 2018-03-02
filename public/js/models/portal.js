@@ -3,7 +3,7 @@
 	'use strict';
 
 
-	Radb.portal_meeting_model = Radb.Model.create({
+	Acme.portal_meeting_model = Acme.Model.create({
 		'url' 			: 'meeting',
 		'alias'         : 'portalmeeting',
 		'messages' 		: {'set' : 'fetched'},
@@ -11,18 +11,18 @@
 			'data' : {}
 		}
 	});
-		Radb.portal_meeting_model.listeners = {
+		Acme.portal_meeting_model.listeners = {
 
 			"meeting" : function(data) {
 				var self = this;
 				this.data.id = data.meeting;
-				if (!Radb.state.portalwindow) return;
+				if (!Acme.state.portalwindow) return;
 				this.query = ['data', 'portal', 'portal', 'all']; //, 'migrate', 'true'
 				this.fetch().done(
 					function(r) {
 						if (r.data) {
 							self.data = r.data;
-							Radb.state.listener('update_state', {'portalmeeting': self});
+							Acme.state.listener('update_state', {'portalmeeting': self});
 						}
 					}
 				);
@@ -34,7 +34,7 @@
 					function(r) {
 						if (r.data) {
 							self.data = r.data;
-							Radb.state.listener('update_state', {'portalmeeting': self});
+							Acme.state.listener('update_state', {'portalmeeting': self});
 						}
 					}
 				);
@@ -54,19 +54,19 @@
 
 		}
 
-		// Radb.portal_meeting_model.listeners = {
+		// Acme.portal_meeting_model.listeners = {
 		// 	"timezoneSelect" : function(data) {
 		// 		var self = this;
 		// 		var val  = data.timezoneSelect.split('::');
 		// 		this.update({'timezone': val[0]}).done(function(r) {
 		// 			if (r.data === true) {
-		// 				Radb.PubSub.publish('state_changed', {'meetingTZ': self});
+		// 				Acme.PubSub.publish('state_changed', {'meetingTZ': self});
 		// 			}
 		// 		});
 		// 	}
 		// };
 		//
-		// Radb.portal_meeting_model.listener = function(topic, data)
+		// Acme.portal_meeting_model.listener = function(topic, data)
 		// {
 			// console.log(topic, data);
 			// this.data.id = data.data.id;
@@ -88,8 +88,8 @@
 		//
 		//
 		// };
-		Radb.PubSub.subscribe({
-			'Radb.portal_meeting_model.listener' : [ "state_changed"]
+		Acme.PubSub.subscribe({
+			'Acme.portal_meeting_model.listener' : [ "state_changed"]
 		});
 
 })();

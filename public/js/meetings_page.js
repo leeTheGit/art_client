@@ -29,7 +29,7 @@
 
 		$('.openPortal').on("click", function(e) {
 			e.preventDefault();
-			Radb.effects.leftPaneToggle('portal');
+			Acme.effects.leftPaneToggle('portal');
 		});
 
 		// $('#searchicon').on('click', function(e) {
@@ -100,33 +100,33 @@
 
 		$('#minified').on('click', function(e) {
 			$(this).css('visibility', 'hidden');
-			Radb.PubSub.publish('search/maximize');
+			Acme.PubSub.publish('search/maximize');
 		});
 
 		$('.meeting_list_tabs').unbind().on('click', function(e) {
-			Radb.state.meeting = null;
+			Acme.state.meeting = null;
 			var elem = $(e.target);
 			if (elem.is('li')) {
 				var label = elem.text();
 				if (label === 'Load') {
 					localStorage['context'] = 'load';
-					Radb.render_load();
-					Radb.load_col.fetch();
+					Acme.render_load();
+					Acme.load_col.fetch();
 				} else {
 					localStorage['context'] = 'meetings';
-					Radb.render_meetings();
-					Radb.PubSub.publish('load_from_url');
+					Acme.render_meetings();
+					Acme.PubSub.publish('load_from_url');
 				}
 			}
 		});
 	};
 
 
-	Radb.start = function()
+	Acme.start = function()
 	{
 
 		$('#searchHead').html(template('searchPanel'));
-		$('#meetingFilter').html(template('meetingFiltertmpl'));
+		// $('#meetingFilter').html(template('meetingFiltertmpl'));
 
 
 
@@ -136,47 +136,47 @@
 
 
 		//  SEARCH
-		Radb.search_view = new Radb.View.search(Radb.Model.search, {'template': template('search_result_tmpl'), 'el': $('body')});
+		Acme.search_view = new Acme.View.search(Acme.Model.search, {'template': template('search_result_tmpl'), 'el': $('body')});
 
 		// FILTER
-		Radb.filter = new Radb.View.filter();
+		// Acme.filter = new Acme.View.filter();
 
 		//  MEETINGS
-		Radb.meeting_view = new Radb.View.meetings({'template': template('meetingList'), 'el': $('.meetingsList')});
+		// Acme.meeting_view = new Acme.View.meetings({'template': template('meetingList'), 'el': $('.meetingsList')});
 
 		//  MEETINGS
-		// Radb.selected_meeting_view = new Radb.View.meeting({'template': template('meeting_top'), 'el': '.meeting-info'});
+		// Acme.selected_meeting_view = new Acme.View.meeting({'template': template('meeting_top'), 'el': '.meeting-info'});
 
 
 
 		//  LOAD
-		Radb.load_view    = new Radb.View.load({'template': template('loadList'), 'el': $('.meetingsList')});
-		Radb.load_history = new Radb.View.load_history({'template': template('meetingHistory'), 'el': '#historyData'});
-		Radb.load_source  = new Radb.View.load_source({'template': template('meetingSource'), 'el': '#sourceData'});
-		Radb.load_feed    = new Radb.View.load_feed({'template': template('load-box'), 'el': '#importBox'});
-		Radb.source_feed  = new Radb.View.load_diff({'template': template('source-feed'), 'el': '#importBox'});
+		// Acme.load_view    = new Acme.View.load({'template': template('loadList'), 'el': $('.meetingsList')});
+		// Acme.load_history = new Acme.View.load_history({'template': template('meetingHistory'), 'el': '#historyData'});
+		// Acme.load_source  = new Acme.View.load_source({'template': template('meetingSource'), 'el': '#sourceData'});
+		// Acme.load_feed    = new Acme.View.load_feed({'template': template('load-box'), 'el': '#importBox'});
+		// Acme.source_feed  = new Acme.View.load_diff({'template': template('source-feed'), 'el': '#importBox'});
 
 
 		// FEEDS
-		Radb.feed = new Radb.Feed.load();
+		// Acme.feed = new Acme.Feed.load();
 
 		//  RACES
-		Radb.race_list_view = new Radb.View.race({'el': '#raceList'});
+		// Acme.race_list_view = new Acme.View.race({'el': '#raceList'});
 
 		//  RUNNERS
-		Radb.runners_view = new Radb.View.runners({'el': '.runnersList'});
+		// Acme.runners_view = new Acme.View.runners({'el': '.runnersList'});
 
 
-   		Radb.track_view = new Radb.View.track({
-												'templates': {
-													'trackPage' : template('trackListPage'),
-													'tracks' 	: template('trackListTemp'),
-													},
-												'containers': {
-													'main' : '#rightside',
-													'tracks' : '#trackList'
-												}
-											});
+   		// Acme.track_view = new Acme.View.track({
+					// 							'templates': {
+					// 								'trackPage' : template('trackListPage'),
+					// 								'tracks' 	: template('trackListTemp'),
+					// 								},
+					// 							'containers': {
+					// 								'main' : '#rightside',
+					// 								'tracks' : '#trackList'
+					// 							}
+					// 						});
 
 
 
@@ -185,20 +185,20 @@
 		// // ***************************************
 
 
-		Radb.meeting_col 	= new Radb.Collection.meetings(	Radb.Model.meeting);
-		Radb.races_col 		= new Radb.Collection.races(	Radb.Model.race);
-		Radb.runners_col 	= new Radb.Collection.runners(	Radb.Model.runner);
-		Radb.load_col 		= new Radb.Collection.load(		Radb.Model.loadModel);
-		Radb.groups_col  	= new Radb.Groups(				Radb._Model);
-		Radb.track_col 		= new Radb.Collection.track(	Radb.Model.track);
-		Radb.PubSub.subscribe({
-			'Radb.track_col.update' : [  "track/needed",
-										 "track/added",
-										 "track/deleted",
-										 "track/updated",
-										 "track_tz/selected",
-									 	 "track_state/selected"]
-		});
+		// Acme.meeting_col 	= new Acme.Collection.meetings(	Acme.Model.meeting);
+		// Acme.races_col 		= new Acme.Collection.races(	Acme.Model.race);
+		// Acme.runners_col 	= new Acme.Collection.runners(	Acme.Model.runner);
+		// Acme.load_col 		= new Acme.Collection.load(		Acme.Model.loadModel);
+		// Acme.groups_col  	= new Acme.Groups(				Acme._Model);
+		// Acme.track_col 		= new Acme.Collection.track(	Acme.Model.track);
+		// Acme.PubSub.subscribe({
+		// 	'Acme.track_col.update' : [  "track/needed",
+		// 								 "track/added",
+		// 								 "track/deleted",
+		// 								 "track/updated",
+		// 								 "track_tz/selected",
+		// 							 	 "track_state/selected"]
+		// });
 
 
 
@@ -208,22 +208,22 @@
 
 
 		//  Divs states
-		Radb.resultsStatesMenu_view = new Radb.resultsStateMenu({'el': 'stateSelect'});
+		// Acme.resultsStatesMenu_view = new Acme.resultsStateMenu({'el': 'stateSelect'});
 
 
 		//  Groups
-		Radb.groupMenu_view = new Radb.groupMenu({'el': 'groupSelectTop', 'default': '39c02f98-d579-415f-8da7-a952ade3668a'});
-		Radb.PubSub.subscribe({
-			'Radb.groupMenu_view.update' : [ "groups/fetched", "meeting/selected", "state_changed"]
-		});
+		// Acme.groupMenu_view = new Acme.groupMenu({'el': 'groupSelectTop', 'default': '39c02f98-d579-415f-8da7-a952ade3668a'});
+		// Acme.PubSub.subscribe({
+		// 	'Acme.groupMenu_view.update' : [ "groups/fetched", "meeting/selected", "state_changed"]
+		// });
 
-		// console.log(Radb.state);
+		// console.log(Acme.state);
 
 		//  Users
-		Radb.userMenu_view = new Radb.userMenu({'el': 'userSelectTop', 'default': Radb.state.user});
-		Radb.PubSub.subscribe({
-			'Radb.userMenu_view.update' : [ "group/selected"]
-		});
+		// Acme.userMenu_view = new Acme.userMenu({'el': 'userSelectTop', 'default': Acme.state.user});
+		// Acme.PubSub.subscribe({
+		// 	'Acme.userMenu_view.update' : [ "group/selected"]
+		// });
 
 
 
@@ -237,17 +237,15 @@
 		//
 		// ***********************************************************
 
-		var renderFunc = 'render_meetings';
-		if (localStorage['context']) {
-			renderFunc = 'render_' + localStorage['context'];
-		}
-		
-		Radb[renderFunc]();
+		// var renderFunc = 'render_meetings';
+		// if (localStorage['context']) {
+		// 	renderFunc = 'render_' + localStorage['context'];
+		// }
+		// console.log(localStorage['context']);
+		// Acme[renderFunc]();
 
 		// Gets the ball rolling
-		// Radb.PubSub.publish('load_from_url');
-
-		// Radb.groups_col.fetch();
+		Acme.PubSub.publish('load_from_url');
 
 		pageEvents();
 	}

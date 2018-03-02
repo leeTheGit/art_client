@@ -1,7 +1,7 @@
 $(function() {
 	'use strict';
 
-	Radb.typeMenu = null;
+	Acme.typeMenu = null;
 
 
 
@@ -11,14 +11,14 @@ $(function() {
 ------------------------------------------------
 */
 
-	Radb.Model.publication = Radb.Model.create({
+	Acme.Model.publication = Acme.Model.create({
 		'url' : 'publication'
 	});
 
-	Radb.Model.output = Radb.Model.create({
+	Acme.Model.output = Acme.Model.create({
 		'url' : 'output'
 	});
-		Radb.Model.output.copyOutput = function()
+		Acme.Model.output.copyOutput = function()
 		{
 			var self = this;
 				var updateParams = {
@@ -30,13 +30,13 @@ $(function() {
 					'tip' 		: self.data.tip,
 					'comment' 	: self.data.comment
 				};
-				Radb.server.create("output/", updateParams)
+				Acme.server.create("output/", updateParams)
 					.done(function(r) {
-						Radb.PubSub.publish('output/added', self);
+						Acme.PubSub.publish('output/added', self);
 					});
 		};
 
-	Radb.Model.portal_publication = Radb.Model.create({
+	Acme.Model.portal_publication = Acme.Model.create({
 		'url' : 'group'
 	});
 
@@ -49,25 +49,25 @@ $(function() {
 */
 
 
-	Radb.Collection.PortalPublications = function(model)
+	Acme.Collection.PortalPublications = function(model)
 	{
 		// this.date 		= "2014-06-06";
 		this.model 		  = model;
 		this.publications = [];
 	};
-		Radb.Collection.PortalPublications.prototype.url = function()
+		Acme.Collection.PortalPublications.prototype.url = function()
 		{
 			return "group/";
 		};
-		Radb.Collection.PortalPublications.prototype.update = function(topic, data)
+		Acme.Collection.PortalPublications.prototype.update = function(topic, data)
 		{
 			return this.fetch();
 		};
-		Radb.Collection.PortalPublications.prototype.fetch = function(url)
+		Acme.Collection.PortalPublications.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 			 .done( function(response) {
 			 	// console.log(response);
 				self.publications = [];
@@ -81,10 +81,10 @@ $(function() {
 										}
 					));
 				}
-				Radb.PubSub.publish('portalPublications/fetched', self);
+				Acme.PubSub.publish('portalPublications/fetched', self);
 			});
 		};
-		Radb.Collection.PortalPublications.prototype.find = function(id)
+		Acme.Collection.PortalPublications.prototype.find = function(id)
 		{
 			for(var i=0; this.publications.length > i; i++) {
 				if (this.publications[i].data.groupid === id) return i;
@@ -95,18 +95,18 @@ $(function() {
 
 
 	// All tipsters from selected portal group used in pulldown menu
-	Radb.Collection.PortalTipsters = function(config)
+	Acme.Collection.PortalTipsters = function(config)
 	{
 		this.tipsters 		= [];
 		this.resource 		= config['resource'];
 		this.id       		= '';
 		this.publication 	= '';
 	};
-		Radb.Collection.PortalTipsters.prototype.url = function()
+		Acme.Collection.PortalTipsters.prototype.url = function()
 		{
 			return 'group/' + this.publication;
 		};
-		Radb.Collection.PortalTipsters.prototype.update = function(topic, data)
+		Acme.Collection.PortalTipsters.prototype.update = function(topic, data)
 		{
 			if (topic === 'update_state') {
 				if (data['portPubSelect']) {
@@ -115,12 +115,12 @@ $(function() {
 			}
 			return this.fetch();
 		};
-		Radb.Collection.PortalTipsters.prototype.fetch = function(url)
+		Acme.Collection.PortalTipsters.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
 
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 			 .done( function(response) {
 				self.tipsters = [];
 				// console.log(response.data);
@@ -128,14 +128,14 @@ $(function() {
 				if (tipsters) {
 					for (var i=0;i<tipsters.length;i++) {
 						self.tipsters.push( Object.create(
-							Radb._Model, { 'resource':
+							Acme._Model, { 'resource':
 												{ 'value': 'tipster'},
 											'data':
 												{'value' : tipsters[i]}
 											})
 										);
 					}
-					Radb.PubSub.publish('portalTipsters/reloaded', self);
+					Acme.PubSub.publish('portalTipsters/reloaded', self);
 				}
 			});
 		};
@@ -144,7 +144,7 @@ $(function() {
 
 
 	// All tips panels available for selected portal group
-	Radb.Collection.tipsPanel = function(config)
+	Acme.Collection.tipsPanel = function(config)
 	{
 		this.publication 	= '';
 		this.panels 		= [];
@@ -152,11 +152,11 @@ $(function() {
 		this.id 			= '';
 		this.resource 		= config['resource'];
 	};
-		Radb.Collection.tipsPanel.prototype.url = function()
+		Acme.Collection.tipsPanel.prototype.url = function()
 		{
 			return this.resource + '/' + this.id + this.buildParams();
 		};
-		Radb.Collection.tipsPanel.prototype.buildParams = function()
+		Acme.Collection.tipsPanel.prototype.buildParams = function()
 		{
 			var query = '';
 			for(var i=0;i<this.query.length; i+=2) {
@@ -167,45 +167,45 @@ $(function() {
 			}
 			return query;
 		},
-		Radb.Collection.tipsPanel.prototype.update = function(topic, data)
+		Acme.Collection.tipsPanel.prototype.update = function(topic, data)
 		{
 			var self = this;
 			console.log(topic, data);
 			if (topic === 'update_state') {
 				if (data['portPubSelect']) {
-					Radb.state.publication = data['portPubSelect'];
-					console.log(Radb.state);
+					Acme.state.publication = data['portPubSelect'];
+					console.log(Acme.state);
 					this.query = ['publication', data['portPubSelect']];
 				}
 			}	
 			return this.fetch().done(function(){self.query=[];});
 		};
-		Radb.Collection.tipsPanel.prototype.fetch = function(url)
+		Acme.Collection.tipsPanel.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
 
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 			 .done( function(response) {
 				self.panels = [];
 				var panels = response.data;
 				for (var i=0;i<panels.length;i++) {
 					self.panels.push( Object.create(
-						Radb._Model, {'resource':
+						Acme._Model, {'resource':
 											{ 'value': 'tipsterspanels'},
 									  'data':
 											{'value' : panels[i]}
 										})
 									);
 				}
-				Radb.PubSub.publish('portalTipsPanel/reloaded', self);
+				Acme.PubSub.publish('portalTipsPanel/reloaded', self);
 			});
 		};
-		Radb.Collection.tipsPanel.prototype.create = function(publication, panel)
+		Acme.Collection.tipsPanel.prototype.create = function(publication, panel)
 		{
 			var self = this;
 			var data = {'publication': publication, 'name': panel};
-			return Radb.server.create(this.url(), data)
+			return Acme.server.create(this.url(), data)
 			.done(function(r) {
 				self.query = ['publication', publication];
 				self.fetch().done(function(){self.query=[];});
@@ -215,7 +215,7 @@ $(function() {
 
 
 	// All tipsters from selected tips panel
-	Radb.Collection.PanelTipsters = function(config)
+	Acme.Collection.PanelTipsters = function(config)
 	{
 		this.tipsters 	 = [];
 		this.panelid 	 = null;
@@ -224,11 +224,11 @@ $(function() {
 		this.id 	 	 = '';
 		this.subresource = [];
 	};
-		Radb.Collection.PanelTipsters.prototype.url = function()
+		Acme.Collection.PanelTipsters.prototype.url = function()
 		{
 			return this.resource + '/' + this.id + this.buildPath() + this.buildParams();
 		};
-		Radb.Collection.PanelTipsters.prototype.buildPath = function()
+		Acme.Collection.PanelTipsters.prototype.buildPath = function()
 		{
 			var path = '';
 			for(var i=0;i<this.subresource.length; i++) {
@@ -236,7 +236,7 @@ $(function() {
 			}
 			return path;
 		};
-		Radb.Collection.PanelTipsters.prototype.buildParams = function()
+		Acme.Collection.PanelTipsters.prototype.buildParams = function()
 		{
 			var query = '';
 			for(var i=0;i<this.query.length; i+=2) {
@@ -247,7 +247,7 @@ $(function() {
 			}
 			return query;
 		},
-		Radb.Collection.PanelTipsters.prototype.update = function(topic, data)
+		Acme.Collection.PanelTipsters.prototype.update = function(topic, data)
 		{
 			if (topic === 'update_state') {
 				if (data['portTipSelect']) {
@@ -262,11 +262,11 @@ $(function() {
 			}
 			return this.fetch().done(function(){this.query=[];});
 		};
-		Radb.Collection.PanelTipsters.prototype.fetch = function(url)
+		Acme.Collection.PanelTipsters.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			return Radb.server.request( url )
+			return Acme.server.request( url )
 			 .done( function(response) {
 				self.tipsters = [];
 				var tipsters = response.data.tipsters;
@@ -274,42 +274,42 @@ $(function() {
 				if (tipsters) {
 					for (var i=0;i<tipsters.length;i++) {
 						self.tipsters.push( Object.create(
-							Radb._Model, {'resource':
+							Acme._Model, {'resource':
 												{ 'value': 'tipster'},
 											'data':
 												{ 'value': tipsters[i]}
 											})
 										);
 					}
-					Radb.PubSub.publish('panelTipsters/reloaded', self);
+					Acme.PubSub.publish('panelTipsters/reloaded', self);
 				}
 			});
 		};
-		Radb.Collection.PanelTipsters.prototype.addTipster = function(tipster)
+		Acme.Collection.PanelTipsters.prototype.addTipster = function(tipster)
 		{
 			var self = this;
 			var data = {'tipster':tipster};
-			return Radb.server.create(self.url(), data)
+			return Acme.server.create(self.url(), data)
 			.done(function(r) {
 				self.subresource = [];
 				self.fetch();
 			});
 		};
-		Radb.Collection.PanelTipsters.prototype.deleteTipster = function(tipster)
+		Acme.Collection.PanelTipsters.prototype.deleteTipster = function(tipster)
 		{
 			var self = this;
 			self.subresource = ['tipster', tipster];
-			return Radb.server.delete(self.url())
+			return Acme.server.delete(self.url())
 			.done(function(r) {
 				self.fetch();
 			});
 		};
-		Radb.Collection.PanelTipsters.prototype.sort = function(tipsters)
+		Acme.Collection.PanelTipsters.prototype.sort = function(tipsters)
 		{
 			var self = this;
 			var data = {'tipsters':tipsters};
 
-			return Radb.server.update(self.url(), data)
+			return Acme.server.update(self.url(), data)
 			.done(function(r) {
 				console.log(r);
 				self.fetch();
@@ -325,29 +325,29 @@ $(function() {
 
 
 	// Print publications and outputs
-	Radb.Collection.publication = function(model)
+	Acme.Collection.publication = function(model)
 	{
 		this.model 			= model;
 		this.publication	= [];
 	};
-		Radb.Collection.publication.prototype.url = function()
+		Acme.Collection.publication.prototype.url = function()
 		{
 			return "publication/?data=all";
 		};
-		Radb.Collection.publication.prototype.update = function(topic, data)
+		Acme.Collection.publication.prototype.update = function(topic, data)
 		{
 			if (topic === 'publication/added') {
-				Radb.state.output = null;
-				Radb.state.publication = data;
-				Radb.PubSub.publish('resource/selected', Radb.state);
+				Acme.state.output = null;
+				Acme.state.publication = data;
+				Acme.PubSub.publish('resource/selected', Acme.state);
 			};
 			return this.fetch();
 		};
-		Radb.Collection.publication.prototype.fetch = function(url)
+		Acme.Collection.publication.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 
 			data.done( function(response) {
 				// console.log(response);
@@ -362,40 +362,40 @@ $(function() {
 										}
 					));
 				}
-				Radb.PubSub.publish('publication/fetched', self);
+				Acme.PubSub.publish('publication/fetched', self);
 			});
 			return data;
 		};
-		Radb.Collection.publication.prototype.addPublication = function()
+		Acme.Collection.publication.prototype.addPublication = function()
 		{
 			var self = this;
 			var updateParams = {
 				'name' : 'unnamed',
 				'timezone' : 'Australia/Melbourne',
 			};
-			return Radb.server.create("publication/", updateParams)
+			return Acme.server.create("publication/", updateParams)
 				.done(function(r) {
 					self.fetch();
 				});
 		};
 
-	Radb.Collection.output = function(model)
+	Acme.Collection.output = function(model)
 	{
 		this.model 			= model;
 		this.output			= [];
 		this.publication 	= null;
 	};
-		Radb.Collection.output.prototype.url = function()
+		Acme.Collection.output.prototype.url = function()
 		{
 			return "output/?pid=" + this.publication;
 		};
-		Radb.Collection.output.prototype.update = function(topic, data)
+		Acme.Collection.output.prototype.update = function(topic, data)
 		{
 			// console.log(topic, data);
 			if (topic === 'output/added') {
-				Radb.state.output = data;
-				Radb.url.updateQuery({'output':Radb.state.output});
-				Radb.PubSub.publish('resource/selected', Radb.state);
+				Acme.state.output = data;
+				Acme.url.updateQuery({'output':Acme.state.output});
+				Acme.PubSub.publish('resource/selected', Acme.state);
 			};
 
 			if (topic === 'publication/selected') {
@@ -405,12 +405,12 @@ $(function() {
 				return this.fetch();
 			}
 		};
-		Radb.Collection.output.prototype.fetch = function(url)
+		Acme.Collection.output.prototype.fetch = function(url)
 		{
 			var self = this;
 
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 
 			data.done( function(response) {
 				self.output = [];
@@ -425,31 +425,31 @@ $(function() {
 					));
 				}
 
-				Radb.PubSub.publish('output/fetched', self);
+				Acme.PubSub.publish('output/fetched', self);
 			});
 			return data;
 		};
-		Radb.Collection.output.prototype.addOutput = function()
+		Acme.Collection.output.prototype.addOutput = function()
 		{
 			var self = this;
 			var params = {
 				'name' : 'unnamed',
 				'publication' : this.publication
 			};
-			Radb.server.create("output/", params)
+			Acme.server.create("output/", params)
 				.done(function(r) {
 					console.log(r);
 					self.fetch();
 				});
 		};
-		Radb.Collection.output.prototype.copyOutput = function(id)
+		Acme.Collection.output.prototype.copyOutput = function(id)
 		{
 			var self = this;
 			var params = {
 				'output' : id,
 				'publication' : this.publication
 			};
-			Radb.server.create("output/", params)
+			Acme.server.create("output/", params)
 				.done(function(r) {
 					console.log(r);
 					self.fetch();
@@ -463,7 +463,7 @@ $(function() {
 ------------------------------------------------
 */
 
-	Radb.View.publicationList = function(config)
+	Acme.View.publicationList = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.publication     = [];
@@ -472,7 +472,7 @@ $(function() {
 		this.db_id 			 = null;
 		this.events();
 	};
-		Radb.View.publicationList.prototype.update = function(topic, data)
+		Acme.View.publicationList.prototype.update = function(topic, data)
 		{
 			var self = this;
 			if (topic === 'publication_market/selected') {
@@ -500,9 +500,9 @@ $(function() {
 				this.render();
 			}
 		};
-		Radb.View.publicationList.prototype.render = function()
+		Acme.View.publicationList.prototype.render = function()
 		{
-			Radb.PubSub.publish('load_from_url');
+			Acme.PubSub.publish('load_from_url');
 
 			var self = this;
 			self.container.empty();
@@ -532,20 +532,20 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.publicationList.prototype.clear = function()
+		Acme.View.publicationList.prototype.clear = function()
 		{
 			$('.publication_id').val('');
 			$('.publication_name').val('');
 			$('.publication_timezone').val('');
 		};
-		Radb.View.publicationList.prototype.renderDetails = function()
+		Acme.View.publicationList.prototype.renderDetails = function()
 		{
 			var self = this;
 			var publication = this.publication.publication[this.selected];
 
 			if (publication) {
-				Radb.state.publication = publication.data.id;
-				Radb.PubSub.publish('resource/selected', Radb.state);
+				Acme.state.publication = publication.data.id;
+				Acme.PubSub.publish('resource/selected', Acme.state);
 
 				$('.publication_id').val(publication.data.id);
 				$('.publication_name').val(publication.data.name);
@@ -558,12 +558,12 @@ $(function() {
 					this.tzMenu.remove();
 				}
 
-				this.tzMenu = new Radb.listMenu( {
+				this.tzMenu = new Acme.listMenu( {
 							'parent' 		: $('#timezoneSelect'),
 							'defaultSelect' : {"label": timezone},
 							'name' 			: 'timezone',
 							'callback'		: publication.updater(),
-				}).init(Radb.timezones).render();
+				}).init(Acme.timezones).render();
 
 				var timezone = publication.data.timezone;
 
@@ -571,18 +571,18 @@ $(function() {
 					this.stateMenu.remove();
 				}
 
-				this.stateMenu = new Radb.listMenu( {
+				this.stateMenu = new Acme.listMenu( {
 							'parent' 		: $('#stateSelect'),
 							'defaultSelect' : {"label": state},
 							'name' 			: 'state',
 							'callback'		: publication.updater(),
-				}).init(Radb.venueStates).render();
+				}).init(Acme.venueStates).render();
 
 			} else {
 				this.clear();
 			}
 		};
-		Radb.View.publicationList.prototype.selectById = function(id)
+		Acme.View.publicationList.prototype.selectById = function(id)
 		{
 			if (this.publication.publication.length > 0) {
 				var publications = this.publication.publication;
@@ -595,15 +595,15 @@ $(function() {
 						this.selectedElem = $('.list_item[data-arrayid="' + this.selected + '"]');
 						this.selectedElem.addClass('selected');
 
-						if (this.selectedElem.length > 0) Radb.effects.scroll($('#publicationList'), this.selectedElem);
-						Radb.PubSub.publish('publication/selected', this.publication.publication[this.selected].data);
+						if (this.selectedElem.length > 0) Acme.effects.scroll($('#publicationList'), this.selectedElem);
+						Acme.PubSub.publish('publication/selected', this.publication.publication[this.selected].data);
 
 						return;
 					}
 				}
 			}
 		};
-		Radb.View.publicationList.prototype.select = function(id)
+		Acme.View.publicationList.prototype.select = function(id)
 		{
 			var self = this;
 			var publication = $('#publicationList li');
@@ -618,9 +618,9 @@ $(function() {
 				}
 			});
 
-			Radb.PubSub.publish('publication/selected', self.publication.publication[self.selected].data);
+			Acme.PubSub.publish('publication/selected', self.publication.publication[self.selected].data);
 		};
-		Radb.View.publicationList.prototype.events = function()
+		Acme.View.publicationList.prototype.events = function()
 		{
 			var self = this;
 
@@ -631,8 +631,8 @@ $(function() {
 				self.db_id = self.publication.publication[id].data.id;
 				self.select(self.selected);
 
-				Radb.state.output = null;
-				Radb.url.query = [];
+				Acme.state.output = null;
+				Acme.url.query = [];
 
 				self.renderDetails();
 			});
@@ -643,11 +643,11 @@ $(function() {
 
 			$('#deletePublication').unbind().on('click', function(e) {
 				var message = "Delete " + self.publication.publication[self.selected].data.name + "?";
-				Radb.dialog.show(message, "Warning", self.publication.publication[self.selected].delete, self.publication.publication[self.selected])
+				Acme.dialog.show(message, "Warning", self.publication.publication[self.selected].delete, self.publication.publication[self.selected])
 				.done(function(r) {
-					Radb.state.publication = null;
-					Radb.url.query = '';
-					Radb.PubSub.publish('resource/selected',  Radb.state);
+					Acme.state.publication = null;
+					Acme.url.query = '';
+					Acme.PubSub.publish('resource/selected',  Acme.state);
 				});
 			});
 
@@ -661,13 +661,13 @@ $(function() {
 
 				publication.update(data).fail(function(r) {
 					elem.val(publication.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
 		};
 
-	Radb.View.outputList = function(config)
+	Acme.View.outputList = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.output          = [];
@@ -678,7 +678,7 @@ $(function() {
 		this.events();
 		this.fields 		 = {};
 	};
-		Radb.View.outputList.prototype.update = function(topic, data)
+		Acme.View.outputList.prototype.update = function(topic, data)
 		{
 			// console.log(topic, data);
 			if (topic === 'output/selectbyid') {
@@ -696,7 +696,7 @@ $(function() {
 			this.output = data;
 			this.render();
 		};
-		Radb.View.outputList.prototype.render = function()
+		Acme.View.outputList.prototype.render = function()
 		{
 			var self = this;
 			self.container.empty();
@@ -707,7 +707,7 @@ $(function() {
 				return;
 			}
 
-			self.selectById(Radb.state.output);
+			self.selectById(Acme.state.output);
 
 			this.selectList = [];
 			var finalTmpl     = '';
@@ -726,7 +726,7 @@ $(function() {
 			// this.events();
 			return this;
 		};
-		Radb.View.outputList.prototype.selectById = function(id)
+		Acme.View.outputList.prototype.selectById = function(id)
 		{
 			$('outputList.list_item').removeClass('selected');
 			if (this.output.output.length > 0) {
@@ -736,16 +736,16 @@ $(function() {
 						this.selected = i;
 						this.selectedElem = $('outputList.list_item[data-arrayid="' + this.selected + '"]');
 						this.selectedElem.addClass('selected');
-						Radb.PubSub.publish('output/selected', this.output.output[this.selected]);
+						Acme.PubSub.publish('output/selected', this.output.output[this.selected]);
 
-						if (this.selectedElem.length > 0) Radb.effects.scroll($('#outputList'), this.selectedElem);
+						if (this.selectedElem.length > 0) Acme.effects.scroll($('#outputList'), this.selectedElem);
 
 						return;
 					}
 				}
 			}
 		};
-		Radb.View.outputList.prototype.select = function(id)
+		Acme.View.outputList.prototype.select = function(id)
 		{
 			var output = $('#outputList li');
 			output.each(function(index, elem) {
@@ -759,7 +759,7 @@ $(function() {
 				}
 			});
 		};
-		Radb.View.outputList.prototype.events = function()
+		Acme.View.outputList.prototype.events = function()
 		{
 			var self = this;
 			self.container.unbind();
@@ -776,11 +776,11 @@ $(function() {
 				self.selected = id;
 				self.select(self.selected);
 				// self.renderDetails();
-				Radb.state.output = self.output.output[self.selected].data.id;
-				Radb.url.updateQuery({'output':Radb.state.output});
-				Radb.PubSub.publish('resource/selected', Radb.state);
+				Acme.state.output = self.output.output[self.selected].data.id;
+				Acme.url.updateQuery({'output':Acme.state.output});
+				Acme.PubSub.publish('resource/selected', Acme.state);
 
-				Radb.PubSub.publish('output/selected', self.output.output[self.selected]);
+				Acme.PubSub.publish('output/selected', self.output.output[self.selected]);
 			});
 
 			$('#addOutput').on('click', function(e) {
@@ -794,11 +794,11 @@ $(function() {
 			});
 			$('#deleteOutput').on('click', function(e) {
 				var message = "Delete " + self.output.output[self.selected].data.name + "?";
-				Radb.dialog.show(message, "Warning", self.output.output[self.selected].delete, self.output.output[self.selected])
+				Acme.dialog.show(message, "Warning", self.output.output[self.selected].delete, self.output.output[self.selected])
 				.done(function(r) {
-					Radb.state.output = null;
-					Radb.url.query = '';
-					Radb.PubSub.publish('resource/selected', Radb.state);
+					Acme.state.output = null;
+					Acme.url.query = '';
+					Acme.PubSub.publish('resource/selected', Acme.state);
 				});
 			});
 			$('#duplicateOutput').on('click', function(e) {
@@ -806,7 +806,7 @@ $(function() {
 			});
 		};
 
-	Radb.View.outputRace = function(config)
+	Acme.View.outputRace = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.output          = null;
@@ -822,7 +822,7 @@ $(function() {
 		};
 		this.fields 		 = {};
 	};
-		Radb.View.outputRace.prototype.update = function(topic, data)
+		Acme.View.outputRace.prototype.update = function(topic, data)
 		{
 			var self = this;
 
@@ -839,7 +839,7 @@ $(function() {
 				this.render();
 			}
 		};
-		Radb.View.outputRace.prototype.render = function()
+		Acme.View.outputRace.prototype.render = function()
 		{
 			var self = this;
 			self.container.empty();
@@ -864,12 +864,12 @@ $(function() {
 			$('#output_name')		.val(output.data.name);
 			$('#import_script')		.val(output.data.import_script);
 
-			if (Radb.typeMenu) {
-				Radb.typeMenu.select(output.data.type)
+			if (Acme.typeMenu) {
+				Acme.typeMenu.select(output.data.type)
 			}
 			else {
 
-				Radb.typeMenu = new Radb.listMenu({
+				Acme.typeMenu = new Acme.listMenu({
 							'parent' 		: $('#outputTypeSelectorContainer'),
 							'defaultSelect' : {"label": output.data.type},
 							'name' 			: 'type',
@@ -882,7 +882,7 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.outputRace.prototype.clear = function()
+		Acme.View.outputRace.prototype.clear = function()
 		{
 			$('#output_name').html('');
 			$('#output_header').html('');
@@ -896,7 +896,7 @@ $(function() {
 			$('#tip_style').text('');
 			$('#comment_style').text('');
 		};
-		Radb.View.outputRace.prototype.renderDetails = function()
+		Acme.View.outputRace.prototype.renderDetails = function()
 		{
 			var output = this.output.output[this.selected];
 			if (output) {
@@ -913,7 +913,7 @@ $(function() {
 				this.clear();
 			}
 		};
-		Radb.View.outputRace.prototype.select = function(id)
+		Acme.View.outputRace.prototype.select = function(id)
 		{
 			var output = $('#outputList li');
 			output.each(function(index, elem) {
@@ -927,7 +927,7 @@ $(function() {
 				}
 			});
 		};
-		Radb.View.outputRace.prototype.saveOutput = function(id)
+		Acme.View.outputRace.prototype.saveOutput = function(id)
 		{
 			var self = this;
 			var data = {};
@@ -947,12 +947,12 @@ $(function() {
 					console.log('updating!!');
 					output.update(data).fail(function(r) {
 					var elem = $('#output_name');
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 				}
 			}
 		};
-		Radb.View.outputRace.prototype.events = function()
+		Acme.View.outputRace.prototype.events = function()
 		{
 			var self = this;
 			self.container.unbind();
@@ -974,7 +974,7 @@ $(function() {
 				$('button.button[for="' + block + '"]').show();
 				$('button.field.button').not('[for="' + block + '"]').hide();
 				var data = {'output': output, 'field': block};
-				Radb.PubSub.publish('field/selected', data);
+				Acme.PubSub.publish('field/selected', data);
 			});
 			$('.outputHeaders').on('click', function(e) {
 				var elem = $(e.target);
@@ -1000,7 +1000,7 @@ $(function() {
 			});
 		};
 
-	Radb.View.outputTips = function(config)
+	Acme.View.outputTips = function(config)
 	{
 		this.temp 			 = config.template;;
 		this.output          = null;
@@ -1016,7 +1016,7 @@ $(function() {
 		};
 		this.fields 		 = {};
 	};
-		Radb.View.outputTips.prototype.update = function(topic, data)
+		Acme.View.outputTips.prototype.update = function(topic, data)
 		{
 			if (topic == 'output/deleted' || topic == 'publication/selected') {
 				this.clear();
@@ -1031,7 +1031,7 @@ $(function() {
 				this.addTag(data);
 			}
 		};
-		Radb.View.outputTips.prototype.render = function()
+		Acme.View.outputTips.prototype.render = function()
 		{
 			var self = this;
 			self.container.empty();
@@ -1060,12 +1060,12 @@ $(function() {
 
 
 
-			if (Radb.typeMenu) {
-				Radb.typeMenu.select(output.data.type)
+			if (Acme.typeMenu) {
+				Acme.typeMenu.select(output.data.type)
 			}
 			else {
 
-				Radb.typeMenu = new Radb.listMenu({
+				Acme.typeMenu = new Acme.listMenu({
 							'parent' 		: $('#outputTypeSelectorContainer'),
 							'defaultSelect' : {"label": output.data.type},
 							'name' 			: 'type',
@@ -1077,7 +1077,7 @@ $(function() {
 			this.events();
 			return this;
 		};
-		Radb.View.outputTips.prototype.clear = function()
+		Acme.View.outputTips.prototype.clear = function()
 		{
 			$('#output_name').html('');
 			$('#output_header').html('');
@@ -1091,7 +1091,7 @@ $(function() {
 			$('#tip_style').text('');
 			$('#comment_style').text('');
 		};
-		Radb.View.outputTips.prototype.saveOutput = function(id)
+		Acme.View.outputTips.prototype.saveOutput = function(id)
 		{
 			var self = this;
 			var data = {};
@@ -1108,7 +1108,7 @@ $(function() {
 				}
 			}
 		};
-		Radb.View.outputTips.prototype.events = function()
+		Acme.View.outputTips.prototype.events = function()
 		{
 			var self = this;
 			self.container.unbind();
@@ -1180,7 +1180,7 @@ $(function() {
 
 
 
-	Radb.View.Format_view_collection = function(config, views)
+	Acme.View.Format_view_collection = function(config, views)
 	{
 		this.views 			= views || {};
 		this.parent 		= config.parent || null;
@@ -1193,11 +1193,11 @@ $(function() {
 		this.tabLabels 		= $('#formattinglinks label');
 		this.events();
 	};
-		Radb.View.Format_view_collection.prototype.update = function(topic, data)
+		Acme.View.Format_view_collection.prototype.update = function(topic, data)
 		{
 
 			// if (topic === 'portPubSelect/selected') {
-			// 	Radb.state.publication = data;
+			// 	Acme.state.publication = data;
 			// 	return;
 			// }
 			if (topic === 'portalPublications/fetched') {
@@ -1224,7 +1224,7 @@ $(function() {
 			this.output.data.tipstersPanels   	= this.tipstersPanels;
 			this.render();
 		};
-		Radb.View.Format_view_collection.prototype.render = function()
+		Acme.View.Format_view_collection.prototype.render = function()
 		{
 			var self = this;
 
@@ -1240,7 +1240,7 @@ $(function() {
 
 			return this;
 		};
-		Radb.View.Format_view_collection.prototype.events = function()
+		Acme.View.Format_view_collection.prototype.events = function()
 		{
 			var self = this;
 			$('#formattinglinks > label').unbind().on('click', function(e) {
@@ -1249,7 +1249,7 @@ $(function() {
 			});
 		};
 
-		Radb.View.formatting = function(config)
+		Acme.View.formatting = function(config)
 		{
 			this.temp 		  = config.templates;
 			this.field 		  = '';
@@ -1278,7 +1278,7 @@ $(function() {
 			};
 			this.events();
 		};
-			Radb.View.formatting.prototype.update = function(topic, data)
+			Acme.View.formatting.prototype.update = function(topic, data)
 			{
 				if (topic == 'output/selected') {
 					this.output = data;
@@ -1291,7 +1291,7 @@ $(function() {
 				}
 
 			};
-			Radb.View.formatting.prototype.render = function(output)
+			Acme.View.formatting.prototype.render = function(output)
 			{
 				var self = this;
 				self.container.empty().append(self.temp());
@@ -1362,7 +1362,7 @@ $(function() {
 				return this;
 			};
 
-			Radb.View.formatting.prototype.events = function()
+			Acme.View.formatting.prototype.events = function()
 			{
 				var self = this;
 				self.container.unbind();
@@ -1439,7 +1439,7 @@ $(function() {
 					var tag = elem.text();
 					var obj = {};
 					obj[name] = tag;
-					Radb.PubSub.publish('addTag', obj);
+					Acme.PubSub.publish('addTag', obj);
 				});
 
 				formatHeaders.on('click', function(e) {
@@ -1496,7 +1496,7 @@ $(function() {
 
 			};
 
-		Radb.View.tags = function(config)
+		Acme.View.tags = function(config)
 		{
 			this.field 		  = 'output_runner';
 			this.tagList   	  = {};
@@ -1505,7 +1505,7 @@ $(function() {
 			this.output       = {};
 			this.events();
 		};
-			Radb.View.tags.prototype.update = function(topic, data)
+			Acme.View.tags.prototype.update = function(topic, data)
 			{
 				if (topic == 'output/selected') {
 					this.output = data;
@@ -1516,7 +1516,7 @@ $(function() {
 				}
 				this.render();
 			};
-			Radb.View.tags.prototype.render = function(output)
+			Acme.View.tags.prototype.render = function(output)
 			{
 				this.container.empty();
 
@@ -1525,7 +1525,7 @@ $(function() {
 				this.events();
 				return this;
 			};
-			Radb.View.tags.prototype.events = function()
+			Acme.View.tags.prototype.events = function()
 			{
 				var self = this;
 				self.container.unbind();
@@ -1542,12 +1542,12 @@ $(function() {
 					var tag = elem.text();
 					var obj = {};
 					obj[name] = tag;
-					Radb.PubSub.publish('addTag', obj);
+					Acme.PubSub.publish('addTag', obj);
 				});
 			};
 
 
-		Radb.View.tipsgrid = function(config, menus)
+		Acme.View.tipsgrid = function(config, menus)
 		{
 			this.temp 		  = config.templates;
 			this.field 		  = '';
@@ -1559,7 +1559,7 @@ $(function() {
 			this.publications = [];
 			this.events();
 		};
-			Radb.View.tipsgrid.prototype.update = function(topic, data)
+			Acme.View.tipsgrid.prototype.update = function(topic, data)
 			{
 				console.log(topic, data);
 				if (topic == 'output/selected') {
@@ -1572,7 +1572,7 @@ $(function() {
 
 				this.render();
 			};
-			Radb.View.tipsgrid.prototype.render = function(output)
+			Acme.View.tipsgrid.prototype.render = function(output)
 			{
 
 				var self = this;
@@ -1592,7 +1592,7 @@ $(function() {
 				self.events();
 				return this;
 			};
-			Radb.View.tipsgrid.prototype.renderTipsterList = function(tipsters)
+			Acme.View.tipsgrid.prototype.renderTipsterList = function(tipsters)
 			{
 				var finalTmpl  = '';
 				var temp = _.template('<li data-id="<%= id %>" data-tipster="<%= name %>" data-arrayid="<%= index %>"><ul data-tipster="<%= name %>"><li><%= rank %></li><li><%= name %></li><li data-action="delete" class="delete">Delete</li></ul></li>');
@@ -1609,7 +1609,7 @@ $(function() {
 				$('.paneltipsters').empty().append(finalTmpl);
 
 			};
-			Radb.View.tipsgrid.prototype.events = function()
+			Acme.View.tipsgrid.prototype.events = function()
 			{
 				var self = this;
 
@@ -1640,8 +1640,8 @@ $(function() {
 
 				$('#newpanelbutton').unbind().on('click', function(e) {
 					var elem = $(this).siblings('input');
-					if (Radb.state.publication) {
-						self.panelMenu.data.create(Radb.state.publication, elem.val());
+					if (Acme.state.publication) {
+						self.panelMenu.data.create(Acme.state.publication, elem.val());
 					}
 				});
 
@@ -1658,21 +1658,21 @@ $(function() {
 
 
 	// Portal groups and tips menus
-	Radb.View.publicationMenu = function(config)
+	Acme.View.publicationMenu = function(config)
 	{
 		// this.temp 			 = config.template;
 		this.menu            = null;
 		this.publications 	 = null;
 		this.containerEl     = config.el;
 	};
-		Radb.View.publicationMenu.prototype.update = function(topic, data)
+		Acme.View.publicationMenu.prototype.update = function(topic, data)
 		{
 			if (topic == 'publications/reloaded') {
 				this.data = data;
 			}
 			this.render();
 		};
-		Radb.View.publicationMenu.prototype.render = function(publications)
+		Acme.View.publicationMenu.prototype.render = function(publications)
 		{
 			var self = this;
 			self.publications = publications.publications;
@@ -1693,7 +1693,7 @@ $(function() {
 				}
 			}
 
-			this.menu = new Radb._listMenu({
+			this.menu = new Acme._listMenu({
 						'parent' 		: this.container,
 						'list' 			: theList,
 						'defaultSelect' : {"label": 'publication'},
@@ -1702,26 +1702,26 @@ $(function() {
 
 		}
 
-	Radb.View.tipstersMenu = function(config)
+	Acme.View.tipstersMenu = function(config)
 	{
 		// this.temp 			 = config.template;
 		this.data 			 = {};
 		this.containerEl     = config.el;
 	};
-		Radb.View.tipstersMenu.prototype.update = function(topic, data)
+		Acme.View.tipstersMenu.prototype.update = function(topic, data)
 		{
 			if (topic == 'portalTipsters/reloaded') {
 				this.data = data;
 				this.render(this.data.tipsters);
 			} else if (topic == 'tipster/remoteSelect') {
-				Radb.state.tipster = data.name;
+				Acme.state.tipster = data.name;
 				this.menu.select(data.fullname);
 				return;
 			} else {
 				this.render();
 			}
 		};
-		Radb.View.tipstersMenu.prototype.render = function(tipsters)
+		Acme.View.tipstersMenu.prototype.render = function(tipsters)
 		{
 			if (!tipsters) return;
 
@@ -1741,7 +1741,7 @@ $(function() {
 				this.menu.remove();
 			}
 
-			this.menu = new Radb._listMenu({
+			this.menu = new Acme._listMenu({
 				'parent' 		: this.container,
 				'list' 			: theList,
 				'defaultSelect' : {"label": 'Tipsters'},
@@ -1749,25 +1749,25 @@ $(function() {
 			}).init().render();
 		}
 
-	Radb.View.tipstersPanelMenu = function(config)
+	Acme.View.tipstersPanelMenu = function(config)
 	{
 		this.data 			 = {};
 		this.containerEl     = config.el;
 	};
-		Radb.View.tipstersPanelMenu.prototype.update = function(topic, data)
+		Acme.View.tipstersPanelMenu.prototype.update = function(topic, data)
 		{
 			if (topic == 'portalTipsPanel/reloaded') {
 				this.data = data;
 				this.render(this.data.panels);
 			} else if (topic == 'tipster/remoteSelect') {
-				Radb.state.tipster = data.username;
+				Acme.state.tipster = data.username;
 				this.menu.select(data.fullname);
 				return;
 			} else {
 				this.render();
 			}
 		};
-		Radb.View.tipstersPanelMenu.prototype.render = function(panels)
+		Acme.View.tipstersPanelMenu.prototype.render = function(panels)
 		{
 			var self = this;
 			this.container = $('#'+this.containerEl);
@@ -1784,7 +1784,7 @@ $(function() {
 					'value': panels[i].data.id
 				});
 			}
-			this.menu = new Radb._listMenu({
+			this.menu = new Acme._listMenu({
 						'parent' 		: this.container,
 						'list' 			: theList,
 						'defaultSelect' : {"label": 'Panels'},
@@ -1798,9 +1798,9 @@ $(function() {
 
 
 
-	Radb.start = function()
+	Acme.start = function()
 	{
-		Radb.state.page = 'outputs';
+		Acme.state.page = 'outputs';
 
 		$('html').click(function(e) {
 			// e.preventDefault();
@@ -1811,9 +1811,9 @@ $(function() {
 		// ***************************************
 					// LOAD VIEWS
 		// ***************************************
-		Radb.publicationList_view = new Radb.View.publicationList({'template': template('publicationListTemp'), 'el': $('#publicationList')});
-		Radb.PubSub.subscribe({
-			'Radb.publicationList_view.update' : [ "publication/fetched",
+		Acme.publicationList_view = new Acme.View.publicationList({'template': template('publicationListTemp'), 'el': $('#publicationList')});
+		Acme.PubSub.subscribe({
+			'Acme.publicationList_view.update' : [ "publication/fetched",
 										 		   "publication/deleted",
 										 		   "output/refresh",
 										 		   "publication/selectbyid",
@@ -1823,40 +1823,40 @@ $(function() {
 
 
 
-		Radb.outputList_view = new Radb.View.outputList({'template': template('outputListTemp'), 'el': $('#outputList')});
-		Radb.PubSub.subscribe({
-			'Radb.outputList_view.update' : [ "output/fetched",
+		Acme.outputList_view = new Acme.View.outputList({'template': template('outputListTemp'), 'el': $('#outputList')});
+		Acme.PubSub.subscribe({
+			'Acme.outputList_view.update' : [ "output/fetched",
 										 	  "output/deleted",
 										 	  "output/selectbyid"]
 		});
 
 
-		Radb.outputRace_view = new Radb.View.outputRace({'template': template('outputRace'), 'el': $('#outputContent')});
-		Radb.PubSub.subscribe({
-			'Radb.outputRace_view.update' : [ "output/selected",
+		Acme.outputRace_view = new Acme.View.outputRace({'template': template('outputRace'), 'el': $('#outputContent')});
+		Acme.PubSub.subscribe({
+			'Acme.outputRace_view.update' : [ "output/selected",
 										 	  "addTag",
 										 	  "publication/selected",
 										 	  "outputTypeSelector/selected"]
 		});
 
 
-		Radb.outputTips_view = new Radb.View.outputTips({'template': template('outputTips'), 'el': $('#outputContent')});
-		Radb.PubSub.subscribe({
-			'Radb.outputTips_view.update' : [ "output/selected",
+		Acme.outputTips_view = new Acme.View.outputTips({'template': template('outputTips'), 'el': $('#outputContent')});
+		Acme.PubSub.subscribe({
+			'Acme.outputTips_view.update' : [ "output/selected",
 										 	  "addTag",
 										 	  "publication/selected"]
 		});
 
 
-		Radb.format_view = new Radb.View.formatting({'templates': template('formatListTemp'), 'el': $('#formatList')});
-		Radb.PubSub.subscribe({
-			'Radb.outputTips_view.update' : [ "field/selected"]
+		Acme.format_view = new Acme.View.formatting({'templates': template('formatListTemp'), 'el': $('#formatList')});
+		Acme.PubSub.subscribe({
+			'Acme.outputTips_view.update' : [ "field/selected"]
 		});
 
 
-		Radb.tags_view = new Radb.View.tags({'el': $('#formatList')});
-		Radb.PubSub.subscribe({
-			'Radb.tags_view.update' : [ "field/selected"]
+		Acme.tags_view = new Acme.View.tags({'el': $('#formatList')});
+		Acme.PubSub.subscribe({
+			'Acme.tags_view.update' : [ "field/selected"]
 		});
 
 
@@ -1869,41 +1869,41 @@ $(function() {
 		*/
 
 		//  Publications
-		Radb.publication_menu = new Radb.View.publicationMenu({'el': 'publicationMenuContainer'});
-		Radb.PubSub.subscribe({
-			'Radb.publication_menu.update' : [ "publications/reloaded"]
+		Acme.publication_menu = new Acme.View.publicationMenu({'el': 'publicationMenuContainer'});
+		Acme.PubSub.subscribe({
+			'Acme.publication_menu.update' : [ "publications/reloaded"]
 		});
 
 
 		//  Tips Panels
-		Radb.tipstersPanel_menu = new Radb.View.tipstersPanelMenu({'el': 'gridMenuContainer'});
-		Radb.PubSub.subscribe({
-			'Radb.tipstersPanel_menu.update' : [ "portalTipsPanel/reloaded"]
+		Acme.tipstersPanel_menu = new Acme.View.tipstersPanelMenu({'el': 'gridMenuContainer'});
+		Acme.PubSub.subscribe({
+			'Acme.tipstersPanel_menu.update' : [ "portalTipsPanel/reloaded"]
 		});
 
-		Radb.pubMarketMenu = new Radb.groupMenu({'el': 'marketSelect', 'name': 'publication_market', 'default': '98d58f70-69b3-4966-859b-b5bc2d2876cd'});
-		Radb.PubSub.subscribe({
-			'Radb.pubMarketMenu.update' : [ "groups/fetched", "publication/selected" ]
+		Acme.pubMarketMenu = new Acme.groupMenu({'el': 'marketSelect', 'name': 'publication_market', 'default': '98d58f70-69b3-4966-859b-b5bc2d2876cd'});
+		Acme.PubSub.subscribe({
+			'Acme.pubMarketMenu.update' : [ "groups/fetched", "publication/selected" ]
 		});
 
 
 		//  Tipsters
-		Radb.tipsters_menu = new Radb.View.tipstersMenu({'el': 'tipsterMenuContainer'});
-		Radb.PubSub.subscribe({
-			'Radb.tipsters_menu.update' : [ "portalTipsters/reloaded",
+		Acme.tipsters_menu = new Acme.View.tipstersMenu({'el': 'tipsterMenuContainer'});
+		Acme.PubSub.subscribe({
+			'Acme.tipsters_menu.update' : [ "portalTipsters/reloaded",
 										 	"tipster/remoteSelect"]
 		});
 
 
 
-		var menus = {'pubMenu': Radb.publication_menu, 'tipMenu': Radb.tipsters_menu, 'panelMenu': Radb.tipstersPanel_menu};
-		Radb.tipsgrid_view = new Radb.View.tipsgrid({'templates': template('tipsgrid'), 'el': $('#formatList')}, menus);
+		var menus = {'pubMenu': Acme.publication_menu, 'tipMenu': Acme.tipsters_menu, 'panelMenu': Acme.tipstersPanel_menu};
+		Acme.tipsgrid_view = new Acme.View.tipsgrid({'templates': template('tipsgrid'), 'el': $('#formatList')}, menus);
 
 
-		var views = {"formatting" : Radb.format_view, "tags": Radb.tags_view, "tipsgrid": Radb.tipsgrid_view};
-		Radb.formatCollection_view = new Radb.View.Format_view_collection({"parent": "formattingColumn"}, views);
-		Radb.PubSub.subscribe({
-			'Radb.formatCollection_view.update' : [ "output/selected",
+		var views = {"formatting" : Acme.format_view, "tags": Acme.tags_view, "tipsgrid": Acme.tipsgrid_view};
+		Acme.formatCollection_view = new Acme.View.Format_view_collection({"parent": "formattingColumn"}, views);
+		Acme.PubSub.subscribe({
+			'Acme.formatCollection_view.update' : [ "output/selected",
 										 	  		"portalPublications/fetched",
 										 	  		"portalTipsters/reloaded",
 										 	  		"portalTipsPanel/reloaded",
@@ -1918,58 +1918,58 @@ $(function() {
 		// 			// LOAD COLLECTIONS
 		// // ***************************************
 
-		Radb.publication_col = new Radb.Collection.publication(Radb.Model.publication);
-		Radb.PubSub.subscribe({
-			'Radb.publication_col.update' : [ "publication/deleted",
+		Acme.publication_col = new Acme.Collection.publication(Acme.Model.publication);
+		Acme.PubSub.subscribe({
+			'Acme.publication_col.update' : [ "publication/deleted",
 										 	  "publication/added",
 										 	  "publication/updated",
 										 	  "publication_tz/selected"]
 		});
 
 
-		Radb.output_col = new Radb.Collection.output(Radb.Model.output);
-		Radb.PubSub.subscribe({
-			'Radb.output_col.update' : [ "output/deleted",
+		Acme.output_col = new Acme.Collection.output(Acme.Model.output);
+		Acme.PubSub.subscribe({
+			'Acme.output_col.update' : [ "output/deleted",
 										 "output/added",
 										 "output/updated",
 										 "publication/selected"]
 		});
 
-		Radb.groups_col = new Radb.Groups(Radb._Model);
-		Radb.groups_col.fetch();
+		Acme.groups_col = new Acme.Groups(Acme._Model);
+		Acme.groups_col.fetch();
 
 
 		//  Portal Publications
-		Radb.portalPublications = new Radb.Collection.PortalPublications(Radb.Model.portal_publication);
+		Acme.portalPublications = new Acme.Collection.PortalPublications(Acme.Model.portal_publication);
 
 
 		// //  Portal Tipsters
-		Radb.portalTipsters = new Radb.Collection.PortalTipsters({'resource':'portal/tipsters'});
-		Radb.PubSub.subscribe({
-			'Radb.portalTipsters.update' : [ "portPubSelect/selected", "update_state"]
+		Acme.portalTipsters = new Acme.Collection.PortalTipsters({'resource':'portal/tipsters'});
+		Acme.PubSub.subscribe({
+			'Acme.portalTipsters.update' : [ "portPubSelect/selected", "update_state"]
 		});
 
 
 
 		// //  Tips panels
-		Radb.tipsPanel = new Radb.Collection.tipsPanel({'resource':'tipspanel'});
-		Radb.PubSub.subscribe({
-			'Radb.tipsPanel.update' : [ "portPubSelect/selected", "update_state"]
+		Acme.tipsPanel = new Acme.Collection.tipsPanel({'resource':'tipspanel'});
+		Acme.PubSub.subscribe({
+			'Acme.tipsPanel.update' : [ "portPubSelect/selected", "update_state"]
 		});
 
 
 		// //  Tips panels Tipsters
-		Radb.panelTipsters = new Radb.Collection.PanelTipsters({'resource':'tipspanel'});
-		Radb.PubSub.subscribe({
-			'Radb.panelTipsters.update' : [ "portPanelSelect/selected",
+		Acme.panelTipsters = new Acme.Collection.PanelTipsters({'resource':'tipspanel'});
+		Acme.PubSub.subscribe({
+			'Acme.panelTipsters.update' : [ "portPanelSelect/selected",
 										 	"portTipSelect/selected",
 										 	"update_state"]
 		});
 
-		Radb.publication_col.fetch();
-		Radb.portalPublications.fetch();
-		Radb.formatCollection_view.render();
-		// Radb.PubSub.print();
+		Acme.publication_col.fetch();
+		Acme.portalPublications.fetch();
+		Acme.formatCollection_view.render();
+		// Acme.PubSub.print();
 	}
 
 

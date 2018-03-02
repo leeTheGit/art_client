@@ -2,14 +2,14 @@
 {
 	'use strict';
 
-	Radb.Model.race = Radb.Model.create({
+	Acme.Model.race = Acme.Model.create({
 		'url' : 'race'
 	});
-        Radb.Model.race.matchDivs = function(divId)
+        Acme.Model.race.matchDivs = function(divId)
         {
             var self = this;
 
-            return Radb.server.update(self.url(), {'matchDiv':divId})
+            return Acme.server.update(self.url(), {'matchDiv':divId})
             .done(function(response) {
                 self.fetch();
             });

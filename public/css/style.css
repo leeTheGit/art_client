@@ -94,7 +94,7 @@ weight{;}
 	.textBold{font-weight:700 !important;}
 
 Padding{;}
-	.padding-5{padding:5px;}
+/*	.padding-5{padding:5px;}
 	.padding-10{padding:10px;}
 	.padding-20{padding:20px;}
 	.padding-30{padding:30px;}
@@ -112,15 +112,15 @@ Padding{;}
 	.padding-bottom-5{padding-bottom:5px;}
 	.padding-bottom-15{padding-bottom:15px;}
 	.padding-bottom-30{padding-bottom:30px;}
-
+*/
 Margins{;}
-	.left-margin-10{margin-left:10px;}
+/*	.left-margin-10{margin-left:10px;}
 	.left-margin-20{margin-left:20px;}
 	.right-margin-15{margin-right:15px;}
 	.right-margin-16{margin-right:16px;}
 	.bottom-margin-15{margin-bottom:15px;}
 	.bottom-margin-30{margin-bottom:30px;}
-Positioning{;}
+*/Positioning{;}
 	.left{float:left;}
 	.right{float:right;}
 	.nowrap{white-space:nowrap;}
@@ -128,17 +128,15 @@ Positioning{;}
 	.centre{text-align: center;}
 
 Font{;}
-	.weight-100 {font-weight: 100 !important;}
+/*	.weight-100 {font-weight: 100 !important;}
 	.weight-300 {font-weight: 300 !important;}
 	.weight-400 {font-weight: 400 !important;}
 	.weight-500 {font-weight: 400 !important;}
 	.weight-700 {font-weight: 700 !important;}
+*/
+	/*.smaller {font-size: 0.85em !important;}*/
 
-	.smaller {font-size: 0.85em !important;}
-
-	.italic{
-		font-style: italic;
-	}
+	/*.italic{ font-style: italic;}*/
 
 layout{;}
 	.flex_col{display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;

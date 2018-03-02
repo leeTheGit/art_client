@@ -3,7 +3,7 @@
 	'use strict';
 
 
-	Radb.View.race = function(config)
+	Acme.View.race = function(config)
 	{
 		this.temp 			 	= config.template || null;
 		this.data 			 	= {};
@@ -14,8 +14,8 @@
 		this.resultsView        = 'act';
 		this.showSelectedOnly 	= false;
 		this.race_discrepancies = [];
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.race_list_view.listener' : [ "state_changed", "race/select", "divs_updated" ]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.race_list_view.listener' : [ "state_changed", "race/select", "divs_updated" ]
 		});
 		this.listeners = {
 			"clickEvent" : function(data) {
@@ -55,7 +55,7 @@
 			},
 		}
 	};
-		Radb.View.race.prototype.listener = function(topic, data)
+		Acme.View.race.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -67,19 +67,19 @@
 				}
 			}
 		};
-		Radb.View.race.prototype.clear = function()
+		Acme.View.race.prototype.clear = function()
 		{
 			this.container.empty();
 		};
-		Radb.View.race.prototype.soften = function()
+		Acme.View.race.prototype.soften = function()
 		{
 			this.container.css('opacity', '.4');
 		};
-		Radb.View.race.prototype.brighten = function()
+		Acme.View.race.prototype.brighten = function()
 		{
 			this.container.css('opacity', '1');
 		};
-		Radb.View.race.prototype.render = function()
+		Acme.View.race.prototype.render = function()
 		{
 			/**
 			* 	Main rendering function that hands off duty
@@ -99,7 +99,7 @@
 
 			racetablist.find('li').removeClass('runnertabselect');
 
-			racetablist.find('#' + Radb.state.raceView).addClass('runnertabselect');
+			racetablist.find('#' + Acme.state.raceView).addClass('runnertabselect');
 
  			$('#publish_button').css('display', 'none');
 
@@ -107,41 +107,41 @@
 
 			var headerParams = {};
 
-			if (Radb.state.raceView === 'raceMultiples') {
+			if (Acme.state.raceView === 'raceMultiples') {
 				headerParams = {
 					supplier: '',
 				};
 			}
 
-			$('#raceHeader').empty().append(template(Radb.state.raceView + 'Header')(headerParams));
+			$('#raceHeader').empty().append(template(Acme.state.raceView + 'Header')(headerParams));
 			var finalTmpl  = '';
 
-			if (Radb.state.race) {
-				self.selectById(Radb.state.race);
+			if (Acme.state.race) {
+				self.selectById(Acme.state.race);
 			}
 
-			if (Radb.state.raceView === 'raceResults') {
+			if (Acme.state.raceView === 'raceResults') {
 				var divs = [];
 				if (this.data.races[0].data.hasOwnProperty('results')) {
 					divs = this.data.races[0].data.results.divs;
 				}
-				Radb.PubSub.publish('raceView/results', {'raceDivs': divs});
+				Acme.PubSub.publish('raceView/results', {'raceDivs': divs});
 			} else {
-				Radb.PubSub.publish('raceView/results', {'raceDivs': false});
+				Acme.PubSub.publish('raceView/results', {'raceDivs': false});
 			}
 
 
 			for (var i=0; i<this.data.races.length; i++) {
 
-				if ((this.showSelectedOnly && (Radb.state.race === this.data.races[i].data.id))
+				if ((this.showSelectedOnly && (Acme.state.race === this.data.races[i].data.id))
 				|| !this.showSelectedOnly) {
 
-					var temp = template(Radb.state.raceView);
-					var params = this.renderRaceData(Radb.state.raceView, this.data.races[i]);
+					var temp = template(Acme.state.raceView);
+					var params = this.renderRaceData(Acme.state.raceView, this.data.races[i]);
 					if (undefined === params) continue;
 
 					params['index'] = i;
-					params['selected'] = (Radb.state.race === this.data.races[i].data.id) ? 'raceSelect' : '';
+					params['selected'] = (Acme.state.race === this.data.races[i].data.id) ? 'raceSelect' : '';
 					params['disabled'] = this.data.races[i].data.enabled ? '' : 'scratched';
 					finalTmpl += temp(params);
 				}
@@ -149,7 +149,7 @@
 
 			self.container.empty().append(finalTmpl);
 
-			if (Radb.state.raceView === 'raceMultiples') {
+			if (Acme.state.raceView === 'raceMultiples') {
 				for (var i=0; i < this.data.races.length; i++) {
 
 					$("div#raceMultiplesPlaceholder" + this.data.races[i].data.id).empty();
@@ -157,7 +157,7 @@
 					for (var m=0; m < this.data.races[i].data.multiples.length; m++) {
 						var multiple = this.data.races[i].data.multiples[m];
 
-						if (multiple.agency === Radb.state.group) {
+						if (multiple.agency === Acme.state.group) {
 
 							$("div#raceMultiplesPlaceholder" + this.data.races[i].data.id).append(template("raceMultipleButton")({
 								id: multiple.id,
@@ -178,7 +178,7 @@
 			this.events();
 			return true;
 		};
-		Radb.View.race.prototype.selectById = function(id)
+		Acme.View.race.prototype.selectById = function(id)
 		{
 			/**
 			* 	Iterates through stored races comparing race id.
@@ -196,7 +196,7 @@
 				}
 			}
 		};
-		Radb.View.race.prototype.select = function(elem)
+		Acme.View.race.prototype.select = function(elem)
 		{
 			/**
 			* 	Purely visible selection for ui.
@@ -204,7 +204,7 @@
 			$('.race_data').removeClass('raceSelect');
 			elem.addClass('raceSelect');
 		};
-		Radb.View.race.prototype.events = function()
+		Acme.View.race.prototype.events = function()
 		{
 			/**
 			* 	Events loaded upon each render.
@@ -223,14 +223,14 @@
 				if (data === 0) {
 					self.selected = null;
 
-					Radb.PubSub.publish('update_state', {'race': null});
+					Acme.PubSub.publish('update_state', {'race': null});
 					return;
 				}
 				self.selected += (self.selected == null && data === 1) ? 0 :
 					( self.selected == null && data === - 1) ? self.data.races.length-1 : data;
 
 
-				Radb.PubSub.publish('update_state', {'race': self.data.races[self.selected].data.id})
+				Acme.PubSub.publish('update_state', {'race': self.data.races[self.selected].data.id})
 				.done(function(r) {
 					self.render();
 				});
@@ -240,13 +240,13 @@
 				var elem = $(e.target);
 				var mismatch = elem.data('typeMatch');
 				if (mismatch) {
-					Radb.effects.message("The meeting type does not match");
+					Acme.effects.message("The meeting type does not match");
 					return;
 				}
 				var message = "These are the same tracks?";
 				var that = self.data.races[0];
-				var divID = that.data.results.divs[Radb.state.resultsState].id;
-				Radb.dialog.show(message, "Warning", that.matchDivs, that, divID)
+				var divID = that.data.results.divs[Acme.state.resultsState].id;
+				Acme.dialog.show(message, "Warning", that.matchDivs, that, divID)
 				.done(function(r) {
 					console.log(r);
 					// self.data.fetch();
@@ -284,7 +284,7 @@
 					var NZQAD = '164cec8e-bc49-40fd-9ed7-fb1a6bcee663';
 					var NZTRB = 'c213ac3c-e1c4-4f25-8d4b-22c4111647b7';
 
-					Radb.server.request('meeting/' + Radb.state.meeting)
+					Acme.server.request('meeting/' + Acme.state.meeting)
 					.done(function(r) {
 
 						for (var i=0; i < allRaceMultis.length; i++) {
@@ -409,14 +409,14 @@
 					var enabled = (race.data.enabled !== true);
 
 					race.update({'enabled': enabled}).done(function(r) {
-						Radb.PubSub.publish('state_changed', {'race_updated': self.data.races[id].data.id});
+						Acme.PubSub.publish('state_changed', {'race_updated': self.data.races[id].data.id});
 					});
 					return;
 				}
 
 				if (elem.closest('li').hasClass('race_divs')) {
 
-					var selectedState = Radb.state.resultsState;
+					var selectedState = Acme.state.resultsState;
 
 					var stateDivs = {};
 
@@ -424,10 +424,10 @@
 						stateDivs = self.data.races[id].data.results.divs[selectedState].divs;
 					}
 
-					Radb.divEditor.show(stateDivs, function(divs) {
+					Acme.divEditor.show(stateDivs, function(divs) {
 						self.data.races[id].update({'state': selectedState, 'divs': JSON.stringify(divs), 'racenumber': self.data.races[id].data.number}).done(function(r) {
-							Radb.PubSub.publish('meeting_updated', {'divs': true});
-							Radb.effects.saved(elem);
+							Acme.PubSub.publish('meeting_updated', {'divs': true});
+							Acme.effects.saved(elem);
 						});
 					});
 
@@ -452,7 +452,7 @@
 									elem.removeClass('multi_on');
 								}
 
-								Radb.PubSub.publish('state_changed', {'race_updated': self.data.races[id].data.id });
+								Acme.PubSub.publish('state_changed', {'race_updated': self.data.races[id].data.id });
 							});
 						}
 					}
@@ -463,7 +463,7 @@
 				var ul = elem.closest('.race_data');
 				self.select(ul);
 				self.selected = id;
-				Radb.PubSub.publish('update_state', {'race': self.data.races[id].data.id });
+				Acme.PubSub.publish('update_state', {'race': self.data.races[id].data.id });
 			});
 
 			$('.minimize').unbind().on('click', function(e) {
@@ -476,7 +476,7 @@
 				}
 				self.showSelectedOnly = !self.showSelectedOnly;
 
-				Radb.PubSub.publish('race/select', self);
+				Acme.PubSub.publish('race/select', self);
 			});
 
 			$('.raceList').on("change", function(e) {
@@ -499,10 +499,10 @@
 				}
 
 				self.data.races[id].update(data).done(function(r) {
-					Radb.effects.saved(elem);
+					Acme.effects.saved(elem);
 				}).fail(function(r) {
 					elem.val(self.data.races[id].data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 				});
 			});
 
@@ -511,13 +511,13 @@
 				if (!elem.is('li')) {
 					return;
 				}
-				Radb.state.raceView = elem.attr('id');
-				// Radb.state.raceView = elem.attr('id');
+				Acme.state.raceView = elem.attr('id');
+				// Acme.state.raceView = elem.attr('id');
 				self.render();
 			});
 
 		};
-		Radb.View.race.prototype.renderRaceData = function(tab, race)
+		Acme.View.race.prototype.renderRaceData = function(tab, race)
 		{
 			var raceTime = moment(race.data.racetime);
 			var self = this;
@@ -601,7 +601,7 @@
 			if (tab == 'raceResults') {
 				if (race.data.hasOwnProperty('results')) {
 					var divs = JSON.parse(JSON.stringify(race.data.results.divs));
-					divs = divs[Radb.state.resultsState];
+					divs = divs[Acme.state.resultsState];
 				}
 
 
@@ -661,7 +661,7 @@
 
 			return params;
 		};
-		Radb.View.race.prototype.colourDivs = function(divs)
+		Acme.View.race.prototype.colourDivs = function(divs)
 		{
 			divs = divs.replace(/(FIRST 4|First 4|Sub:|A2|Q:|E:|T:|D:|Scr:|Duets:)/g, '<span class="blueHilight">$1</span>');
 
@@ -674,15 +674,15 @@
 
 
 
-	Radb.resultsStateMenu = function(config)
+	Acme.resultsStateMenu = function(config)
 	{
 		this.data 			 = null;
 		this.containerEl     = config.el;
 		this.container       = null;
 		this.name 			 = config.name || 'resultsState';
-		this.default 	 	 = Radb.state.resultsState;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.resultsStatesMenu_view.listener' : [
+		this.default 	 	 = Acme.state.resultsState;
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.resultsStatesMenu_view.listener' : [
 											"raceView/results",
 										  	"state_changed"
 										  ]
@@ -703,7 +703,7 @@
 		}
 	};
 
-		Radb.resultsStateMenu.prototype.listener = function(topic, data)
+		Acme.resultsStateMenu.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -716,7 +716,7 @@
 			}
 		};
 
-		Radb.resultsStateMenu.prototype.render = function(config)
+		Acme.resultsStateMenu.prototype.render = function(config)
 		{	var self = this;
 
 			self.container = $('#' + this.containerEl);
@@ -725,23 +725,23 @@
 				this.Menu.remove();
 			}
 
-			this.Menu = new Radb.listMenu( {
+			this.Menu = new Acme.listMenu( {
 						'parent' 		: self.container,
 						'defaultSelect' : {"label": self.default},
 						'name' 			: self.name,
 						'callback'		: function(data) {
-							Radb.PubSub.publish('update_state', {'resultsState': data.resultsState})
+							Acme.PubSub.publish('update_state', {'resultsState': data.resultsState})
 						}
 			}).init(['vic', 'nsw', 'qld', 'act']).render();
 		};
 
-	Radb.divEditor = {
+	Acme.divEditor = {
 		data : {},
 		show : function(data, callback) {
 			var self = this;
 
 			self.data = data;
-			self.selected = Radb.state.resultsState;
+			self.selected = Acme.state.resultsState;
 
 			var dead_heat = self.data['dead_heat'];
 

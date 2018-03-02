@@ -1,6 +1,6 @@
 $(function() {
 	'use strict';
-	var server = Radb.server;
+	var server = Acme.server;
 	var page = window.location.pathname.split('/')[1];
 
 	var req = server.request("user/self");
@@ -29,7 +29,7 @@ $(function() {
 			if (theDate.getMonth() == 9 && theDate.getDate() == 19) {
 				$('.userIcon').switchClass('userIcon','pirateIcon',100);
 			}
-			Radb.PubSub.publish('update_state', {'user':data.userid});
+			Acme.PubSub.publish('update_state', {'user':data.userid});
 			$('#loginHead').html( template('loginInfo')({'userName': data.username}) );
 
 			eventHandlers();

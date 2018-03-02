@@ -1,11 +1,10 @@
-<div class="topPanel backgroundImage1 flex_row flex_between"> <!-- backgroundImage2 -->
-    <div id="meetingFilter" class="meetingfilter_container flex-shrink0 headerCell"></div>
+<div class="topPanel  flex_row flex_between"> <!-- backgroundImage2 -->
 
     <div id="searchHead" class="searchHead flex2 headerCell"></div>
 
     <nav id="topNav" class="flex4 headerCell">
-		<button data-page="meeting">Locations</button>
-		<button data-page="outputs">Checklist</button>
+		<button data-page="locations">Locations</button>
+		<button data-page="checklist">Checklist</button>
     </nav>
 
     <div class="flex4 flex_row flex_between">

@@ -6,7 +6,7 @@
 
 
 
-	Radb.View.filter = function(config)
+	Acme.View.filter = function(config)
 	{
 		this.filter 		 = '';
 		this.meetingtype  	 = null;
@@ -16,11 +16,11 @@
 		this.days 			 = [];
 		this.hiddendays      = [];
 		this.loadStatus      = null;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.filter.listener' : ["filter/updated"]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.filter.listener' : ["filter/updated"]
 		});
 	};
-		Radb.View.filter.prototype.listener = function(topic, data) {
+		Acme.View.filter.prototype.listener = function(topic, data) {
 
 			if (data === null) return;
 
@@ -30,15 +30,15 @@
 			});
 
 			if (localStorage['context'] === 'load') {
-				Radb.PubSub.publish('load/filter', data);
+				Acme.PubSub.publish('load/filter', data);
 			} else {
-				Radb.PubSub.publish('meetings/filter', data);
+				Acme.PubSub.publish('meetings/filter', data);
 			}
 			return;
 		};
 
 
-	Radb.groupMenu = function(config)
+	Acme.groupMenu = function(config)
 	{
 		this.data 			 = null;
 		this.containerEl     = config.el;
@@ -46,11 +46,11 @@
 		this.name 			 = config.name || 'group';
 		this.default 	 	 = config.default || null;
 	};
-		Radb.groupMenu.prototype.update = function(topic, data)
+		Acme.groupMenu.prototype.update = function(topic, data)
 		{
 			if (topic == 'groups/fetched') {
 				this.data = data;
-				Radb.PubSub.publish('update_state', {"group": this.default})
+				Acme.PubSub.publish('update_state', {"group": this.default})
 			}
 
 			if ( Object.keys(data).indexOf('group') > -1) {
@@ -59,7 +59,7 @@
 
 			this.render();
 		};
-		Radb.groupMenu.prototype.render = function(config)
+		Acme.groupMenu.prototype.render = function(config)
 		{	var self = this;
 
 			if (!this.data) return;
@@ -91,7 +91,7 @@
 				defaultSelect = {"label": theList[0].label};
 			}
 
-			this.pubMenu = new Radb._listMenu( {
+			this.pubMenu = new Acme._listMenu( {
 						'parent' 		: this.container,
 						'list' 			: theList,
 						'defaultSelect' : defaultSelect,
@@ -101,21 +101,21 @@
 		};
 
 
-	Radb.userMenu = function(config)
+	Acme.userMenu = function(config)
 	{
 		this.data 			 = null;
 		this.containerEl     = config.el;
 		this.container       = null;
 		this.name 			 = config.name || 'user';
-		this.default 	 	 = Radb.state.user || null;
+		this.default 	 	 = Acme.state.user || null;
 		this.defaultStyle 	 = null;
-		this.subscriptions 	 = Radb.PubSub.subscribe({
-			'Radb.userMenu_view.listener' : [ "update_state" ]
+		this.subscriptions 	 = Acme.PubSub.subscribe({
+			'Acme.userMenu_view.listener' : [ "update_state" ]
 		});
 		this.listeners = {
 			"group" : function(data) {
-				Radb.server.request( 'group/' + data.group ).done(function(response) {
-					Radb.PubSub.publish('group/selected', response.data.users);
+				Acme.server.request( 'group/' + data.group ).done(function(response) {
+					Acme.PubSub.publish('group/selected', response.data.users);
 				});
 			},
 			"user" : function(data) {
@@ -126,7 +126,7 @@
 			},
 		};
 	};
-		Radb.userMenu.prototype.listener = function(topic, data)
+		Acme.userMenu.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -139,17 +139,17 @@
 			}
 		};
 
-		Radb.userMenu.prototype.update = function(topic, data)
+		Acme.userMenu.prototype.update = function(topic, data)
 		{
 			if (topic == 'group/selected') {
 				this.data = data;
 				this.render();
 			}
 		};
-		Radb.userMenu.prototype.render = function(config)
+		Acme.userMenu.prototype.render = function(config)
 		{	var self = this;
 
-			if (!this.data || !Radb.state.group) return;
+			if (!this.data || !Acme.state.group) return;
 
 			self.container = $('#' + this.containerEl);
 
@@ -175,21 +175,21 @@
 
 				if (userItem.userid === self.default) {
 					defaultSelect = {"label": userItem.firstname + ' ' + userItem.lastname};
-					Radb.PubSub.publish('update_state', {"user": userItem.userid})
+					Acme.PubSub.publish('update_state', {"user": userItem.userid})
 					this.defaultStyle = 'group_on';
 				}
 			}
 
 			if (!defaultSelect) {
 				defaultSelect = {"label": theList[0].label};
-				Radb.PubSub.publish('update_state', {"user": null})
+				Acme.PubSub.publish('update_state', {"user": null})
 				this.defaultStyle = 'group_off';
 			}
 
 			console.log(defaultSelect);
 			console.log(this.defaultStyle);
 
-			this.pubMenu = new Radb._listMenu( {
+			this.pubMenu = new Acme._listMenu( {
 						'parent' 		: this.container,
 						'list' 			: theList,
 						'defaultSelect' : defaultSelect,
@@ -201,7 +201,7 @@
 
 
 
-	Radb.render_meetings = function()
+	Acme.render_meetings = function()
 	{
 		$('.meeting_editor').html(template('meeting-editor'));
 		$('.race-info').html(template('race-info'));
@@ -210,14 +210,14 @@
 		$('.meetingsList').empty();
 	};
 
-	Radb.render_load = function()
+	Acme.render_load = function()
 	{
 		$('.meeting_editor').html(template('load-editor'));
 		$('#meeting_load_filter').show();
 		$('.meetingsList').empty();
 	};
 
-	Radb.render_results = function()
+	Acme.render_results = function()
 	{
 		$('.meeting_editor').html('');
 		$('#meeting_load_filter').hide();

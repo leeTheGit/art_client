@@ -1,0 +1,37 @@
+#modal 	{margin: auto auto;width:350px;min-height:250px;text-align:center;vertical-align: middle;background:rgba(0,0,0,0.9);padding:25px 0px 25px 0px;border-radius: 5px;}
+
+.modal_container{display:block;width:275px;margin:0 auto;}
+.modal_filter{display:inline-block;background:rgb(70,70,70) !important; color:white;font-weight:300;font-size:1.3em;width:100%}
+
+#modalTitle {color:white;text-align: center;width:95%;font-size:3em;margin:20px auto;padding:5px;font-weight:100;}
+#modalMessage {color:white;display: flex;width: 275px;margin:0 auto;}
+
+.modal_edit{display:inline-block;background:rgb(70,70,70) !important; color:white;font-weight:300;font-size:1.2em;width:100%;border-radius: 5px; padding: 5px;}
+
+.modal_list {
+	display: block;
+	max-height: 300px;
+	overflow: auto;
+	margin: 25px;
+	margin: 0 auto;
+	width:inherit;
+}
+
+.modal_list ul { background-color: rgb(30,30,30); }
+
+.modal_list ul li {
+	text-align: left;
+	padding: 5px;
+}
+.modal_list ul li:hover {
+	cursor: pointer;
+	background-color: rgb(245,210,60);
+	color: black;
+}
+
+#modal_divs 	{margin: auto auto;width:600px;min-height:250px;text-align:center;vertical-align: middle;background:rgba(0,0,0,0.9);padding:25px 0px 25px 0px;border-radius: 5px;}
+.div_container{display:block;width:550px;margin:0 auto;}
+#divMessage {color:white;display: flex;width: 550px;margin:0 auto;}
+.divNameField { width: 60px; text-align: left; }
+.divEditField{display:inline-block;background:rgb(70,70,70) !important; color:white;font-weight:300;font-size:1em;width:100%;border-radius: 3px; padding: 2px;margin:4px;}
+

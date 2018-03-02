@@ -1,0 +1,21 @@
+div.pulldown {font-size:1em;font-weight: 400;position:relative;cursor:pointer;margin:0 10px 0 0px;display:inline-block;height:25px;width:175px;background-color: rgb(40,40,40);border-radius: 6px;}
+div.pulldown p {font-size:1em;font-weight: 400;width:120px;white-space:nowrap;line-height:25px;vertical-align:top;letter-spacing: 0.025em;}
+div.pulldown span {display:inline-block;position:absolute;width:0;height:0;right:5px;top:10px;vertical-align:middle;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #fff;opacity:.4;content:"";}
+div.pulldown ul {display:none;margin-top:5px;position:absolute;right:0px;min-width:175px;background:#171717;z-index:1000;border-radius:6px;overflow:auto;box-shadow: 1px 1px 1px #111;overflow: auto;}
+div.pulldown ul li {display:block;cursor:pointer;color:white;padding:10px;white-space:nowrap;border-top:1px solid rgba(255,255,255,0.025);}
+div.pulldown ul li:hover{background:#258BA8;}
+
+.icon_shift{
+	position: relative;
+	top: 7px;
+}
+
+.icon_shift_up{
+	position: relative;
+	bottom: 5px;
+}
+
+.icon_shift_up_2{
+	position: relative;
+	bottom: 10px;
+}

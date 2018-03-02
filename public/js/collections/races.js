@@ -3,22 +3,22 @@
 	'use strict';
 
 
-    Radb.Collection.races = function(model)
+    Acme.Collection.races = function(model)
 	{
 		this.model = model;
 		this.meetingid = null;
 		this.raceid = null;
 		this.races = [];
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.races_col.listener' : [ "state_changed", "race_updated" ]
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.races_col.listener' : [ "state_changed", "race_updated" ]
 		});
 		this.listeners = {
 			"race_updated" : function(data) {
 				var self = this;
 
-				console.log(Radb.state);
+				console.log(Acme.state);
 
-				return Radb.effects.debounce(
+				return Acme.effects.debounce(
 					function() {
 						self.fetch();
 					},
@@ -32,27 +32,27 @@
 				return this.fetch();
 			},
 			"group" : function(data) {
-				Radb.PubSub.publish('races/enabled', false);
+				Acme.PubSub.publish('races/enabled', false);
 				return this.fetch();
 			},
 		};
 	};
-		Radb.Collection.races.prototype.url = function()
+		Acme.Collection.races.prototype.url = function()
 		{
-			var url = "race/?meeting=" + Radb.state.meeting;
-			if (Radb.state.publication) {
-				url += '&portal=true&publication=' + Radb.state.publication;
+			var url = "race/?meeting=" + Acme.state.meeting;
+			if (Acme.state.publication) {
+				url += '&portal=true&publication=' + Acme.state.publication;
 			}
-			if (Radb.state.user) {
-				url += '&user=' + Radb.state.user;
+			if (Acme.state.user) {
+				url += '&user=' + Acme.state.user;
 			}
 
-			if(Radb.state.raceView == 'raceResults') {
+			if(Acme.state.raceView == 'raceResults') {
 				url += '&tz=Australia/Melbourne';
 			}
 			return url;
 		};
-		Radb.Collection.races.prototype.listener = function(topic, data)
+		Acme.Collection.races.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -64,11 +64,11 @@
 				}
 			}
 		};
-		Radb.Collection.races.prototype.fetch = function(url)
+		Acme.Collection.races.prototype.fetch = function(url)
 		{
 			var self = this;
 			var url = (url === undefined) ? this.url() : url;
-			var data = Radb.server.request( url );
+			var data = Acme.server.request( url );
 			// console.log(url);
 			data.done( function(response) {
 				self.races = _.map(response.data, function(race) {
@@ -81,7 +81,7 @@
 					);
 				});
 
-				Radb.PubSub.publish('update_state', {'races': self});
+				Acme.PubSub.publish('update_state', {'races': self});
 			});
 			return data;
 		};

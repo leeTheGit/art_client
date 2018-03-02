@@ -3,7 +3,7 @@
 	'use strict';
 
 
-	Radb.Model.meeting = Radb.Model.create({
+	Acme.Model.meeting = Acme.Model.create({
 		'url' 			: 'meeting',
 		'alias'         : 'currentmeeting',
 		'messages' 		: {'set' : 'fetched'},
@@ -11,17 +11,17 @@
 			'data' : {}
 		}
 	});
-		Radb.PubSub.subscribe({
-			'Radb.Model.meeting.listener' : [ "state_changed", "update_state"]
+		Acme.PubSub.subscribe({
+			'Acme.Model.meeting.listener' : [ "state_changed", "update_state"]
 		});
 
-		Radb.Model.meeting.listeners = {
+		Acme.Model.meeting.listeners = {
 			"timezoneSelect" : function(data) {
 				var self = this;
 				var val  = data.timezoneSelect.split('::');
 				this.update({'timezone': val[0]}).done(function(r) {
 					if (r.data === true) {
-						Radb.PubSub.publish('state_changed', {'meetingTZ': self});
+						Acme.PubSub.publish('state_changed', {'meetingTZ': self});
 					}
 				});
 			},
@@ -33,23 +33,23 @@
 					function(r) {
 						if (r.data.date) {
 							self.data = r.data;
-							Radb.state.listener('update_state', {'currentmeeting': self});
+							Acme.state.listener('update_state', {'currentmeeting': self});
 						}
 					}
 				);
 			}
 		};
-		Radb.Model.meeting.tab_link = function()
+		Acme.Model.meeting.tab_link = function()
 		{
 			var self = this;
 
-			return Radb.server.update(self.url(), {'tab_abbr_req':true})
+			return Acme.server.update(self.url(), {'tab_abbr_req':true})
 			.done(function(response) {
 				console.log(response);
 				self.fetch();
 			});
 		};
-		Radb.Model.meeting.ordercolours = function(races)
+		Acme.Model.meeting.ordercolours = function(races)
 		{
 			var self = this;
 			var reqString = "";
@@ -71,12 +71,12 @@
 					datum.data.push(r.data);
 					// console.log(datum);
 
-					return Radb.server.create('jockeysilks', datum).done(function(r) {
+					return Acme.server.create('jockeysilks', datum).done(function(r) {
 
 						if (r.created == true) {
 							var jerseys = r.stats.jerseys;
 							var races = r.stats.races;
-							Radb.effects.message(jerseys + ' jerseys, for ' + races + " races ordered");
+							Acme.effects.message(jerseys + ' jerseys, for ' + races + " races ordered");
 							self.update({'require_colours': true});
 						}
 					});

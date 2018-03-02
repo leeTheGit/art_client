@@ -4,15 +4,15 @@
 
 
 
-	Radb.View.runners = function(config)
+	Acme.View.runners = function(config)
 	{
 		this.containerTmpl   = config.el;
 		this.container       = null;
 		this.view 			 = 'runnersData';
 		this.selectedRunner  = null;
 		this.selected        = null;
-		this.subscriptions = Radb.PubSub.subscribe({
-			'Radb.runners_view.listener' : [ "state_changed" ],
+		this.subscriptions = Acme.PubSub.subscribe({
+			'Acme.runners_view.listener' : [ "state_changed" ],
 		});
 		this.listeners = {
 			"clickEvent" : function(data) {
@@ -36,7 +36,7 @@
 
 		}
 	};
-		Radb.View.runners.prototype.listener = function(topic, data)
+		Acme.View.runners.prototype.listener = function(topic, data)
 		{
 			var keys = Object.keys(data);
 			for (var i = 0; i<keys.length; i++) {
@@ -48,21 +48,21 @@
 				}
 			}
 		};
-		Radb.View.runners.prototype.clear = function()
+		Acme.View.runners.prototype.clear = function()
 		{
 			var self = this;
 			self.container = $(self.containerTmpl);
 			self.container.empty();
 		};
-		Radb.View.runners.prototype.soften = function()
+		Acme.View.runners.prototype.soften = function()
 		{
 			this.container.css('opacity', '.4');
 		};
-		Radb.View.runners.prototype.brighten = function()
+		Acme.View.runners.prototype.brighten = function()
 		{
 			this.container.css('opacity', '1');
 		};
-		Radb.View.runners.prototype.render = function()
+		Acme.View.runners.prototype.render = function()
 		{
 			var self = this;
 			this.container = $(this.containerTmpl);
@@ -72,7 +72,7 @@
 			self.brighten();
 			var runnersCount  = this.data.runners.length;
 
-			self.selectedRunner = Radb.state.runner;
+			self.selectedRunner = Acme.state.runner;
 			if (runnersCount === 0 ) return;
 			$('#runnerstabs').show();
 
@@ -89,21 +89,21 @@
 
 			var sortRunners = function(runners) {
 				if (self.view == 'runnersResults') {
-					return runners.sort(Radb.by('data.racenumber', false, clampInt, Radb.by('data.result.position', false, clampInt)));			
+					return runners.sort(Acme.by('data.racenumber', false, clampInt, Acme.by('data.result.position', false, clampInt)));			
 				} else {
 					return runners;
 				}
 			};
 
-			var finalTmpl = Radb.renderRunnerData(self.view).call(self, sortRunners(self.data.runners.slice()));
+			var finalTmpl = Acme.renderRunnerData(self.view).call(self, sortRunners(self.data.runners.slice()));
 
 			self.container.append(finalTmpl);
 
 			this.selectedElem = $('ul.runnerSelect');
 			if (this.selectedElem.length > 0) {
-				Radb.effects.scroll($('.runnersList'), this.selectedElem);
+				Acme.effects.scroll($('.runnersList'), this.selectedElem);
 			} else {
-				Radb.effects.scroll($('.runnersList'), $('.runnersList > li:first-child'));
+				Acme.effects.scroll($('.runnersList'), $('.runnersList > li:first-child'));
 			}
 
 			var last = self.data.runners.slice(-1)[0];
@@ -111,7 +111,7 @@
 			this.events();
 			return true;
 		};
-		Radb.View.runners.prototype.selectById = function(id)
+		Acme.View.runners.prototype.selectById = function(id)
 		{
 			if (this.data.runners.length > 0) {
 				var runners = this.data.runners;
@@ -125,12 +125,12 @@
 				}
 			}
 		};
-		Radb.View.runners.prototype.select = function(elem)
+		Acme.View.runners.prototype.select = function(elem)
 		{
 			$('.runner_data').removeClass('runnerSelect');
 			elem.addClass('runnerSelect');
 		};
-		Radb.View.runners.prototype.events = function()
+		Acme.View.runners.prototype.events = function()
 		{
 			var self = this;
 			var presstimer;
@@ -146,7 +146,7 @@
 
 				presstimer = setTimeout(function() {
 					var message = "Delete "+runner.data.name+"?";
-					Radb.dialog.show(message, "Warning", runner.delete, runner);
+					Acme.dialog.show(message, "Warning", runner.delete, runner);
 					return;
 				}, 1000);
 				return false;
@@ -164,7 +164,7 @@
 
 				presstimer = setTimeout(function() {
 					var message = "Clear discrepancy for "+runner.data.name+"?";
-					Radb.dialog.show(message, "Warning", runner.update, runner, {'load_discrepancy': runner.data.load_discrepancy ? 'NULL' : true });
+					Acme.dialog.show(message, "Warning", runner.update, runner, {'load_discrepancy': runner.data.load_discrepancy ? 'NULL' : true });
 					return;
 				}, 1000);
 				return false;
@@ -181,10 +181,10 @@
 				var runner = self.data.runners[id];
 
 				self.select(ul);
-				Radb.PubSub.publish('update_state', {'runner': runner.data.id });
+				Acme.PubSub.publish('update_state', {'runner': runner.data.id });
 
-				// Radb.state.runner = runner.data.id;
-				// Radb.PubSub.publish('resource/selected', Radb.state);
+				// Acme.state.runner = runner.data.id;
+				// Acme.PubSub.publish('resource/selected', Acme.state);
 
 
 				if (elem.hasClass('jockeyname')) {
@@ -192,17 +192,17 @@
 						text: elem.text(),
 						template: '<div class="flex3"><input class="modal_edit" type="text" id="edit_val" autocomplete="off" value="' + elem.text() + '"></div>',
 						callback: function(text) {
-							Radb.server.update('jockey/' + elem.data('id'), {name: text}).done(function(r) {
-								Radb.effects.saved(elem);
-								// Radb.PubSub.publish('state_changed', {'runner': r.data});
+							Acme.server.update('jockey/' + elem.data('id'), {name: text}).done(function(r) {
+								Acme.effects.saved(elem);
+								// Acme.PubSub.publish('state_changed', {'runner': r.data});
 							})
 						},
 					};
-					Radb.server.request('jockey').done(function(jockeys) {
-						Radb.modal.show('Select Jockey', edit, jockeys.data, function(id) {
+					Acme.server.request('jockey').done(function(jockeys) {
+						Acme.modal.show('Select Jockey', edit, jockeys.data, function(id) {
 							runner.update({'jockeyid': id}).done(function(r) {
-								Radb.effects.saved(elem);
-								// Radb.PubSub.publish('state_changed', {'runner': r.data});
+								Acme.effects.saved(elem);
+								// Acme.PubSub.publish('state_changed', {'runner': r.data});
 							});
 						});
 					});
@@ -215,17 +215,17 @@
 						text: elem.text(),
 						template: '<div class="flex3"><input class="modal_edit" type="text" id="edit_val" autocomplete="off" value="' + elem.text() + '"></div>',
 						callback: function(text) {
-							Radb.server.update('trainer/' + elem.data('id'), {name: text}).done(function(r) {
-								Radb.effects.saved(elem);
-								// Radb.PubSub.publish('state_changed', {'runner': r.data});
+							Acme.server.update('trainer/' + elem.data('id'), {name: text}).done(function(r) {
+								Acme.effects.saved(elem);
+								// Acme.PubSub.publish('state_changed', {'runner': r.data});
 							})
 						},
 					};
-					Radb.server.request('trainer').done(function(trainers) {
-						Radb.modal.show('Select Trainer', edit, trainers.data, function(id) {
+					Acme.server.request('trainer').done(function(trainers) {
+						Acme.modal.show('Select Trainer', edit, trainers.data, function(id) {
 							runner.update({'trainerid': id}).done(function(r) {
-								Radb.effects.saved(elem);
-								// Radb.PubSub.publish('state_changed', {'runner': r.data});
+								Acme.effects.saved(elem);
+								// Acme.PubSub.publish('state_changed', {'runner': r.data});
 							});
 						});
 					});
@@ -241,14 +241,14 @@
 					var scr_value = (runner.data.scratched !== true);
 					var tipped = (runner.data.tip) ? true : false;
 					runner.update({'scratched': scr_value}).done(function(r) {
-						Radb.PubSub.publish('state_changed', {'runner_tip': r.data});
+						Acme.PubSub.publish('state_changed', {'runner_tip': r.data});
 					});
 					return;
 				}
 				if (elem.parent().hasClass('runner_tip')) {
-					runner.update({'tip': true, 'user': Radb.state.user ? Radb.state.user : null}).done(function(r) {
+					runner.update({'tip': true, 'user': Acme.state.user ? Acme.state.user : null}).done(function(r) {
 						console.log(r);
-						Radb.PubSub.publish('state_changed', {'runner_tip': r.data});
+						Acme.PubSub.publish('state_changed', {'runner_tip': r.data});
 					});
 					return;
 				}
@@ -289,14 +289,14 @@
 
 				data[field] = elem.val();
 				if (data['market']) {
-					data['supplier'] = Radb.state.group;
+					data['supplier'] = Acme.state.group;
 				}
 
 				runner.update(data).done(function(r) {
-					Radb.effects.saved(elem);
+					Acme.effects.saved(elem);
 				}).fail(function(r) {
 					elem.val(runner.data[field]);
-					Radb.effects.error(elem);
+					Acme.effects.error(elem);
 
 				});
 			});
@@ -309,7 +309,7 @@
 		};
 
 
-		Radb.renderRunnerData = function(tab)
+		Acme.renderRunnerData = function(tab)
 		{
 			var temp = template(tab);
 
@@ -514,8 +514,8 @@
 					params['emergency']			= runner.emergency;
 					params['scratched'] 		= runner.scratched ? 'scratched' : '';
 					params['market_missing']	= runner.market ? '' : 'missing_value';
-					params['market_unset']		= Radb.state.group ? ((runner.market_supplier === Radb.state.group) ? '' : 'unset_value') : '';
-					params['market_aap']		= Radb.state.group ? ((runner.market_supplier === Radb.state.group) ? '' : params['market']) : '';
+					params['market_unset']		= Acme.state.group ? ((runner.market_supplier === Acme.state.group) ? '' : 'unset_value') : '';
+					params['market_aap']		= Acme.state.group ? ((runner.market_supplier === Acme.state.group) ? '' : params['market']) : '';
 					params['race_number'] 		= runner.racenumber;
 					params['number'] 			= runner.number;
 					params['name']				= runner.name;
@@ -540,7 +540,7 @@
 
 				}
 
-				Radb.PubSub.publish("state_changed", {'discrepancy' : race_discrepancies});
+				Acme.PubSub.publish("state_changed", {'discrepancy' : race_discrepancies});
 
 				return finalTmpl;
 			}

@@ -1,4 +1,5 @@
 Iconr
+/node_modules
 .vagrant
 .vagrant/*
 .DS_Store

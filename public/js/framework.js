@@ -1,16 +1,16 @@
 (function()
 {
 	'use strict'
-    window.Radb 	  = {};
-	Radb.View 	  	  = {};
-	Radb.Model 		  = {};
-	Radb.Collection   = {};
-	Radb.Feed 		  = {};
-    Radb.PubSub 	  = {};
-	Radb.effects      = {};
+    window.Acme 	  = {};
+	Acme.View 	  	  = {};
+	Acme.Model 		  = {};
+	Acme.Collection   = {};
+	Acme.Feed 		  = {};
+    Acme.PubSub 	  = {};
+	Acme.effects      = {};
 
 
-	Radb.timezones = ['Australia/Melbourne',
+	Acme.timezones = ['Australia/Melbourne',
 					  'Australia/Sydney',
 					  'Australia/Brisbane',
 					  'Australia/Perth',
@@ -28,7 +28,7 @@
 					  'Europe/Paris',
 					  ];
 
-	Radb.venueStates = ['VIC', 'NSW', 'QLD', 'WA', 'TAS', 'ACT', 'SA', 'NT', 'NZ', 'Hongkong', 'Singapore', 'South Africa', 'UK']
+	Acme.venueStates = ['VIC', 'NSW', 'QLD', 'WA', 'TAS', 'ACT', 'SA', 'NT', 'NZ', 'Hongkong', 'Singapore', 'South Africa', 'UK']
 
     window.template   = function(id) {
     	if ($('#' + id).html() == void (0)) {
@@ -46,7 +46,7 @@
 	}
 
 
-	// Radb.extend =  function(obj) {
+	// Acme.extend =  function(obj) {
 	//
     //     var length = arguments.length;
     //     if (length < 2 || obj === null) return obj;
@@ -63,9 +63,9 @@
     // };
 
 
-	Radb.listen = function() {};
+	Acme.listen = function() {};
 
-	Radb.listen.prototype.listener = function(topic, data)
+	Acme.listen.prototype.listener = function(topic, data)
 	{
 		// console.log(topic, data);
 		var keys = Object.keys(data);
@@ -84,7 +84,7 @@
 		}
 	};
 
-	Radb.State = function()
+	Acme.State = function()
 	{
 		this.page 			= 'meeting';
 		this.date           = moment().add(1, 'days');
@@ -119,27 +119,27 @@
 		this.raceview       = 'race';
 		this.portalwindow   = false;
 	};
-		Radb.State.prototype.listener = function(topic, data)
+		Acme.State.prototype.listener = function(topic, data)
 		{
-			// console.log(topic, data);
+			console.log(topic, data);
 			if (topic === 'update_state') {
-				if (data.hasOwnProperty('date_rel') || data.hasOwnProperty('date_abs') ) {
-					// console.log('DATES');
-					if (data.hasOwnProperty('date_rel')) {
+				// if (data.hasOwnProperty('date_rel') || data.hasOwnProperty('date_abs') ) {
+				// 	// console.log('DATES');
+				// 	if (data.hasOwnProperty('date_rel')) {
 
-						if (data.date_rel === 'Previous') this.date.add(-1, 'days');
-						if (data.date_rel === 'Next') this.date.add(1, 'days');
-					}
-					if (data.hasOwnProperty('date_abs')) {
-						this.date = moment(data.date_abs);
-					}
+				// 		if (data.date_rel === 'Previous') this.date.add(-1, 'days');
+				// 		if (data.date_rel === 'Next') this.date.add(1, 'days');
+				// 	}
+				// 	if (data.hasOwnProperty('date_abs')) {
+				// 		this.date = moment(data.date_abs);
+				// 	}
 
-					// console.log('publishing state change for date');
-					Radb.PubSub.publish('state_changed', {'date':this.date});
-				}
+				// 	// console.log('publishing state change for date');
+				// 	Acme.PubSub.publish('state_changed', {'date':this.date});
+				// }
 
-				delete data['date_rel'];
-				delete data['date_abs'];
+				// delete data['date_rel'];
+				// delete data['date_abs'];
 
 				var keys  = Object.keys(data);
 
@@ -150,110 +150,94 @@
 						this[key] = data[key];
 						data = {};
 						data[key] = this[key];
-						// console.log('publishing state changed for ' + key);
-						Radb.PubSub.publish('state_changed', data );
+						Acme.PubSub.publish('state_changed', data );
 					}
 				}
 
-				Radb.PubSub.publish('url/updated', Radb.state);
+				Acme.PubSub.publish('url/updated', Acme.state);
 
 			}
 
-			if (topic === 'resource/selected') {
-				Radb.PubSub.publish('url/updated', Radb.state);
-			}
+			// if (topic === 'resource/selected') {
+			// 	Acme.PubSub.publish('url/updated', Acme.state);
+			// }
 
 
-			if (topic === 'resource/updated') {
+			// if (topic === 'resource/updated') {
 
-				Radb.state.track 			= data.track 		|| null;
-				Radb.state.publication 		= data.publication  || null;
-				Radb.state.output 			= data.output 		|| null;
+			// 	Acme.state.track 			= data.track 		|| null;
+			// 	Acme.state.publication 		= data.publication  || null;
+			// 	Acme.state.output 			= data.output 		|| null;
 
-				if (data.type === 'Horse' || data.type === 'Jockey') {
-					Radb.state.meeting 		= data.meetid 		|| null;
-					Radb.state.race 		= data.raceid 		|| null;
-					Radb.state.runner 		= data.id 			|| null;
-				} else {
-					Radb.state.meeting 		= data.meetid 		|| null;
-					Radb.state.race 		= data.raceid 		|| null;
-					Radb.state.runner 		= null;
-				}
-				Radb.PubSub.publish('url/updated', Radb.state);
-				this.loadFromUrl();
-			}
+			// 	if (data.type === 'Horse' || data.type === 'Jockey') {
+			// 		Acme.state.meeting 		= data.meetid 		|| null;
+			// 		Acme.state.race 		= data.raceid 		|| null;
+			// 		Acme.state.runner 		= data.id 			|| null;
+			// 	} else {
+			// 		Acme.state.meeting 		= data.meetid 		|| null;
+			// 		Acme.state.race 		= data.raceid 		|| null;
+			// 		Acme.state.runner 		= null;
+			// 	}
+			// 	Acme.PubSub.publish('url/updated', Acme.state);
+			// 	this.loadFromUrl();
+			// }
 
 
-			if (topic === 'load_from_url') {
-				Radb.url.getParams();
-				this.loadFromUrl();
-			}
+			// if (topic === 'load_from_url') {
+			// 	Acme.url.getParams();
+			// 	this.loadFromUrl();
+			// }
 		};
-		Radb.State.prototype.loadFromUrl = function()
+		Acme.State.prototype.loadFromUrl = function()
 		{
 			console.log('load from url');
-			console.log(Radb.state);
+			console.log(Acme.state);
 
-			if (Radb.state.meeting) {
+			if (Acme.state.meeting) {
 				// console.log('state_changed : meeting');
-				Radb.PubSub.publish('state_changed', {'meeting' : Radb.state.meeting});
+				// Acme.PubSub.publish('state_changed', {'meeting' : Acme.state.meeting});
 				// var today = moment();
 				// var date = r.data.date;
 				// if (moment(date) < today ) {
 				// 	date = moment().format("YYYY-MM-DD");
 				// }
-				// Radb.state.listener('update_state', {'date_abs': date, 'daterange': 'from'});
+				// Acme.state.listener('update_state', {'date_abs': date, 'daterange': 'from'});
 
 			}
-			// else {
-				if (localStorage['context'] == 'load') {
 
-					Radb.PubSub.publish('load/fetch');
+			if (localStorage['context'] == 'load') {
 
-				} else {
+				Acme.PubSub.publish('load/fetch');
 
-					Radb.PubSub.publish('state_changed', {'date' : Radb.state.date});
-				}
-			// }
+			} else {
 
-			// if (Radb.state.race) {
-			// 	Radb.PubSub.publish('race/selected',  Radb.state.race);
-			// }
-			// if (Radb.state.runner) {
-			// 	Radb.PubSub.publish('runner/selectbyid', Radb.state.runner);
-			// }
-			if (Radb.state.track) {
-				Radb.PubSub.publish('track/selectbyid', Radb.state.track);
+				// Acme.PubSub.publish('state_changed', {'date' : Acme.state.date});
 			}
-			// if (Radb.state.publication) {
-			// 	Radb.PubSub.publish('publication/selectbyid', Radb.state.publication);
-			// }
-			// if (Radb.state.output) {
-			// 	Radb.PubSub.publish('output/selectbyid', Radb.state.output);
-			// }
+
 		};
 
-	Radb.Url = function()
+	Acme.Url = function()
 	{
 		this.page = {
 			'meeting': {
-							'resource': ['meeting'],
-						 	'params': ['race', 'runner']
-						},
-			'tracks'  : {
-							'resource': ['track'],
-							'params': []
-						},
-			'outputs' : {
-							'resource': ['publication'],
-							'params': ['output']
-						}
+				'resource': ['meeting'],
+			 	'params': ['race', 'runner']
+			},
+			// 'tracks'  : {
+			// 				'resource': ['track'],
+			// 				'params': []
+			// 			},
+			// 'outputs' : {
+			// 				'resource': ['publication'],
+			// 				'params': ['output']
+			// 			}
 		};
 		this.buildResourceFromUrl();
 		this.queryString = '';
 	};
-		Radb.Url.prototype.listener = function(topic, data)
+		Acme.Url.prototype.listener = function(topic, data)
 		{
+
 			var query = {};
 			for (var key in data) {
 				if (data.hasOwnProperty(key)) {
@@ -265,30 +249,30 @@
 			this.updateQuery(query);
 			this.generateURL();
 		};
-		Radb.Url.prototype.generateURL = function() {
+		Acme.Url.prototype.generateURL = function() {
 
 			this.buildPath();
 			this.buildQuery();
 			this.url =  this.path + this.queryString;
 
-			localStorage[Radb.state.page] = this.url;
+			localStorage[Acme.state.page] = this.url;
 
 			this.push();
 			return this;
 		};
-		Radb.Url.prototype.getQueryFromString = function(query)
+		Acme.Url.prototype.getQueryFromString = function(query)
 		{
 			return query.split(/[?=&]/);
 		};
-		Radb.Url.prototype.push = function()
+		Acme.Url.prototype.push = function()
 		{
 			window.history.pushState("Test", "test2", this.url);
 		};
-		Radb.Url.prototype.updateQuery = function(query)
+		Acme.Url.prototype.updateQuery = function(query)
 		{
 			this.query = [];
 			var keys = Object.keys(query);
-			var schema = this.page[Radb.state.page]['params'];
+			var schema = this.page[Acme.state.page]['params'];
 			keys = _.filter(keys, function(key) {
 				if (schema.indexOf(key) > -1) {
 					return key;
@@ -313,21 +297,21 @@
 				}
 			}
 		};
-		Radb.Url.prototype.buildPath = function()
+		Acme.Url.prototype.buildPath = function()
 		{
 			var path = '/';
-			path += Radb.state.page + '/';
-			var schema = this.page[Radb.state.page]['resource'];
+			path += Acme.state.page + '/';
+			var schema = this.page[Acme.state.page]['resource'];
 			for(var i=0;i<schema.length; i++) {
-				if (Radb.state[schema[i]]) {
-					path += Radb.state[schema[i]] + '/';
+				if (Acme.state[schema[i]]) {
+					path += Acme.state[schema[i]] + '/';
 				}
 			}
 			this.path = path;
 
 			return this;
 		};
-		Radb.Url.prototype.buildQuery = function()
+		Acme.Url.prototype.buildQuery = function()
 		{
 			var query = '';
 			for(var i=0;i<this.query.length; i+=2) {
@@ -338,13 +322,13 @@
 			}
 			this.queryString = query;
 		};
-		Radb.Url.prototype.getFullPath = function()
+		Acme.Url.prototype.getFullPath = function()
 		{
 			var path = this.path.split('/');
 			path.shift();
 			return path.join('/') + this.queryString;
 		};
-		Radb.Url.prototype.buildResourceFromUrl = function()
+		Acme.Url.prototype.buildResourceFromUrl = function()
 		{
 			this.url   = window.location;
 			this.host  = this.url.host;
@@ -352,7 +336,7 @@
 			this.query = this.getQueryFromString(this.url.search);
 			this.query.shift();
 		};
-		Radb.Url.prototype.getParams = function()
+		Acme.Url.prototype.getParams = function()
 		{
 			this.buildResourceFromUrl();
 			var path = this.path.split('/');
@@ -360,12 +344,12 @@
 			var state = this.page[path[1]]['resource'];
 			for(var i=2;i<path.length; i++) {
 				if (path[i] != '') {
-					Radb.state[state] = path[i];
+					Acme.state[state] = path[i];
 				}
 			}
 			for(var i=0;i<this.query.length; i+=2) {
-				if (this.query[i] in Radb.state) {
-					Radb.state[this.query[i]] = this.query[i+1];
+				if (this.query[i] in Acme.state) {
+					Acme.state[this.query[i]] = this.query[i+1];
 				}
 			}
 			this.generateURL();
@@ -374,226 +358,226 @@
 
 
 
-	Radb._listMenu = function(config)
-	{
-		this.defaultTemp  	  = _.template('<div id="<%= name %>" class="pulldown <%= default_style %>"><div class="flex_row"><div class="flex1 fa fa-lg <%= listIcon %> icon_shift"></div><p class="flex3"></p><i class="fa fa-lg fa-caret-down flex1 icon_shift" /></div><ul></ul></div>');
-		this.defaultItemTemp  = _.template('<li class="<%= item_style %>" data-value="<%= value %>"><%= label %></li>');
-		this.menuParent		  = config.parent 	 	 || {};
-		this.template 		  = config.template  	 || this.defaultTemp;
-		this.itemTemp 		  = config.itemTemp 	 || this.defaultItemTemp;
-		this.list 			  = config.list 	 	 || [];
-		this.defaultSelection = config.defaultSelect || null;
-		this.defaultStyle 	  = config.defaultStyle  || '';
-		this.name 			  = config.name 	 	 || null;
-		this.listIcon 		  = config.listIcon 	 || '';
-		this.listContainer	  = null;
-		this.defaultItem	  = null;
-		return this;
-	};
-		Radb._listMenu.prototype.init = function(prepend)
-		{
-			var prepend = prepend || 'append';
-			this.menuParent[prepend]( this.template({"name": this.name, "default_style": this.defaultStyle, "listIcon": this.listIcon}) );
-			this.defaultItem   = $('#' + this.name+' p');
-			this.listContainer = $('#' + this.name+' ul');
-			this.events();
-			if (this.extendedEvents) this.extendedEvents();
-			return this;
-		};
-		Radb._listMenu.prototype.render = function()
-		{
-			this.listContainer.empty();
-			if (this.defaultSelection != null) {
-				this.defaultItem.text(this.defaultSelection.label);
-			}
-			var html = this.createList();
-			this.listContainer.append( html );
-			this.listItemEvents();
-			return this;
-		};
-		Radb._listMenu.prototype.events = function()
-		{
-			var self = this;
-			this.defaultItem.parent().on('click', function(e) {
-				e.stopPropagation();
-				self.listContainer.show();
-			});
-		};
-		Radb._listMenu.prototype.createList = function()
-		{
-			var itemTemp = this.itemTemp;
-			var html = '';
-			for (var i=0; i<this.list.length; i++) {
-				html += itemTemp({
-					'label'	  :  this.list[i].label,
-					'value'   :  this.list[i].value,
-					'item_style'   :  this.list[i].style || '',
-				});
-			}
-			return html;
-		};
-		Radb._listMenu.prototype.select = function(item)
-		{
-			var menuid = '#' + this.name + ' > p';
-			$(menuid).text(item);
-			return this;
-		};
-		Radb._listMenu.prototype.listItemEvents = function()
-		{
-			var self = this;
-			this.listContainer.on('click', function(e) {
-				var elem = $(e.target);
-				var value = elem.data('value');
+	// Acme._listMenu = function(config)
+	// {
+	// 	this.defaultTemp  	  = _.template('<div id="<%= name %>" class="pulldown <%= default_style %>"><div class="flex_row"><div class="flex1 fa fa-lg <%= listIcon %> icon_shift"></div><p class="flex3"></p><i class="fa fa-lg fa-caret-down flex1 icon_shift" /></div><ul></ul></div>');
+	// 	this.defaultItemTemp  = _.template('<li class="<%= item_style %>" data-value="<%= value %>"><%= label %></li>');
+	// 	this.menuParent		  = config.parent 	 	 || {};
+	// 	this.template 		  = config.template  	 || this.defaultTemp;
+	// 	this.itemTemp 		  = config.itemTemp 	 || this.defaultItemTemp;
+	// 	this.list 			  = config.list 	 	 || [];
+	// 	this.defaultSelection = config.defaultSelect || null;
+	// 	this.defaultStyle 	  = config.defaultStyle  || '';
+	// 	this.name 			  = config.name 	 	 || null;
+	// 	this.listIcon 		  = config.listIcon 	 || '';
+	// 	this.listContainer	  = null;
+	// 	this.defaultItem	  = null;
+	// 	return this;
+	// };
+	// 	Acme._listMenu.prototype.init = function(prepend)
+	// 	{
+	// 		var prepend = prepend || 'append';
+	// 		this.menuParent[prepend]( this.template({"name": this.name, "default_style": this.defaultStyle, "listIcon": this.listIcon}) );
+	// 		this.defaultItem   = $('#' + this.name+' p');
+	// 		this.listContainer = $('#' + this.name+' ul');
+	// 		this.events();
+	// 		if (this.extendedEvents) this.extendedEvents();
+	// 		return this;
+	// 	};
+	// 	Acme._listMenu.prototype.render = function()
+	// 	{
+	// 		this.listContainer.empty();
+	// 		if (this.defaultSelection != null) {
+	// 			this.defaultItem.text(this.defaultSelection.label);
+	// 		}
+	// 		var html = this.createList();
+	// 		this.listContainer.append( html );
+	// 		this.listItemEvents();
+	// 		return this;
+	// 	};
+	// 	Acme._listMenu.prototype.events = function()
+	// 	{
+	// 		var self = this;
+	// 		this.defaultItem.parent().on('click', function(e) {
+	// 			e.stopPropagation();
+	// 			self.listContainer.show();
+	// 		});
+	// 	};
+	// 	Acme._listMenu.prototype.createList = function()
+	// 	{
+	// 		var itemTemp = this.itemTemp;
+	// 		var html = '';
+	// 		for (var i=0; i<this.list.length; i++) {
+	// 			html += itemTemp({
+	// 				'label'	  :  this.list[i].label,
+	// 				'value'   :  this.list[i].value,
+	// 				'item_style'   :  this.list[i].style || '',
+	// 			});
+	// 		}
+	// 		return html;
+	// 	};
+	// 	Acme._listMenu.prototype.select = function(item)
+	// 	{
+	// 		var menuid = '#' + this.name + ' > p';
+	// 		$(menuid).text(item);
+	// 		return this;
+	// 	};
+	// 	Acme._listMenu.prototype.listItemEvents = function()
+	// 	{
+	// 		var self = this;
+	// 		this.listContainer.on('click', function(e) {
+	// 			var elem = $(e.target);
+	// 			var value = elem.data('value');
 
-				var data = {};
-				data[self.name] = value;
-				Radb.PubSub.publish('update_state', data);
-				self.defaultItem.text(elem.text());
-				self.defaultSelection.label = elem.text();
-				$(self.listContainer).hide(100);
-			});
-		};
-		Radb._listMenu.prototype.remove = function()
-		{
-			$('#' + this.name).remove();
-			return this;
-		}
-		Radb._listMenu.prototype.clear = function()
-		{
-			$('#' + this.name).html('');
-			return this;
-		}
-	   	Radb._listMenu.prototype.empty = function()
-		{
-			this.listContainer.empty();
-			return this;
-		}
-	   	Radb._listMenu.prototype.update = function(list)
-		{
-			this.list = list;
-			this.empty();
-			this.render();
-			return this;
-		}
-
-
-
-	Radb.listMenu = function(config)
-	{
-		this.defaultTemp  	  = _.template('<div id="<%= name %>" class="pulldown"><p></p><span></span><ul></ul></div>');
-		this.defaultItemTemp  = _.template('<li data-value="<%= value %>"><%= label %></li>');
-		this.menuParent		  = config.parent 	 	 || {};
-		this.template 		  = config.template  	 || this.defaultTemp;
-		this.itemTemp 		  = config.itemTemp 	 || this.defaultItemTemp;
-		this.defaultSelection = config.defaultSelect || null;
-		this.name 			  = config.name 	 	 || null;
-		this.callback 		  = config.callback 	 || null;
-		this.listContainer	  = null;
-		this.defaultItem	  = null;
-		return this;
-	};
-		Radb.listMenu.prototype.init = function(data)
-		{
-			// console.log(data);
-			this.list = data.map(function(item) {
-				return {
-					'label': item,
-					'value': item,
-				}
-			});
-
-			this.menuParent['append']( this.template({"name": this.name}) );
-			this.defaultItem   = $('#' + this.name+' p');
-			this.listContainer = $('#' + this.name+' ul');
-			this.events();
-			if (this.extendedEvents) this.extendedEvents();
-			return this;
-		};
-		Radb.listMenu.prototype.render = function()
-		{
-			this.listContainer.empty();
-			if (this.defaultSelection != null) {
-				this.defaultItem.text(this.defaultSelection.label);
-			}
-			var html = this.createList();
-			this.listContainer.append( html );
-			this.listItemEvents();
-			return this;
-		};
-		Radb.listMenu.prototype.events = function()
-		{
-			var self = this;
-			this.defaultItem.parent().on('click', function(e) {
-				e.stopPropagation();
-				self.listContainer.show();
-			});
-		};
-		Radb.listMenu.prototype.createList = function()
-		{
-			var itemTemp = this.itemTemp;
-			var html = '';
-			for (var i=0; i<this.list.length; i++) {
-				html += itemTemp({
-					'label'	  :  this.list[i].label,
-					'value'   :  this.list[i].value
-				});
-			}
-			return html;
-		};
-		Radb.listMenu.prototype.select = function(item)
-		{
-			var menuid = '#' + this.name + ' > p';
-			$(menuid).text(item);
-			return this;
-		};
-		Radb.listMenu.prototype.listItemEvents = function()
-		{
-			var self = this;
-			this.listContainer.on('click', function(e) {
-				console.log('clicked a list itme');
-				var elem = $(e.target);
-				var value = elem.data('value');
-
-				var data = {};
-				data[self.name] = value;
-				console.log(self.callback);
-				self.callback(data);
-
-				// Radb.PubSub.publish('update_state', data);
-				self.defaultItem.text(elem.text());
-				self.defaultSelection.label = elem.text();
-				$(self.listContainer).hide(100);
-			});
-		};
-		Radb.listMenu.prototype.remove = function()
-		{
-			$('#' + this.name).remove();
-			return this;
-		}
-		Radb.listMenu.prototype.clear = function()
-		{
-			$('#' + this.name).html('');
-			return this;
-		}
-	   	Radb.listMenu.prototype.empty = function()
-		{
-			this.listContainer.empty();
-			return this;
-		}
-	   	Radb.listMenu.prototype.update = function(list)
-		{
-			this.list = list;
-			this.empty();
-			this.render();
-			return this;
-		}
+	// 			var data = {};
+	// 			data[self.name] = value;
+	// 			Acme.PubSub.publish('update_state', data);
+	// 			self.defaultItem.text(elem.text());
+	// 			self.defaultSelection.label = elem.text();
+	// 			$(self.listContainer).hide(100);
+	// 		});
+	// 	};
+	// 	Acme._listMenu.prototype.remove = function()
+	// 	{
+	// 		$('#' + this.name).remove();
+	// 		return this;
+	// 	}
+	// 	Acme._listMenu.prototype.clear = function()
+	// 	{
+	// 		$('#' + this.name).html('');
+	// 		return this;
+	// 	}
+	//    	Acme._listMenu.prototype.empty = function()
+	// 	{
+	// 		this.listContainer.empty();
+	// 		return this;
+	// 	}
+	//    	Acme._listMenu.prototype.update = function(list)
+	// 	{
+	// 		this.list = list;
+	// 		this.empty();
+	// 		this.render();
+	// 		return this;
+	// 	}
 
 
 
-	Radb.Model.create = function(config)
+	// Acme.listMenu = function(config)
+	// {
+	// 	this.defaultTemp  	  = _.template('<div id="<%= name %>" class="pulldown"><p></p><span></span><ul></ul></div>');
+	// 	this.defaultItemTemp  = _.template('<li data-value="<%= value %>"><%= label %></li>');
+	// 	this.menuParent		  = config.parent 	 	 || {};
+	// 	this.template 		  = config.template  	 || this.defaultTemp;
+	// 	this.itemTemp 		  = config.itemTemp 	 || this.defaultItemTemp;
+	// 	this.defaultSelection = config.defaultSelect || null;
+	// 	this.name 			  = config.name 	 	 || null;
+	// 	this.callback 		  = config.callback 	 || null;
+	// 	this.listContainer	  = null;
+	// 	this.defaultItem	  = null;
+	// 	return this;
+	// };
+	// 	Acme.listMenu.prototype.init = function(data)
+	// 	{
+	// 		// console.log(data);
+	// 		this.list = data.map(function(item) {
+	// 			return {
+	// 				'label': item,
+	// 				'value': item,
+	// 			}
+	// 		});
+
+	// 		this.menuParent['append']( this.template({"name": this.name}) );
+	// 		this.defaultItem   = $('#' + this.name+' p');
+	// 		this.listContainer = $('#' + this.name+' ul');
+	// 		this.events();
+	// 		if (this.extendedEvents) this.extendedEvents();
+	// 		return this;
+	// 	};
+	// 	Acme.listMenu.prototype.render = function()
+	// 	{
+	// 		this.listContainer.empty();
+	// 		if (this.defaultSelection != null) {
+	// 			this.defaultItem.text(this.defaultSelection.label);
+	// 		}
+	// 		var html = this.createList();
+	// 		this.listContainer.append( html );
+	// 		this.listItemEvents();
+	// 		return this;
+	// 	};
+	// 	Acme.listMenu.prototype.events = function()
+	// 	{
+	// 		var self = this;
+	// 		this.defaultItem.parent().on('click', function(e) {
+	// 			e.stopPropagation();
+	// 			self.listContainer.show();
+	// 		});
+	// 	};
+	// 	Acme.listMenu.prototype.createList = function()
+	// 	{
+	// 		var itemTemp = this.itemTemp;
+	// 		var html = '';
+	// 		for (var i=0; i<this.list.length; i++) {
+	// 			html += itemTemp({
+	// 				'label'	  :  this.list[i].label,
+	// 				'value'   :  this.list[i].value
+	// 			});
+	// 		}
+	// 		return html;
+	// 	};
+	// 	Acme.listMenu.prototype.select = function(item)
+	// 	{
+	// 		var menuid = '#' + this.name + ' > p';
+	// 		$(menuid).text(item);
+	// 		return this;
+	// 	};
+	// 	Acme.listMenu.prototype.listItemEvents = function()
+	// 	{
+	// 		var self = this;
+	// 		this.listContainer.on('click', function(e) {
+	// 			console.log('clicked a list itme');
+	// 			var elem = $(e.target);
+	// 			var value = elem.data('value');
+
+	// 			var data = {};
+	// 			data[self.name] = value;
+	// 			console.log(self.callback);
+	// 			self.callback(data);
+
+	// 			// Acme.PubSub.publish('update_state', data);
+	// 			self.defaultItem.text(elem.text());
+	// 			self.defaultSelection.label = elem.text();
+	// 			$(self.listContainer).hide(100);
+	// 		});
+	// 	};
+	// 	Acme.listMenu.prototype.remove = function()
+	// 	{
+	// 		$('#' + this.name).remove();
+	// 		return this;
+	// 	}
+	// 	Acme.listMenu.prototype.clear = function()
+	// 	{
+	// 		$('#' + this.name).html('');
+	// 		return this;
+	// 	}
+	//    	Acme.listMenu.prototype.empty = function()
+	// 	{
+	// 		this.listContainer.empty();
+	// 		return this;
+	// 	}
+	//    	Acme.listMenu.prototype.update = function(list)
+	// 	{
+	// 		this.list = list;
+	// 		this.empty();
+	// 		this.render();
+	// 		return this;
+	// 	}
+
+
+
+	Acme.Model.create = function(config)
 	{
 		var obj = Object.create(
-		Radb._Model.prototype, {'resource': {
+		Acme._Model.prototype, {'resource': {
 									'value' : config['url'],
 									'enumerable': true,
 								},
@@ -631,10 +615,10 @@
 
 
 
-	Radb.View.create = function(config)
+	Acme.View.create = function(config)
 	{
 		function obj() {};
-		obj.prototype = Object.create(Radb.listen.prototype,
+		obj.prototype = Object.create(Acme.listen.prototype,
 			{
 				'template': {
 					'value' : config['temp'] || null,
@@ -679,14 +663,14 @@
 
 
 
-	Radb._Collection = function() {};
-		Radb._Collection.prototype = Object.create(Radb.listen.prototype);
+	Acme._Collection = function() {};
+		Acme._Collection.prototype = Object.create(Acme.listen.prototype);
 
 
 
-	Radb._Model = function() {};
-		Radb._Model.prototype = Object.create(Radb.listen.prototype);
-		Radb._Model.prototype.url = function()
+	Acme._Model = function() {};
+		Acme._Model.prototype = Object.create(Acme.listen.prototype);
+		Acme._Model.prototype.url = function()
 		{
 			if (this.resource_id) {
 				var scope = this;
@@ -700,7 +684,7 @@
 			var id = resource_id || this.data.id;
 			return this.resource + '/' + id + this.buildParams();
 		};
-		Radb._Model.prototype.buildParams = function()
+		Acme._Model.prototype.buildParams = function()
 		{
 			var query = '';
 			for(var i=0;i<this.query.length; i+=2) {
@@ -711,41 +695,41 @@
 			}
 			return query;
 		};
-		Radb._Model.prototype.fetch = function(set)
+		Acme._Model.prototype.fetch = function(set)
 		{
 			var self = this;
 			var set = (set === void 0) ? true : set;
 			// console.log(self.url());
-			return Radb.server.request(self.url())
+			return Acme.server.request(self.url())
 			.done(function(r) {
 				// console.log(r);
 				if (set) self.set(r.data);
 			});
 		};
-		Radb._Model.prototype.update = function(data, msg)
+		Acme._Model.prototype.update = function(data, msg)
 		{
 			var self = this;
 
-			return Radb.server.update(self.url(), data)
+			return Acme.server.update(self.url(), data)
 			.done(function(d, status, xhr) {
 				if (xhr.status === 200) {
 					self.set(data, msg);
 
 					var message = self.resource + '/update';
 
-					Radb.socket.send(JSON.stringify({action: message, value: self.data.id}));
+					Acme.socket.send(JSON.stringify({action: message, value: self.data.id}));
 
 				}
 			});
 		};
 
-		Radb._Model.prototype.updater = function()
+		Acme._Model.prototype.updater = function()
 		{
 			var self = this;
 			var _url = self.url();
 
 			return function(data, msg) {
-				return Radb.server.update(_url, data)
+				return Acme.server.update(_url, data)
 				.done(function(d, status, xhr) {
 					if (xhr.status === 200) {
 						// console.log(data);
@@ -755,7 +739,7 @@
 			}
 		};
 
-		Radb._Model.prototype.set = function(value, msg)
+		Acme._Model.prototype.set = function(value, msg)
 		{
 			// console.log('setting new data');
 			// console.log(msg);
@@ -767,92 +751,40 @@
 				// console.log(this.resource);
 				var resource = {};
 				resource[this.resource] = this;
-				// Radb.PubSub.publish('state_changed', resource);
-				// Radb.PubSub.publish('update_state', resource);
+				// Acme.PubSub.publish('state_changed', resource);
+				// Acme.PubSub.publish('update_state', resource);
 				// console.log(this.resource + '/' + this.messages.set);
-				Radb.PubSub.publish(this.resource + '/' + this.messages.set, this);
+				Acme.PubSub.publish(this.resource + '/' + this.messages.set, this);
 			}
 		};
-		Radb._Model.prototype.delete = function()
+		Acme._Model.prototype.delete = function()
 		{
 			var self = this;
 			var name = self.alias || self.resource;
 			var msg = name + '/delete';
 
-			console.log(Radb.socket.send(JSON.stringify({action: msg, value: self.data.id})));
+			console.log(Acme.socket.send(JSON.stringify({action: msg, value: self.data.id})));
 
-			return Radb.server.delete(self.url())
+			return Acme.server.delete(self.url())
 			.done(function(response) {
 				if (response.data == true) {
 					self.data = {};
 					var data =  {};
 					data[name] = null;
 					console.log(data);
-					Radb.PubSub.publish('update_state', data);
+					Acme.PubSub.publish('update_state', data);
 				}
 			});
 		};
 
 
-	Radb.getTimeDuration = function(start, end)
-	{
-		var difference   = moment.duration(end.diff(start)),
-			diffWeeks    = difference.weeks(),
-			diffDays     = difference.days(),
-			diffHours    = difference.hours(),
-			diffMins     = difference.minutes(),
-			diffSeconds  = difference.seconds(),
 
-			weekSuffix   = 'weeks',
-			daySuffix    = 'days',
-			hourSuffix   = 'hrs',
-			minSuffix 	 = 'mins',
-			secSuffix 	 = 'seconds',
-
-
-			timeDiffString = '';
-
-		if (diffWeeks > 0 ) {
-			if (diffWeeks === 1) {
-				weekSuffix = 'week';
-			}
-			return diffWeeks + ' ' + weekSuffix + ' ';
-		}
-
-		if (diffDays > 0 ) {
-			if (diffDays === 1) {
-				daySuffix = 'day';
-			}
-			return diffDays + ' ' + daySuffix + ' ';
-		}
-
-		if (diffHours > 0 ) {
-			if (diffHours === 1) {
-				hourSuffix = 'hr';
-			}
-			timeDiffString = timeDiffString + diffHours + ' ' + hourSuffix + ' ';
-		}
-
-		if (diffMins > 0 ) {
-			if (diffMins === 1) {
-				minSuffix = 'min';
-			}
-			timeDiffString = timeDiffString + diffMins + ' ' + minSuffix + ' ';
-		}
-
-		if (diffMins == 0 && diffSeconds > 0 ) {
-			timeDiffString = timeDiffString + diffSeconds + ' ' + secSuffix + ' ';
-		}
-		return timeDiffString;
-	};
-
-
-    Radb.PubSub = {
+    Acme.PubSub = {
         topics : {},
         lastUid : -1,
     };
 
-        Radb.PubSub.publisher = function(topic, data) {
+        Acme.PubSub.publisher = function(topic, data) {
             var self = this;
             var Deferred = function() {
                 return {
@@ -902,16 +834,16 @@
          *  @data: The data to pass to subscribers
         **/
 
-        Radb.PubSub.publish = function( topic, data ){
+        Acme.PubSub.publish = function( topic, data ){
             return this.publisher( topic, data, false );
         };
 
 
-        Radb.PubSub.reset = function( ){
+        Acme.PubSub.reset = function( ){
             this.lastUid = -1;
         };
 
-        Radb.PubSub.print = function(){
+        Acme.PubSub.print = function(){
             // console.log(this.topics);
             var subscribers = this.topics;
             console.log(subscribers);
@@ -930,7 +862,7 @@
          *  @func (Function): The function to call when a new topic is published
         **/
 
-        Radb.PubSub.subscribe = function( subscription ) {
+        Acme.PubSub.subscribe = function( subscription ) {
             // console.log(subscription);
             var callbacks = Object.keys(subscription);
             // console.log(callbacks);
@@ -970,7 +902,7 @@
          *  @token (String): The token of the function to unsubscribe
         **/
 
-        Radb.PubSub.unsubscribe = function( token ){
+        Acme.PubSub.unsubscribe = function( token ){
             for ( var m in this.topics ){
                 if ( this.topics.hasOwnProperty( m ) ){
                     for ( var i = 0, j = this.topics[m].length; i < j; i++ ){
@@ -988,7 +920,7 @@
 
 
 
-	Radb.server = {
+	Acme.server = {
 
 		create: function(uri, queryParams) {return this.call(uri, queryParams, 'post');},
 		request: function(uri, queryParams, datatype){return this.call(uri, queryParams, 'get', datatype);},
@@ -1014,8 +946,8 @@
 				type: type
 			}).fail(function(r) {
 				console.log(r);
-				if (r.status == 501 || r.status == 404) Radb.effects.errorMessage(r.responseText);
-				if (r.responseJSON) Radb.effects.message(r.responseJSON);
+				if (r.status == 501 || r.status == 404) Acme.effects.errorMessage(r.responseText);
+				if (r.responseJSON) Acme.effects.message(r.responseJSON);
 			});
 		},
 		callClient: function(uri, queryParams, type) {
@@ -1030,7 +962,7 @@
 		}
 	}
 
-	Radb.by = function (path, reverse, primer, then, dataTransform) {
+	Acme.by = function (path, reverse, primer, then, dataTransform) {
 		var get = function (obj, path) {
 				path = path.split('.');
 				for (var i = 0, len = path.length; i < len - 1; i++) {
@@ -1047,17 +979,17 @@
 			};
 
 		return function (a, b) {
-			// Radb.counter++;
-			// var objindex = Radb.sortObjs.indexOf(a);
+			// Acme.counter++;
+			// var objindex = Acme.sortObjs.indexOf(a);
 			// // console.log(objindex);
 			// var key = a.data.venue;
 			// if (objindex > -1) {
 			// 	// console.log('adding number to sort track');
-			// 	// console.log(Radb.ObjCount[key]);
-			// 	Radb.ObjCount[key] = Radb.ObjCount[key] + 1;
+			// 	// console.log(Acme.ObjCount[key]);
+			// 	Acme.ObjCount[key] = Acme.ObjCount[key] + 1;
 			// } else {
-			// 	Radb.sortObjs.push(a);
-			// 	Radb.ObjCount[a.data.venue] = 1;
+			// 	Acme.sortObjs.push(a);
+			// 	Acme.ObjCount[a.data.venue] = 1;
 			// }
 			var A = prime(a),
 				B = prime(b);
